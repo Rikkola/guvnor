@@ -17,12 +17,13 @@
 package org.drools.guvnor.server;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
 import org.drools.guvnor.client.rpc.SecurityService;
 import org.drools.guvnor.client.rpc.UserSecurityContext;
-import org.drools.guvnor.client.security.Capabilities;
+import org.drools.guvnor.client.configurations.Capability;
 import org.drools.guvnor.server.security.SecurityServiceImpl;
 import org.drools.guvnor.server.util.LoggingHelper;
 import org.jboss.seam.security.AuthorizationException;
@@ -58,12 +59,11 @@ public class SecurityServiceServlet extends RemoteServiceServlet implements
         }
     }
 
-
     public UserSecurityContext getCurrentUser() {
         return service.getCurrentUser();
     }
 
-    public Capabilities getUserCapabilities() {
+    public List<Capability> getUserCapabilities() {
         return service.getUserCapabilities();
     }
 

@@ -16,23 +16,16 @@
 
 package org.drools.guvnor.server.security;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Properties;
 
 import javax.security.auth.login.LoginException;
 
-import org.drools.repository.utils.IOUtils;
+import org.drools.core.util.KeyStoreHelper;
+import org.drools.guvnor.client.configurations.Capability;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.drools.core.util.DateUtils;
 import org.drools.guvnor.client.rpc.SecurityService;
 import org.drools.guvnor.client.rpc.UserSecurityContext;
-import org.drools.guvnor.client.security.Capabilities;
 import org.jboss.seam.Component;
 import org.jboss.seam.contexts.Contexts;
 import org.jboss.seam.security.AuthorizationException;
@@ -43,38 +36,44 @@ import org.jboss.seam.security.Identity;
  */
 public class SecurityServiceImpl implements SecurityService {
 
-    public static final String       GUEST_LOGIN             = "guest";
-    private static final Logger      log                     = LoggerFactory.getLogger( SecurityServiceImpl.class );
-    static final Map<String, String> PREFERENCES             = loadPrefs();
-    private static String[]          serializationProperties = new String[]{"drools.serialization.private.keyStoreURL", "drools.serialization.private.keyStorePwd", "drools.serialization.private.keyAlias", "drools.serialization.private.keyPwd", "drools.serialization.public.keyStoreURL", "drools.serialization.public.keyStorePwd"};
+    public static final String GUEST_LOGIN = "guest";
+    private static final Logger log = LoggerFactory.getLogger(SecurityServiceImpl.class);
+    private static String[] serializationProperties = new String[]{
+            KeyStoreHelper.PROP_PVT_KS_URL,
+            KeyStoreHelper.PROP_PVT_KS_PWD,
+            KeyStoreHelper.PROP_PVT_ALIAS,
+            KeyStoreHelper.PROP_PVT_PWD,
+            KeyStoreHelper.PROP_PUB_KS_URL,
+            KeyStoreHelper.PROP_PUB_KS_PWD
+    };
 
     public boolean login(String userName, String password) {
 
-        if ( userName == null || userName.trim().equals( "" ) ) {
+        if (userName == null || userName.trim().equals("")) {
             userName = "logInAdmin";
         }
 
-        log.info( "Logging in user [" + userName + "]" );
-        if ( Contexts.isApplicationContextActive() ) {
+        log.info("Logging in user [" + userName + "]");
+        if (Contexts.isApplicationContextActive()) {
 
             // Check for banned characters in user name
             // These will cause the session to jam if you let them go further
             char[] bannedChars = {'\'', '*', '[', ']'};
-            for ( int i = 0; i < bannedChars.length; i++ ) {
+            for (int i = 0; i < bannedChars.length; i++) {
                 char c = bannedChars[i];
-                if ( userName.indexOf( c ) >= 0 ) {
-                    log.error( "Not a valid name character " + c );
+                if (userName.indexOf(c) >= 0) {
+                    log.error("Not a valid name character " + c);
                     return false;
                 }
             }
 
-            Identity.instance().getCredentials().setUsername( userName );
-            Identity.instance().getCredentials().setPassword( password );
+            Identity.instance().getCredentials().setUsername(userName);
+            Identity.instance().getCredentials().setPassword(password);
 
             try {
                 Identity.instance().authenticate();
-            } catch ( LoginException e ) {
-                log.error( "Unable to login.", e );
+            } catch (LoginException e) {
+                log.error("Unable to login.", e);
                 return false;
             }
             return Identity.instance().isLoggedIn();
@@ -84,16 +83,16 @@ public class SecurityServiceImpl implements SecurityService {
     }
 
     public UserSecurityContext getCurrentUser() {
-        if ( Contexts.isApplicationContextActive() ) {
-            if ( !Identity.instance().isLoggedIn() ) {
+        if (Contexts.isApplicationContextActive()) {
+            if (!Identity.instance().isLoggedIn()) {
                 //check to see if we can autologin
-                return new UserSecurityContext( checkAutoLogin() );
+                return new UserSecurityContext(checkAutoLogin());
             }
-            return new UserSecurityContext( Identity.instance().getCredentials().getUsername() );
+            return new UserSecurityContext(Identity.instance().getCredentials().getUsername());
         } else {
             //            HashSet<String> disabled = new HashSet<String>();
             //return new UserSecurityContext(null);
-            return new UserSecurityContext( "SINGLE USER MODE (DEBUG) USE ONLY" );
+            return new UserSecurityContext("SINGLE USER MODE (DEBUG) USE ONLY");
         }
     }
 
@@ -104,13 +103,13 @@ public class SecurityServiceImpl implements SecurityService {
      */
     private String checkAutoLogin() {
         Identity id = Identity.instance();
-        id.getCredentials().setUsername( GUEST_LOGIN );
+        id.getCredentials().setUsername(GUEST_LOGIN);
         try {
             id.authenticate();
-        } catch ( LoginException e ) {
+        } catch (LoginException e) {
             return null;
         }
-        if ( id.isLoggedIn() ) {
+        if (id.isLoggedIn()) {
             return id.getCredentials().getUsername();
         } else {
             return null;
@@ -118,139 +117,49 @@ public class SecurityServiceImpl implements SecurityService {
 
     }
 
-    public Capabilities getUserCapabilities() {
+    public List<Capability> getUserCapabilities() {
 
-        if ( Contexts.isApplicationContextActive() ) {
-            if ( Identity.instance().hasRole( RoleTypes.ADMIN ) ) {
-                return Capabilities.all( PREFERENCES );
+        if (Contexts.isApplicationContextActive()) {
+            if (Identity.instance().hasRole(RoleTypes.ADMIN)) {
+                return CapabilityCalculator.grantAllCapabilities();
             }
 
-            RoleBasedPermissionResolver resolver = (RoleBasedPermissionResolver) Component.getInstance( "org.jboss.seam.security.roleBasedPermissionResolver" );
-            if ( !resolver.isEnableRoleBasedAuthorization() ) {
-                return Capabilities.all( PREFERENCES );
+            RoleBasedPermissionResolver resolver = (RoleBasedPermissionResolver) Component.getInstance("org.jboss.seam.security.roleBasedPermissionResolver");
+            if (!resolver.isEnableRoleBasedAuthorization()) {
+                return CapabilityCalculator.grantAllCapabilities();
             }
 
-            RoleBasedPermissionManager permManager = (RoleBasedPermissionManager) Component.getInstance( "roleBasedPermissionManager" );
+            RoleBasedPermissionManager permManager = (RoleBasedPermissionManager) Component.getInstance("roleBasedPermissionManager");
 
             List<RoleBasedPermission> permissions = permManager.getRoleBasedPermission();
-            if ( permissions.size() == 0 ) {
+            if (permissions.size() == 0) {
                 Identity.instance().logout();
-                throw new AuthorizationException( "This user has no permissions setup." );
+                throw new AuthorizationException("This user has no permissions setup.");
             }
 
-            if ( invalidSecuritySerilizationSetup() ) {
+            if (invalidSecuritySerializationSetup()) {
                 Identity.instance().logout();
-                throw new AuthorizationException( " Configuration error - Please refer to the Administration Guide section on installation. You must configure a key store before proceding.  " );
+                throw new AuthorizationException(" Configuration error - Please refer to the Administration Guide section on installation. You must configure a key store before proceding.  ");
             }
-            return new CapabilityCalculator().calcCapabilities( permissions, PREFERENCES );
+            return new CapabilityCalculator().calcCapabilities(permissions);
         } else {
-            if ( invalidSecuritySerilizationSetup() ) {
-                throw new AuthorizationException( " Configuration error - Please refer to the Administration Guide section on installation. You must configure a key store before proceding.  " );
+            if (invalidSecuritySerializationSetup()) {
+                throw new AuthorizationException(" Configuration error - Please refer to the Administration Guide section on installation. You must configure a key store before proceding.  ");
             }
-            return Capabilities.all( PREFERENCES );
+            return CapabilityCalculator.grantAllCapabilities();
         }
     }
 
-    private boolean invalidSecuritySerilizationSetup() {
-        String ssecurity = System.getProperty( "drools.serialization.sign" );
-        if ( ssecurity != null && ssecurity.equalsIgnoreCase( "true" ) ) {
-            for ( String nextProp : serializationProperties ) {
-                String nextPropVal = System.getProperty( nextProp );
-                if ( nextPropVal == null || nextPropVal.trim().equals( "" ) ) {
+    private boolean invalidSecuritySerializationSetup() {
+        String security = System.getProperty(KeyStoreHelper.PROP_SIGN);
+        if (security != null && security.equalsIgnoreCase("true")) {
+            for (String nextProp : serializationProperties) {
+                String nextPropVal = System.getProperty(nextProp);
+                if (nextPropVal == null || nextPropVal.trim().equals("")) {
                     return true;
                 }
             }
         }
         return false;
-    }
-
-    private static Map<String, String> loadPrefs() {
-        Properties ps = new Properties();
-        InputStream in = null;
-        try {
-            in = SecurityServiceImpl.class.getResourceAsStream("/preferences.properties");
-            ps.load(in);
-            Map<String, String> prefs = new HashMap<String, String>();
-            for ( Object o : ps.keySet() ) {
-                String feature = (String) o;
-
-                prefs.put( feature, ps.getProperty( feature ) );
-            }
-
-            setSystemProperties( prefs );
-
-            return prefs;
-        } catch ( IOException e ) {
-            log.info( "Couldn't find preferences.properties - using defaults" );
-            return new HashMap<String, String>();
-        } finally {
-            IOUtils.closeQuietly(in);
-        }
-    }
-
-    /**
-     * Set system properties.
-     * If the system properties were not set, set them to Preferences so we can access them in client side.
-     * @param prefs
-     */
-    private static void setSystemProperties(Map<String, String> prefs) {
-        final String dateFormat = "drools.dateformat";
-        final String defaultLanguage = "drools.defaultlanguage";
-        final String defaultCountry = "drools.defaultcountry";
-        final String serializationSign = "drools.serialization.sign";
-        final String privateKeyStoreURL = "drools.serialization.private.keyStoreURL";
-        final String privateKeyStorePwd = "drools.serialization.private.keyStorePwd";
-        final String privateKeyAlias = "drools.serialization.private.keyAlias";
-        final String privateKeyPwd = "drools.serialization.private.keyPwd";
-        final String publicKeyStoreURL = "drools.serialization.public.keyStoreURL";
-        final String publicKeyStorePwd = "drools.serialization.public.keyStorePwd";
-
-        // Set properties that were specified in the properties file
-        if ( prefs.containsKey( dateFormat ) ) {
-            System.setProperty( dateFormat, prefs.get( dateFormat ) );
-        }
-        if ( prefs.containsKey( defaultLanguage ) ) {
-            System.setProperty( defaultLanguage, prefs.get( defaultLanguage ) );
-        }
-        if ( prefs.containsKey( defaultCountry ) ) {
-            System.setProperty( defaultCountry, prefs.get( defaultCountry ) );
-        }
-
-        if ( prefs.containsKey( serializationSign ) ) {
-            System.setProperty( serializationSign, prefs.get( serializationSign ) );
-        }
-        if ( prefs.containsKey( privateKeyStoreURL ) ) {
-            System.setProperty( privateKeyStoreURL, prefs.get( privateKeyStoreURL ) );
-        }
-        if ( prefs.containsKey( privateKeyStorePwd ) ) {
-            System.setProperty( privateKeyStorePwd, prefs.get( privateKeyStorePwd ) );
-        }
-        if ( prefs.containsKey( privateKeyAlias ) ) {
-            System.setProperty( privateKeyAlias, prefs.get( privateKeyAlias ) );
-        }
-        if ( prefs.containsKey( privateKeyPwd ) ) {
-            System.setProperty( privateKeyPwd, prefs.get( privateKeyPwd ) );
-        }
-        if ( prefs.containsKey( publicKeyStoreURL ) ) {
-            System.setProperty( publicKeyStoreURL, prefs.get( publicKeyStoreURL ) );
-        }
-        if ( prefs.containsKey( publicKeyStorePwd ) ) {
-            System.setProperty( publicKeyStorePwd, prefs.get( publicKeyStorePwd ) );
-        }
-
-        // If properties were not set in the file, use the defaults
-        if ( !prefs.containsKey( dateFormat ) ) {
-            prefs.put( dateFormat, DateUtils.getDateFormatMask() );
-        }
-        if ( !prefs.containsKey( defaultLanguage ) ) {
-            prefs.put( defaultLanguage, System.getProperty( defaultLanguage ) );
-        }
-        if ( !prefs.containsKey( defaultCountry ) ) {
-            prefs.put( defaultCountry, System.getProperty( defaultCountry ) );
-        }
-
-        // For security Serialization we DO NOT want to set any default 
-        // as those can be set through other means and we don't want 
-        // to override or mess with that
     }
 }

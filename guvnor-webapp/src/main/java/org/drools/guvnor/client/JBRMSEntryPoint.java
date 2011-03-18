@@ -27,6 +27,7 @@ import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 import org.drools.guvnor.client.common.GenericCallback;
+import org.drools.guvnor.client.configurations.ConfigurationsLoader;
 import org.drools.guvnor.client.explorer.*;
 import org.drools.guvnor.client.messages.Constants;
 import org.drools.guvnor.client.resources.GuvnorResources;
@@ -36,7 +37,6 @@ import org.drools.guvnor.client.rpc.ConfigurationServiceAsync;
 import org.drools.guvnor.client.rpc.RepositoryServiceFactory;
 import org.drools.guvnor.client.rpc.UserSecurityContext;
 import org.drools.guvnor.client.ruleeditor.StandaloneEditorManager;
-import org.drools.guvnor.client.security.CapabilitiesManager;
 
 import java.util.Collection;
 
@@ -95,18 +95,31 @@ public class JBRMSEntryPoint
 
         Window.setStatus(constants.LoadingUserPermissions());
 
-        CapabilitiesManager.getInstance().refreshAllowedCapabilities(new Command() {
+        loadConfigurations(userName);
+    }
+
+    private void loadConfigurations(final String userName) {
+        ConfigurationsLoader.loadPreferences(new Command() {
             public void execute() {
-
-                Preferences.INSTANCE.loadPrefs(CapabilitiesManager.getInstance().getCapabilities());
-
-                Window.setStatus(" ");
-
-                createMain();
-
-                perspectivesPanel.setUserName(userName);
+                loadUserCapabilities(userName);
             }
         });
+    }
+
+    private void loadUserCapabilities(final String userName) {
+        ConfigurationsLoader.loadUserCapabilities(new Command() {
+            public void execute() {
+                setUpMain(userName);
+            }
+        });
+    }
+
+    private void setUpMain(String userName) {
+        Window.setStatus(" ");
+
+        createMain();
+
+        perspectivesPanel.setUserName(userName);
     }
 
     /**

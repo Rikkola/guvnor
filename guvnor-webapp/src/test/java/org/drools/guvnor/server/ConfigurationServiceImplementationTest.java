@@ -27,6 +27,7 @@ import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
@@ -131,6 +132,14 @@ public class ConfigurationServiceImplementationTest extends GuvnorTestBase {
         } catch (RulesRepositoryException e) {
             //Expected
         }
+    }
+
+    @Test
+    public void testLoadApplicationPreferences() throws Exception {
+        setUpMockIdentity();
+        Map<String, String> preferences = configurationService.loadPreferences();
+
+        assertNotNull(preferences);
     }
 
     private String save(String name, String url) {

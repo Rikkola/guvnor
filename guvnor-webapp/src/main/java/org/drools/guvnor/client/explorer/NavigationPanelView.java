@@ -16,12 +16,8 @@
 
 package org.drools.guvnor.client.explorer;
 
-import org.drools.guvnor.client.explorer.NavigationPanelView.Presenter;
+interface NavigationPanelView {
+    interface Presenter {
 
-public class NavigationPanel implements Presenter {
-
-
-    public NavigationPanel(NavigationPanelView view) {
-        // TODO: Generated code -Rikkola-
     }
 }

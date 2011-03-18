@@ -14,14 +14,16 @@
  *   limitations under the License.
  */
 
-package org.drools.guvnor.client.explorer;
+package org.drools.guvnor.client.configurations;
 
-import org.drools.guvnor.client.explorer.NavigationPanelView.Presenter;
+public enum Capability {
+    SHOW_PACKAGE_VIEW,  //(show status list view as well) if they have any package perms
+    SHOW_CREATE_NEW_ASSET,//if they have any package perms not read only
+    SHOW_CREATE_NEW_PACKAGE, //if they are package logInAdmin
+    SHOW_ADMIN, //if they are logInAdmin, package logInAdmin??
+    SHOW_QA, //if they have any package perms
+    SHOW_DEPLOYMENT,  //if they are package logInAdmin??
+    SHOW_DEPLOYMENT_NEW //can create a new depl, rename etc...
+    ;
 
-public class NavigationPanel implements Presenter {
-
-
-    public NavigationPanel(NavigationPanelView view) {
-        // TODO: Generated code -Rikkola-
-    }
 }

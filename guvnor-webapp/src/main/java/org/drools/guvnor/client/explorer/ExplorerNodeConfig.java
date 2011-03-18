@@ -20,18 +20,18 @@ import java.util.Map;
 
 import org.drools.guvnor.client.common.AssetFormats;
 import org.drools.guvnor.client.common.GenericCallback;
+import org.drools.guvnor.client.configurations.UserCapabilities;
 import org.drools.guvnor.client.messages.Constants;
 import org.drools.guvnor.client.resources.Images;
 import org.drools.guvnor.client.rpc.PackageConfigData;
 import org.drools.guvnor.client.rpc.RepositoryServiceFactory;
-import org.drools.guvnor.client.security.Capabilities;
-import org.drools.guvnor.client.security.CapabilitiesManager;
+import org.drools.guvnor.client.configurations.ApplicationPreferences;
+import org.drools.guvnor.client.configurations.Capability;
 import org.drools.guvnor.client.util.Util;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.logical.shared.OpenEvent;
 import com.google.gwt.event.logical.shared.OpenHandler;
-import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.TreeItem;
 
@@ -96,7 +96,7 @@ public class ExplorerNodeConfig {
         pkg.addItem( item );
 
         
-        if ( Preferences.getBooleanPref( "flex-bpel-editor" ) ) {
+        if ( ApplicationPreferences.getBooleanPref("flex-bpel-editor") ) {
             item = new TreeItem( Util.getHeader( images.ruleflowSmall(), constants.RuleFlows() ) );
             itemWidgets.put( item, AssetFormats.RULE_FLOW_RF );
             item.setUserObject( new String[]{AssetFormats.RULE_FLOW_RF, AssetFormats.BPMN_PROCESS, AssetFormats.BPMN2_PROCESS, AssetFormats.BPEL_PACKAGE} );
@@ -191,7 +191,7 @@ public class ExplorerNodeConfig {
         inbox.setState( true );
         root.addItem( inbox );
 
-        if ( CapabilitiesManager.getInstance().shouldShow( Capabilities.SHOW_PACKAGE_VIEW ) ) {
+        if ( UserCapabilities.INSTANCE.hasCapability(Capability.SHOW_PACKAGE_VIEW) ) {
             final TreeItem byStatus = new TreeItem( Util.getHeader( images.statusSmall(), constants.ByStatus() ) );
             itemWidgets.put( byStatus, STATES_ROOT_ID );
             setupStatesStructure( byStatus, itemWidgets );
@@ -260,7 +260,7 @@ public class ExplorerNodeConfig {
             }
 
             private void newRepoDialogIfShowAdminAndPathMatches(final String path) {
-                if ( path.equals( "/" ) && CapabilitiesManager.getInstance().shouldShow( Capabilities.SHOW_ADMIN ) ) {
+                if ( path.equals( "/" ) && UserCapabilities.INSTANCE.hasCapability(Capability.SHOW_ADMIN) ) {
                     RepositoryServiceFactory.getPackageService().listPackages( createGenericCallbackForListPackages() );
                 }
             }
@@ -332,7 +332,7 @@ public class ExplorerNodeConfig {
         analysis.addItem( new TreeItem( constants.PleaseWaitDotDotDot() ) );
         itemWidgets.put( analysis, ANALYSIS_ROOT_ID );
 
-        if ( Preferences.getBooleanPref( "verifier" ) ) {
+        if ( ApplicationPreferences.getBooleanPref("verifier") ) {
             tree.addItem( analysis );
         }
 

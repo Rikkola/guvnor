@@ -20,6 +20,8 @@ import com.google.gwt.user.client.rpc.SerializationException;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import org.drools.guvnor.client.rpc.ConfigurationService;
 import org.drools.guvnor.client.rpc.IFramePerspectiveConfiguration;
+import org.drools.guvnor.server.configurations.ApplicationPreferencesInitializer;
+import org.drools.guvnor.server.configurations.ApplicationPreferencesLoader;
 import org.drools.guvnor.server.util.TestEnvironmentSessionHelper;
 import org.drools.repository.IFramePerspectiveConfigurationItem;
 import org.drools.repository.RulesRepository;
@@ -28,6 +30,7 @@ import org.jboss.seam.contexts.Contexts;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
 
 public class ConfigurationServiceImplementation
         extends RemoteServiceServlet
@@ -86,6 +89,12 @@ public class ConfigurationServiceImplementation
         repository.save();
     }
 
+    public Map<String, String> loadPreferences() {
+        Map<String, String> preferences = ApplicationPreferencesLoader.load();
+        ApplicationPreferencesInitializer.setSystemProperties(preferences);
+        return preferences;
+    }
+
     private IFramePerspectiveConfiguration prepareResult(IFramePerspectiveConfigurationItem perspectiveConfigurationItem) {
         if (perspectiveConfigurationItem == null) {
             return null;
@@ -102,12 +111,10 @@ public class ConfigurationServiceImplementation
 
     protected RulesRepository getRepository() {
         if (Contexts.isApplicationContextActive()) {
-            RulesRepository repo = (RulesRepository) Component.getInstance("repository");
-            return repo;
+            return (RulesRepository) Component.getInstance("repository");
         } else {
             try {
-                RulesRepository repo = new RulesRepository(TestEnvironmentSessionHelper.getSession(false));
-                return repo;
+                return new RulesRepository(TestEnvironmentSessionHelper.getSession(false));
             } catch (Exception e) {
                 throw new IllegalStateException("Unable to get repo to run tests", e);
             }

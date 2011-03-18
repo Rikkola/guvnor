@@ -14,38 +14,40 @@
  * limitations under the License.
  */
 
-package org.drools.guvnor.client.explorer;
-
-import org.drools.guvnor.client.security.Capabilities;
+package org.drools.guvnor.client.configurations;
 
 import java.util.Map;
 
 /**
- * Storage for global prefs.
+ * Storage for global preferences.
  * Preferences effect behaviour and display.
  */
-public class Preferences {
+public class ApplicationPreferences {
 
-    public static final Preferences    INSTANCE = new Preferences();
-    private Map<String, String> prefs;
+    public static final String DATE_FORMAT = "drools.dateformat";
+    public static final String DEFAULT_LANGUAGE = "drools.defaultlanguage";
+    public static final String DEFAULT_COUNTRY = "drools.defaultcountry";
 
-    private Preferences() {
+    public static ApplicationPreferences instance;
+    private Map<String, String> preferences;
+
+    private ApplicationPreferences(Map<String, String> preferences) {
+        this.preferences = preferences;
     }
 
-    public void loadPrefs(Capabilities caps) {
-        this.prefs = caps.prefs;
+    public static void setUp(Map<String, String> map) {
+        instance = new ApplicationPreferences(map);
     }
 
     public static boolean getBooleanPref(String name) {
-        if ( INSTANCE.prefs.containsKey( name ) ) {
-            return Boolean.parseBoolean( INSTANCE.prefs.get( name ) );
+        if (instance.preferences.containsKey(name)) {
+            return Boolean.parseBoolean(instance.preferences.get(name));
         } else {
             return false;
         }
     }
 
     public static String getStringPref(String name) {
-        return INSTANCE.prefs.get( name );
+        return instance.preferences.get(name);
     }
-
 }

@@ -14,14 +14,19 @@
  *   limitations under the License.
  */
 
-package org.drools.guvnor.client.explorer;
+package org.drools.guvnor.client.configurations;
 
-import org.drools.guvnor.client.explorer.NavigationPanelView.Presenter;
+import org.junit.Test;
 
-public class NavigationPanel implements Presenter {
+public class ConfigurationsLoaderTest {
 
+    @Test
+    public void testLoadPreferences() throws Exception {
 
-    public NavigationPanel(NavigationPanelView view) {
-        // TODO: Generated code -Rikkola-
+    }
+
+    @Test
+    public void testLoadUserCapabilities() throws Exception {
+
     }
 }
