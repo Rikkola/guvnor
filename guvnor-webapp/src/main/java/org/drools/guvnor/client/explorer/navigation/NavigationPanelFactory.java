@@ -14,14 +14,9 @@
  *   limitations under the License.
  */
 
-package org.drools.guvnor.client.explorer;
+package org.drools.guvnor.client.explorer.navigation;
 
-import org.drools.guvnor.client.explorer.NavigationPanelView.Presenter;
+public abstract class NavigationPanelFactory {
 
-public class NavigationPanel implements Presenter {
-
-
-    public NavigationPanel(NavigationPanelView view) {
-        // TODO: Generated code -Rikkola-
-    }
+    public abstract NavigationPanel createNavigationPanel();
 }

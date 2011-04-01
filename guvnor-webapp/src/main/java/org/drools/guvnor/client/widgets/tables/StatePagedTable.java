@@ -41,105 +41,97 @@ public class StatePagedTable extends AbstractAssetPagedTable<StatePageRow> {
 
     private static final int PAGE_SIZE = 10;
 
-    /**
-     * Constructor
-     * 
-     * @param stateName
-     * @param editEvent
-     */
     public StatePagedTable(
-                           final String stateName,
-                           final OpenItemCommand editEvent) {
-        super( PAGE_SIZE,
-               editEvent );
-        setDataProvider( new AsyncDataProvider<StatePageRow>() {
+            final String stateName) {
+        super(PAGE_SIZE);
+        setDataProvider(new AsyncDataProvider<StatePageRow>() {
             protected void onRangeChanged(HasData<StatePageRow> display) {
                 StatePageRequest request = new StatePageRequest();
-                request.setStateName( stateName );
-                request.setStartRowIndex( pager.getPageStart() );
-                request.setPageSize( pageSize );
-                repositoryService.loadRuleListForState( request,
-                                                        new GenericCallback<PageResponse<StatePageRow>>() {
-                                                            public void onSuccess(PageResponse<StatePageRow> response) {
-                                                                updateRowCount( response.getTotalRowSize(),
-                                                                                response.isTotalRowSizeExact() );
-                                                                updateRowData( response.getStartRowIndex(),
-                                                                               response.getPageRowList() );
-                                                            }
-                                                        } );
+                request.setStateName(stateName);
+                request.setStartRowIndex(pager.getPageStart());
+                request.setPageSize(pageSize);
+                repositoryService.loadRuleListForState(request,
+                        new GenericCallback<PageResponse<StatePageRow>>() {
+                            public void onSuccess(PageResponse<StatePageRow> response) {
+                                updateRowCount(response.getTotalRowSize(),
+                                        response.isTotalRowSizeExact());
+                                updateRowData(response.getStartRowIndex(),
+                                        response.getPageRowList());
+                            }
+                        });
             }
-        } );
+        });
     }
 
     @Override
     protected void addAncillaryColumns(ColumnPicker<StatePageRow> columnPicker,
                                        SortableHeaderGroup<StatePageRow> sortableHeaderGroup) {
 
-        Column<StatePageRow, RuleFormatImageResource> formatColumn = new Column<StatePageRow, RuleFormatImageResource>( new RuleFormatImageResourceCell() ) {
+        Column<StatePageRow, RuleFormatImageResource> formatColumn = new Column<StatePageRow, RuleFormatImageResource>(new RuleFormatImageResourceCell()) {
 
             public RuleFormatImageResource getValue(StatePageRow row) {
-                return EditorLauncher.getAssetFormatIcon( row.getFormat() );
+                return EditorLauncher.getAssetFormatIcon(row.getFormat());
             }
         };
-        columnPicker.addColumn( formatColumn,
-                                new SortableHeader<StatePageRow, RuleFormatImageResource>(
-                                                                                           sortableHeaderGroup,
-                                                                                           constants.Format(),
-                                                                                           formatColumn ),
-                                true );
+        columnPicker.addColumn(formatColumn,
+                new SortableHeader<StatePageRow, RuleFormatImageResource>(
+                        sortableHeaderGroup,
+                        constants.Format(),
+                        formatColumn),
+                true);
 
         TitledTextColumn<StatePageRow> titleColumn = new TitledTextColumn<StatePageRow>() {
             public TitledText getValue(StatePageRow row) {
-                TitledText tt = new TitledText( row.getName(),
-                                                row.getAbbreviatedDescription() );
+                TitledText tt = new TitledText(row.getName(),
+                        row.getAbbreviatedDescription());
                 return tt;
             }
         };
-        columnPicker.addColumn( titleColumn,
-                                new SortableHeader<StatePageRow, TitledText>(
-                                                                              sortableHeaderGroup,
-                                                                              constants.Name(),
-                                                                              titleColumn ),
-                                true );
+        columnPicker.addColumn(titleColumn,
+                new SortableHeader<StatePageRow, TitledText>(
+                        sortableHeaderGroup,
+                        constants.Name(),
+                        titleColumn),
+                true);
 
         TextColumn<StatePageRow> packageNameColumn = new TextColumn<StatePageRow>() {
             public String getValue(StatePageRow row) {
                 return row.getPackageName();
             }
         };
-        columnPicker.addColumn( packageNameColumn,
-                                new SortableHeader<StatePageRow, String>(
-                                                                          sortableHeaderGroup,
-                                                                          constants.PackageName(),
-                                                                          packageNameColumn ),
-                                true );
+        columnPicker.addColumn(packageNameColumn,
+                new SortableHeader<StatePageRow, String>(
+                        sortableHeaderGroup,
+                        constants.PackageName(),
+                        packageNameColumn),
+                true);
 
         TextColumn<StatePageRow> statusNameColumn = new TextColumn<StatePageRow>() {
             public String getValue(StatePageRow row) {
                 return row.getStateName();
             }
         };
-        columnPicker.addColumn( statusNameColumn,
-                                new SortableHeader<StatePageRow, String>(
-                                                                          sortableHeaderGroup,
-                                                                          constants.Status(),
-                                                                          statusNameColumn ),
-                                true );
+        columnPicker.addColumn(statusNameColumn,
+                new SortableHeader<StatePageRow, String>(
+                        sortableHeaderGroup,
+                        constants.Status(),
+                        statusNameColumn),
+                true);
 
-        Column<StatePageRow, Date> lastModifiedColumn = new Column<StatePageRow, Date>( new
-                                                                                        DateCell(
-                                                                                                  DateTimeFormat.getFormat(
-                                                                                                          DateTimeFormat.PredefinedFormat.DATE_TIME_MEDIUM ) ) ) {
+        Column<StatePageRow, Date> lastModifiedColumn = new Column<StatePageRow, Date>(new
+                DateCell(
+                DateTimeFormat.getFormat(
+                        DateTimeFormat.PredefinedFormat.DATE_TIME_MEDIUM))) {
             public Date getValue(StatePageRow row) {
                 return row.getLastModified();
             }
         };
-        columnPicker.addColumn( lastModifiedColumn,
-                                new SortableHeader<StatePageRow, Date>(
-                                                                        sortableHeaderGroup,
-                                                                        constants.LastModified(),
-                                                                        lastModifiedColumn ),
-                                true );
+        columnPicker.addColumn(lastModifiedColumn,
+                new SortableHeader<StatePageRow, Date>(
+                        sortableHeaderGroup,
+                        constants.LastModified(),
+                        lastModifiedColumn),
+                true);
     }
 
 }

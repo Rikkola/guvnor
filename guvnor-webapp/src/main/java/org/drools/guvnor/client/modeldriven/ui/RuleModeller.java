@@ -297,7 +297,7 @@ public class RuleModeller extends DirtyableComposite
     }
 
     private boolean showAttributes() {
-        if ( !UserCapabilities.INSTANCE.hasCapability(Capability.SHOW_PACKAGE_VIEW) ) {
+        if ( !UserCapabilities.INSTANCE.hasCapability(Capability.SHOW_KNOWLEDGE_BASES_VIEW) ) {
             return false;
         }
 
@@ -559,7 +559,7 @@ public class RuleModeller extends DirtyableComposite
                       } );
         }
 
-        if ( UserCapabilities.INSTANCE.hasCapability(Capability.SHOW_PACKAGE_VIEW) ) {
+        if ( UserCapabilities.INSTANCE.hasCapability(Capability.SHOW_KNOWLEDGE_BASES_VIEW) ) {
             choices.addItem( ".................." );
             choices.addItem( constants.FreeFormDrl(),
                              "FF" );
@@ -838,7 +838,7 @@ public class RuleModeller extends DirtyableComposite
             }
         }
 
-        if ( UserCapabilities.INSTANCE.hasCapability(Capability.SHOW_PACKAGE_VIEW) ) {
+        if ( UserCapabilities.INSTANCE.hasCapability(Capability.SHOW_KNOWLEDGE_BASES_VIEW) ) {
             choices.addItem( constants.AddFreeFormDrl(),
                              "FF" ); //NON-NLS
             cmds.put( "FF",

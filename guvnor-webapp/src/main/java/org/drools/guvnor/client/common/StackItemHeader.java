@@ -14,10 +14,22 @@
  *   limitations under the License.
  */
 
-package org.drools.guvnor.client.explorer;
+package org.drools.guvnor.client.common;
 
-interface NavigationPanelView {
-    interface Presenter {
+import com.google.gwt.resources.client.ImageResource;
 
+public class StackItemHeader {
+    private StackItemHeaderView view;
+
+    public StackItemHeader(StackItemHeaderView view) {
+        this.view = view;
+    }
+
+    public void setName(String name) {
+        view.setText(name);
+    }
+
+    public void setImageResource(ImageResource imageResource) {
+        view.setImageResource(imageResource);
     }
 }

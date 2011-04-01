@@ -62,7 +62,7 @@ public class QuickFindWidget extends Composite {
     private SuggestBox       searchBox;
     private CheckBox         archiveBox;
 
-    public QuickFindWidget(final OpenItemCommand editEvent) {
+    public QuickFindWidget() {
 
         VerticalPanel container = new VerticalPanel();
         VerticalPanel criteria = new VerticalPanel();
@@ -88,8 +88,7 @@ public class QuickFindWidget extends Composite {
             public void onClick(ClickEvent event) {
                 resultsP.clear();
                 QueryPagedTable table = new QueryPagedTable( searchBox.getValue(),
-                                                             archiveBox.getValue(),
-                                                             editEvent );
+                                                             archiveBox.getValue());
                 resultsP.add( table );
             }
         };

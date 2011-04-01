@@ -48,55 +48,45 @@ public class AdminArchivedPagedTable extends AbstractAssetPagedTable<AdminArchiv
 
     // UI
     interface AdminArchivedPagedTableBinder
-        extends
-        UiBinder<Widget, AdminArchivedPagedTable> {
+            extends
+            UiBinder<Widget, AdminArchivedPagedTable> {
     }
 
     @UiField()
-    protected Button                             restoreSelectedAssetButton;
+    protected Button restoreSelectedAssetButton;
 
     @UiField()
-    protected Button                             deleteSelectedAssetButton;
+    protected Button deleteSelectedAssetButton;
 
-    private static AdminArchivedPagedTableBinder uiBinder  = GWT.create( AdminArchivedPagedTableBinder.class );
+    private static AdminArchivedPagedTableBinder uiBinder = GWT.create(AdminArchivedPagedTableBinder.class);
 
     // Commands for UI
-    private Command                              restoreSelectedAssetCommand;
-    private Command                              deleteSelectedAssetCommand;
+    private Command restoreSelectedAssetCommand;
+    private Command deleteSelectedAssetCommand;
 
     // Other stuff
-    private static final int                     PAGE_SIZE = 10;
+    private static final int PAGE_SIZE = 10;
 
-    /**
-     * Constructor
-     * 
-     * @param packageUuid
-     * @param formatInList
-     * @param formatIsRegistered
-     * @param editEvent
-     */
     public AdminArchivedPagedTable(Command restoreSelectedAssetCommand,
-                                   Command deleteSelectedAssetCommand,
-                                   OpenItemCommand openSelectedCommand) {
-        super( PAGE_SIZE,
-               openSelectedCommand );
+                                   Command deleteSelectedAssetCommand) {
+        super(PAGE_SIZE);
         this.restoreSelectedAssetCommand = restoreSelectedAssetCommand;
         this.deleteSelectedAssetCommand = deleteSelectedAssetCommand;
-        setDataProvider( new AsyncDataProvider<AdminArchivedPageRow>() {
+        setDataProvider(new AsyncDataProvider<AdminArchivedPageRow>() {
             protected void onRangeChanged(HasData<AdminArchivedPageRow> display) {
-                PageRequest request = new PageRequest( pager.getPageStart(),
-                                                                 pageSize );
-                assetService.loadArchivedAssets( request,
-                                                      new GenericCallback<PageResponse<AdminArchivedPageRow>>() {
-                                                          public void onSuccess(PageResponse<AdminArchivedPageRow> response) {
-                                                              updateRowCount( response.getTotalRowSize(),
-                                                                              true );
-                                                              updateRowData( response.getStartRowIndex(),
-                                                                             response.getPageRowList() );
-                                                          }
-                                                      } );
+                PageRequest request = new PageRequest(pager.getPageStart(),
+                        pageSize);
+                assetService.loadArchivedAssets(request,
+                        new GenericCallback<PageResponse<AdminArchivedPageRow>>() {
+                            public void onSuccess(PageResponse<AdminArchivedPageRow> response) {
+                                updateRowCount(response.getTotalRowSize(),
+                                        true);
+                                updateRowData(response.getStartRowIndex(),
+                                        response.getPageRowList());
+                            }
+                        });
             }
-        } );
+        });
 
     }
 
@@ -104,18 +94,18 @@ public class AdminArchivedPagedTable extends AbstractAssetPagedTable<AdminArchiv
     protected void addAncillaryColumns(ColumnPicker<AdminArchivedPageRow> columnPicker,
                                        SortableHeaderGroup<AdminArchivedPageRow> sortableHeaderGroup) {
 
-        Column<AdminArchivedPageRow, RuleFormatImageResource> formatColumn = new Column<AdminArchivedPageRow, RuleFormatImageResource>( new RuleFormatImageResourceCell() ) {
+        Column<AdminArchivedPageRow, RuleFormatImageResource> formatColumn = new Column<AdminArchivedPageRow, RuleFormatImageResource>(new RuleFormatImageResourceCell()) {
 
             public RuleFormatImageResource getValue(AdminArchivedPageRow row) {
-                return EditorLauncher.getAssetFormatIcon( row.getFormat() );
+                return EditorLauncher.getAssetFormatIcon(row.getFormat());
             }
         };
-        columnPicker.addColumn( formatColumn,
-                                new SortableHeader<AdminArchivedPageRow, RuleFormatImageResource>(
-                                                                                                   sortableHeaderGroup,
-                                                                                                   constants.Format(),
-                                                                                                   formatColumn ),
-                                true );
+        columnPicker.addColumn(formatColumn,
+                new SortableHeader<AdminArchivedPageRow, RuleFormatImageResource>(
+                        sortableHeaderGroup,
+                        constants.Format(),
+                        formatColumn),
+                true);
 
         TextColumn<AdminArchivedPageRow> nameColumn = new TextColumn<AdminArchivedPageRow>() {
             public String getValue(AdminArchivedPageRow row) {
@@ -123,57 +113,57 @@ public class AdminArchivedPagedTable extends AbstractAssetPagedTable<AdminArchiv
                 return name;
             }
         };
-        columnPicker.addColumn( nameColumn,
-                                new SortableHeader<AdminArchivedPageRow, String>(
-                                                                                  sortableHeaderGroup,
-                                                                                  constants.Name(),
-                                                                                  nameColumn ),
-                                true );
+        columnPicker.addColumn(nameColumn,
+                new SortableHeader<AdminArchivedPageRow, String>(
+                        sortableHeaderGroup,
+                        constants.Name(),
+                        nameColumn),
+                true);
 
         TextColumn<AdminArchivedPageRow> packageNameColumn = new TextColumn<AdminArchivedPageRow>() {
             public String getValue(AdminArchivedPageRow row) {
                 return row.getPackageName();
             }
         };
-        columnPicker.addColumn( packageNameColumn,
-                                new SortableHeader<AdminArchivedPageRow, String>(
-                                                                                  sortableHeaderGroup,
-                                                                                  constants.PackageName(),
-                                                                                  packageNameColumn ),
-                                false );
+        columnPicker.addColumn(packageNameColumn,
+                new SortableHeader<AdminArchivedPageRow, String>(
+                        sortableHeaderGroup,
+                        constants.PackageName(),
+                        packageNameColumn),
+                false);
 
         TextColumn<AdminArchivedPageRow> lastContributorColumn = new TextColumn<AdminArchivedPageRow>() {
             public String getValue(AdminArchivedPageRow row) {
                 return row.getLastContributor();
             }
         };
-        columnPicker.addColumn( lastContributorColumn,
-                                new SortableHeader<AdminArchivedPageRow, String>(
-                                                                                  sortableHeaderGroup,
-                                                                                  constants.LastContributor(),
-                                                                                  lastContributorColumn ),
-                                true );
+        columnPicker.addColumn(lastContributorColumn,
+                new SortableHeader<AdminArchivedPageRow, String>(
+                        sortableHeaderGroup,
+                        constants.LastContributor(),
+                        lastContributorColumn),
+                true);
 
-        Column<AdminArchivedPageRow, Date> lastModifiedColumn = new Column<AdminArchivedPageRow, Date>( new
-                                                                                                        DateCell(
-                                                                                                                  DateTimeFormat.getFormat(
-                                                                                                                          DateTimeFormat.PredefinedFormat.DATE_TIME_MEDIUM ) ) ) {
+        Column<AdminArchivedPageRow, Date> lastModifiedColumn = new Column<AdminArchivedPageRow, Date>(new
+                DateCell(
+                DateTimeFormat.getFormat(
+                        DateTimeFormat.PredefinedFormat.DATE_TIME_MEDIUM))) {
             public Date getValue(AdminArchivedPageRow row) {
                 return row.getLastModified();
             }
         };
-        columnPicker.addColumn( lastModifiedColumn,
-                                new SortableHeader<AdminArchivedPageRow, Date>(
-                                                                                sortableHeaderGroup,
-                                                                                constants.LastModified(),
-                                                                                lastModifiedColumn ),
-                                true );
+        columnPicker.addColumn(lastModifiedColumn,
+                new SortableHeader<AdminArchivedPageRow, Date>(
+                        sortableHeaderGroup,
+                        constants.LastModified(),
+                        lastModifiedColumn),
+                true);
 
     }
 
     @Override
     protected Widget makeWidget() {
-        return uiBinder.createAndBindUi( this );
+        return uiBinder.createAndBindUi(this);
     }
 
     @UiHandler("restoreSelectedAssetButton")

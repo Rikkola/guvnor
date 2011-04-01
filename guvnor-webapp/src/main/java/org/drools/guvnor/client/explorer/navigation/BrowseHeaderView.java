@@ -14,19 +14,9 @@
  *   limitations under the License.
  */
 
-package org.drools.guvnor.client.configurations;
+package org.drools.guvnor.client.explorer.navigation;
 
-import org.junit.Test;
+import com.google.gwt.user.client.ui.IsWidget;
 
-public class ConfigurationsLoaderTest {
-
-    @Test
-    public void testLoadPreferences() throws Exception {
-
-    }
-
-    @Test
-    public void testLoadUserCapabilities() throws Exception {
-
-    }
+public interface BrowseHeaderView extends IsWidget {
 }

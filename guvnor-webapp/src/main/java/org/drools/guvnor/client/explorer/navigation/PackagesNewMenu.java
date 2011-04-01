@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-package org.drools.guvnor.client.explorer;
+package org.drools.guvnor.client.explorer.navigation;
 
 import org.drools.guvnor.client.common.AssetFormats;
 import org.drools.guvnor.client.common.GenericCallback;
 import org.drools.guvnor.client.common.LoadingPopup;
+import org.drools.guvnor.client.explorer.navigation.NavigationItemBuilderOld;
 import org.drools.guvnor.client.messages.Constants;
 import org.drools.guvnor.client.packages.NewPackageWizard;
 import org.drools.guvnor.client.resources.Images;
@@ -38,11 +39,11 @@ public class PackagesNewMenu {
     private static Constants constants = ((Constants) GWT.create(Constants.class));
     private static Images images = (Images) GWT.create(Images.class);
 
-    public static MenuBar getMenu(final AbstractTree manager) {
+    public static MenuBar getMenu(final NavigationItemBuilderOld manager) {
 
         MenuBar createNewMenu = new MenuBar(true);
 
-        createNewMenu.addItem(Util.getHeader(images.newPackage(), constants.NewPackage1()),
+        createNewMenu.addItem(Util.getHeader(images.newPackage(), constants.NewPackage1()).asString(),
                 true,
                 new Command() {
             public void execute() {
@@ -54,7 +55,7 @@ public class PackagesNewMenu {
                 wiz.show();            }
         });
 
-        createNewMenu.addItem(Util.getHeader(images.newEnumeration(), constants.NewSpringContext()),
+        createNewMenu.addItem(Util.getHeader(images.newEnumeration(), constants.NewSpringContext()).asString(),
                 true,
                 new Command() {
             public void execute() {
@@ -62,7 +63,7 @@ public class PackagesNewMenu {
             }
         });
 
-        createNewMenu.addItem(Util.getHeader(images.newPackage(), constants.NewWorkingSet()),
+        createNewMenu.addItem(Util.getHeader(images.newPackage(), constants.NewWorkingSet()).asString(),
                 true,
                 new Command() {
             public void execute() {
@@ -70,7 +71,7 @@ public class PackagesNewMenu {
             }
         });
 
-        createNewMenu.addItem(Util.getHeader(images.ruleAsset(), constants.NewRule()),
+        createNewMenu.addItem(Util.getHeader(images.ruleAsset(), constants.NewRule()).asString(),
                 true,
                 new Command() {
             public void execute() {
@@ -78,7 +79,7 @@ public class PackagesNewMenu {
             }
         });
 
-        createNewMenu.addItem(Util.getHeader(images.newTemplate(), constants.NewRuleTemplate()),
+        createNewMenu.addItem(Util.getHeader(images.newTemplate(), constants.NewRuleTemplate()).asString(),
                 true,
                 new Command() {
             public void execute() {
@@ -86,7 +87,7 @@ public class PackagesNewMenu {
            }
         });
         
-        createNewMenu.addItem(Util.getHeader(images.modelAsset(), constants.UploadPOJOModelJar()),
+        createNewMenu.addItem(Util.getHeader(images.modelAsset(), constants.UploadPOJOModelJar()).asString(),
                 true,
                 new Command() {
             public void execute() {
@@ -94,7 +95,7 @@ public class PackagesNewMenu {
             }
         });
 
-        createNewMenu.addItem(Util.getHeader(images.modelAsset(), constants.NewDeclarativeModel()),
+        createNewMenu.addItem(Util.getHeader(images.modelAsset(), constants.NewDeclarativeModel()).asString(),
                 true,
                 new Command() {
             public void execute() {
@@ -103,7 +104,7 @@ public class PackagesNewMenu {
         });
 
         if (ApplicationPreferences.getBooleanPref("flex-bpel-editor")) {
-            createNewMenu.addItem(Util.getHeader(images.modelAsset(), constants.NewBPELPackage()),
+            createNewMenu.addItem(Util.getHeader(images.modelAsset(), constants.NewBPELPackage()).asString(),
                     true,
                     new Command() {
                         public void execute() {
@@ -113,7 +114,7 @@ public class PackagesNewMenu {
             });
         }
 
-        createNewMenu.addItem(Util.getHeader(images.functionAssets(), constants.NewFunction()),
+        createNewMenu.addItem(Util.getHeader(images.functionAssets(), constants.NewFunction()).asString(),
                 true,
                 new Command() {
             public void execute() {
@@ -121,7 +122,7 @@ public class PackagesNewMenu {
             }
         });
 
-        createNewMenu.addItem(Util.getHeader(images.dsl(), constants.NewDSL()),
+        createNewMenu.addItem(Util.getHeader(images.dsl(), constants.NewDSL()).asString(),
                 true,
                 new Command() {
             public void execute() {
@@ -129,7 +130,7 @@ public class PackagesNewMenu {
             }
         });
 
-        createNewMenu.addItem(Util.getHeader(images.ruleflowSmall(), constants.NewRuleFlow()),
+        createNewMenu.addItem(Util.getHeader(images.ruleflowSmall(), constants.NewRuleFlow()).asString(),
                 true,
                 new Command() {
             public void execute() {
@@ -137,7 +138,7 @@ public class PackagesNewMenu {
             }
         });
 
-        createNewMenu.addItem(Util.getHeader(images.ruleflowSmall(), constants.NewBPMN2Process()),
+        createNewMenu.addItem(Util.getHeader(images.ruleflowSmall(), constants.NewBPMN2Process()).asString(),
                 true,
                 new Command() {
             public void execute() {
@@ -145,7 +146,7 @@ public class PackagesNewMenu {
             }
         });
 
-        createNewMenu.addItem(Util.getHeader(images.newEnumeration(), constants.NewEnumeration()),
+        createNewMenu.addItem(Util.getHeader(images.newEnumeration(), constants.NewEnumeration()).asString(),
                 true,
                 new Command() {
             public void execute() {
@@ -153,7 +154,7 @@ public class PackagesNewMenu {
             }
         });
 
-        createNewMenu.addItem(Util.getHeader(images.testManager(), constants.NewTestScenario()),
+        createNewMenu.addItem(Util.getHeader(images.testManager(), constants.NewTestScenario()).asString(),
                 true,
                 new Command() {
             public void execute() {
@@ -161,7 +162,7 @@ public class PackagesNewMenu {
            }
         });
 
-        createNewMenu.addItem(Util.getHeader(images.newFile(), constants.CreateAFile()),
+        createNewMenu.addItem(Util.getHeader(images.newFile(), constants.CreateAFile()).asString(),
                 true,
                 new Command() {
             public void execute() {
@@ -169,7 +170,7 @@ public class PackagesNewMenu {
            }
         });
 
-        createNewMenu.addItem(Util.getHeader(images.refresh(), constants.RebuildAllPackageBinariesQ()),
+        createNewMenu.addItem(Util.getHeader(images.refresh(), constants.RebuildAllPackageBinariesQ()).asString(),
                 true,
                 new Command() {
             public void execute() {

@@ -53,13 +53,9 @@ public class QueryWidget extends Composite {
 
     private Constants       constants = ((Constants) GWT.create( Constants.class ));
 
-    private OpenItemCommand editEvent;
-
     private VerticalPanel   layout;
 
-    public QueryWidget(OpenItemCommand editEvent) {
-        this.editEvent = editEvent;
-
+    public QueryWidget() {
         layout = new VerticalPanel();
         doQuickFind();
         doTextSearch();
@@ -73,7 +69,7 @@ public class QueryWidget extends Composite {
         DecoratedDisclosurePanel advancedDisclosure = new DecoratedDisclosurePanel( constants.NameSearch() );
         advancedDisclosure.ensureDebugId( "cwDisclosurePanel" );
         advancedDisclosure.setWidth( "100%" );
-        advancedDisclosure.setContent( new QuickFindWidget( editEvent ) );
+        advancedDisclosure.setContent( new QuickFindWidget(  ) );
         advancedDisclosure.setOpen( true );
 
         layout.add( advancedDisclosure );
@@ -107,8 +103,7 @@ public class QueryWidget extends Composite {
                 }
                 resultsP.clear();
                 QueryPagedTable table = new QueryPagedTable( tx.getText(),
-                                                             false,
-                                                             editEvent );
+                                                             false);
                 resultsP.add( table );
             }
 
@@ -222,8 +217,7 @@ public class QueryWidget extends Composite {
                                                                  getDate( createdBefore ),
                                                                  getDate( lastModAfter ),
                                                                  getDate( lastModBefore ),
-                                                                 false,
-                                                                 editEvent );
+                                                                 false );
                     resultsP.add( table );
                 } catch ( IllegalArgumentException e ) {
                     ErrorPopup.showMessage( constants.BadDateFormatPleaseTryAgainTryTheFormatOf0(

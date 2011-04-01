@@ -135,7 +135,7 @@ public class JBRMSEntryPoint
             RootLayoutPanel.get().add(new StandaloneEditorManager().getBaseLayout());
         } else {
 
-            ClientFactory clientFactory = GWT.create(ClientFactory.class);
+            ClientFactory clientFactory = new ClientFactoryImpl(); // GWT.create(ClientFactory.class);
             EventBus eventBus = clientFactory.getEventBus();
             PlaceController placeController = clientFactory.getPlaceController();
             Perspective defaultPlace = new AuthorPerspectivePlace();

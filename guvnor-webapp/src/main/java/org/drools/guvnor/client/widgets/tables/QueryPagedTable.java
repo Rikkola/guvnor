@@ -44,27 +44,14 @@ public class QueryPagedTable extends AbstractAssetPagedTable<QueryPageRow> {
 
     private static final int PAGE_SIZE = 10;
 
-    /**
-     * Constructor
-     * 
-     * @param metadata
-     * @param createdAfter
-     * @param createdBefore
-     * @param lastModifiedAfter
-     * @param lastModifiedBefore
-     * @param searchArchived
-     * @param event
-     */
     public QueryPagedTable(
                            final List<MetaDataQuery> metadata,
                            final Date createdAfter,
                            final Date createdBefore,
                            final Date lastModifiedAfter,
                            final Date lastModifiedBefore,
-                           final Boolean searchArchived,
-                           final OpenItemCommand editEvent) {
-        super( PAGE_SIZE,
-               editEvent );
+                           final Boolean searchArchived) {
+        super( PAGE_SIZE );
         setDataProvider( new AsyncDataProvider<QueryPageRow>() {
             protected void onRangeChanged(HasData<QueryPageRow> display) {
                 QueryMetadataPageRequest request = new QueryMetadataPageRequest();
@@ -89,18 +76,9 @@ public class QueryPagedTable extends AbstractAssetPagedTable<QueryPageRow> {
         } );
     }
 
-    /**
-     * Constructor
-     * 
-     * @param searchText
-     * @param searchArchived
-     * @param event
-     */
     public QueryPagedTable(final String searchText,
-                           final Boolean searchArchived,
-                           final OpenItemCommand editEvent) {
-        super( PAGE_SIZE,
-               editEvent );
+                           final Boolean searchArchived) {
+        super( PAGE_SIZE );
         setDataProvider( new AsyncDataProvider<QueryPageRow>() {
             protected void onRangeChanged(HasData<QueryPageRow> display) {
                 QueryPageRequest request = new QueryPageRequest();

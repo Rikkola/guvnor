@@ -39,18 +39,18 @@ public class CapabilityCalculator {
             if (role.equals(RoleTypes.ADMIN)) {
                 return grantAllCapabilities();
             } else if (role.equals(RoleTypes.PACKAGE_ADMIN)) {
-                capabilities.add(SHOW_PACKAGE_VIEW);
+                capabilities.add(SHOW_KNOWLEDGE_BASES_VIEW);
                 capabilities.add(SHOW_CREATE_NEW_ASSET);
                 capabilities.add(SHOW_CREATE_NEW_PACKAGE);
                 capabilities.add(SHOW_DEPLOYMENT);
                 capabilities.add(SHOW_DEPLOYMENT_NEW);
                 capabilities.add(SHOW_QA);
             } else if (role.equals(RoleTypes.PACKAGE_DEVELOPER)) {
-                capabilities.add(SHOW_PACKAGE_VIEW);
+                capabilities.add(SHOW_KNOWLEDGE_BASES_VIEW);
                 capabilities.add(SHOW_CREATE_NEW_ASSET);
                 capabilities.add(SHOW_QA);
             } else if (role.equals(RoleTypes.PACKAGE_READONLY)) {
-                capabilities.add(SHOW_PACKAGE_VIEW);
+                capabilities.add(SHOW_KNOWLEDGE_BASES_VIEW);
             }
         }
         return capabilities;

@@ -51,10 +51,8 @@ public class CategoryPagedTable extends AbstractAssetPagedTable<CategoryPageRow>
      */
     public CategoryPagedTable(
                               final String categoryName,
-                              final OpenItemCommand editEvent,
                               final String feedURL) {
         super( PAGE_SIZE,
-               editEvent,
                feedURL );
         setDataProvider( new AsyncDataProvider<CategoryPageRow>() {
             protected void onRangeChanged(HasData<CategoryPageRow> display) {

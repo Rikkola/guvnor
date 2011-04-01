@@ -48,17 +48,17 @@ public class CapabilityCalculatorTest {
         perms.add(new RoleBasedPermission("", RoleTypes.PACKAGE_DEVELOPER, null, null));
         perms.add(new RoleBasedPermission("", RoleTypes.ANALYST, null, null));
         List<Capability> caps = loader.calcCapabilities(perms);
-        assertTrue(caps.contains(Capability.SHOW_PACKAGE_VIEW));
+        assertTrue(caps.contains(Capability.SHOW_KNOWLEDGE_BASES_VIEW));
 
         perms = new ArrayList<RoleBasedPermission>();
         perms.add(new RoleBasedPermission("", RoleTypes.PACKAGE_ADMIN, null, null));
         caps = loader.calcCapabilities(perms);
-        assertTrue(caps.contains(Capability.SHOW_PACKAGE_VIEW));
+        assertTrue(caps.contains(Capability.SHOW_KNOWLEDGE_BASES_VIEW));
 
         perms = new ArrayList<RoleBasedPermission>();
         perms.add(new RoleBasedPermission("", RoleTypes.PACKAGE_READONLY, null, null));
         caps = loader.calcCapabilities(perms);
-        assertTrue(caps.contains(Capability.SHOW_PACKAGE_VIEW));
+        assertTrue(caps.contains(Capability.SHOW_KNOWLEDGE_BASES_VIEW));
 
         perms = new ArrayList<RoleBasedPermission>();
         perms.add(new RoleBasedPermission("", RoleTypes.PACKAGE_READONLY, null, null));
@@ -66,7 +66,7 @@ public class CapabilityCalculatorTest {
         perms.add(new RoleBasedPermission("", RoleTypes.ANALYST_READ, null, null));
         perms.add(new RoleBasedPermission("", RoleTypes.PACKAGE_DEVELOPER, null, null));
         caps = loader.calcCapabilities(perms);
-        assertTrue(caps.contains(Capability.SHOW_PACKAGE_VIEW));
+        assertTrue(caps.contains(Capability.SHOW_KNOWLEDGE_BASES_VIEW));
         assertTrue(caps.contains(Capability.SHOW_CREATE_NEW_ASSET));
         assertFalse(caps.contains(Capability.SHOW_CREATE_NEW_PACKAGE));
         assertTrue(caps.contains(Capability.SHOW_QA));
@@ -77,7 +77,7 @@ public class CapabilityCalculatorTest {
         perms.add(new RoleBasedPermission("", RoleTypes.ANALYST, null, null));
         perms.add(new RoleBasedPermission("", RoleTypes.PACKAGE_ADMIN, null, null));
         caps = loader.calcCapabilities(perms);
-        assertTrue(caps.contains(Capability.SHOW_PACKAGE_VIEW));
+        assertTrue(caps.contains(Capability.SHOW_KNOWLEDGE_BASES_VIEW));
         assertTrue(caps.contains(Capability.SHOW_CREATE_NEW_ASSET));
         assertTrue(caps.contains(Capability.SHOW_CREATE_NEW_PACKAGE));
         assertTrue(caps.contains(Capability.SHOW_DEPLOYMENT));

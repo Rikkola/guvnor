@@ -14,31 +14,7 @@
  *   limitations under the License.
  */
 
-package org.drools.guvnor.client.explorer;
+package org.drools.guvnor.client.explorer.navigation;
 
-import org.junit.Before;
-
-import static org.mockito.Mockito.mock;
-
-import org.drools.guvnor.client.explorer.NavigationPanelView.Presenter;
-
-public class NavigationPanelTest {
-
-    private NavigationPanelView view;
-    private Presenter presenter;
-
-    @Before
-    public void setUp() throws Exception {
-        view = mock(NavigationPanelView.class);
-
-        presenter = new NavigationPanel(view);
-    }
-
-
-
-
-    // Test list
-
-    // Test if permissions ok and visible
-
+public interface DeploymentTreeView {
 }
