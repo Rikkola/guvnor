@@ -20,40 +20,36 @@ import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import org.drools.guvnor.client.explorer.navigation.NavigationPanelFactory;
 import org.junit.Before;
-import org.drools.guvnor.client.explorer.AuthorPerspectiveView.Presenter;
 import org.junit.Test;
 import org.mockito.Matchers;
 
-
-import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+public class RuntimePerspectiveActivityTest {
 
-public class AuthorPerspectiveActivityTest {
-
-    private AuthorPerspectiveView view;
-    private AuthorPerspectiveActivity authorPerspective;
-    private Presenter presenter;
+    private RuntimePerspectiveView view;
+    private RuntimePerspectiveActivity runtimePerspective;
+    private RuntimePerspectiveView.Presenter presenter;
     private AcceptsOneWidget rootPanel;
 
     @Before
     public void setUp() throws Exception {
         rootPanel = mock(AcceptsOneWidget.class);
-        view = mock(AuthorPerspectiveView.class);
+        view = mock(RuntimePerspectiveView.class);
 
         ClientFactory clientFactory = mock(ClientFactory.class);
-        when(clientFactory.getAuthorPerspectiveView(Matchers.<NavigationPanelFactory>any())).thenReturn(view);
+        when(clientFactory.getRuntimePerspectiveView(Matchers.<NavigationPanelFactory>any())).thenReturn(view);
 
-        authorPerspective = new AuthorPerspectiveActivity(clientFactory);
+        runtimePerspective = new RuntimePerspectiveActivity(clientFactory);
         presenter = getPresenter();
 
-        authorPerspective.start(rootPanel, mock(EventBus.class));
+        runtimePerspective.start(rootPanel, mock(EventBus.class));
     }
 
-    public Presenter getPresenter() {
-        return authorPerspective;
+    public RuntimePerspectiveView.Presenter getPresenter() {
+        return runtimePerspective;
     }
 
     @Test
