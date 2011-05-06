@@ -1,0 +1,300 @@
+----------------------------------------------------------------
+2011-03-04 14:01:17.238 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.5.3.0 - (802917): instance a816c00e-012e-812c-23f9-00000410ee70
+on database directory /Users/rikkola/Codes/drools/guvnor/repository/version/db  
+
+Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+2011-03-04 14:01:19.063 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.5.3.0 - (802917): instance ac3880cc-012e-812c-23f9-00000410ee70
+on database directory /Users/rikkola/Codes/drools/guvnor/repository/workspaces/default/db  
+
+Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+2011-03-04 14:01:21.253 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.5.3.0 - (802917): instance f526c18e-012e-812c-23f9-00000410ee70
+on database directory /Users/rikkola/Codes/drools/guvnor/repository/workspaces/security/db  
+
+Database Class Loader started - derby.database.classpath=''
+
+2011-03-04 14:01:24.578 GMT:
+Shutting down instance ac3880cc-012e-812c-23f9-00000410ee70
+----------------------------------------------------------------
+
+2011-03-04 14:01:24.637 GMT:
+Shutting down instance f526c18e-012e-812c-23f9-00000410ee70
+----------------------------------------------------------------
+
+2011-03-04 14:01:24.686 GMT:
+Shutting down instance a816c00e-012e-812c-23f9-00000410ee70
+----------------------------------------------------------------
+----------------------------------------------------------------
+2011-03-04 14:01:24.865 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.5.3.0 - (802917): instance 69a802c0-012e-812c-23f9-00000410ee70
+on database directory /Users/rikkola/Codes/drools/guvnor/repository/version/db  
+
+Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+2011-03-04 14:01:25.629 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.5.3.0 - (802917): instance add0c37e-012e-812c-23f9-00000410ee70
+on database directory /Users/rikkola/Codes/drools/guvnor/repository/workspaces/default/db  
+
+Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+2011-03-04 14:01:26.659 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.5.3.0 - (802917): instance fe49843d-012e-812c-23f9-00000410ee70
+on database directory /Users/rikkola/Codes/drools/guvnor/repository/workspaces/security/db  
+
+Database Class Loader started - derby.database.classpath=''
+
+2011-03-04 14:01:28.539 GMT:
+Shutting down instance add0c37e-012e-812c-23f9-00000410ee70
+----------------------------------------------------------------
+
+2011-03-04 14:01:28.641 GMT:
+Shutting down instance fe49843d-012e-812c-23f9-00000410ee70
+----------------------------------------------------------------
+
+2011-03-04 14:01:28.705 GMT:
+Shutting down instance 69a802c0-012e-812c-23f9-00000410ee70
+----------------------------------------------------------------
+----------------------------------------------------------------
+2011-03-04 14:01:28.879 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.5.3.0 - (802917): instance 8be7c566-012e-812c-23f9-00000410ee70
+on database directory /Users/rikkola/Codes/drools/guvnor/repository/version/db  
+
+Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+2011-03-04 14:01:29.796 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.5.3.0 - (802917): instance 8ddd8624-012e-812c-23f9-00000410ee70
+on database directory /Users/rikkola/Codes/drools/guvnor/repository/workspaces/default/db  
+
+Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+2011-03-04 14:01:31.253 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.5.3.0 - (802917): instance c68586e4-012e-812c-23f9-00000410ee70
+on database directory /Users/rikkola/Codes/drools/guvnor/repository/workspaces/security/db  
+
+Database Class Loader started - derby.database.classpath=''
+
+2011-03-04 14:01:33.031 GMT:
+Shutting down instance 8ddd8624-012e-812c-23f9-00000410ee70
+----------------------------------------------------------------
+
+2011-03-04 14:01:33.128 GMT:
+Shutting down instance c68586e4-012e-812c-23f9-00000410ee70
+----------------------------------------------------------------
+
+2011-03-04 14:01:33.201 GMT:
+Shutting down instance 8be7c566-012e-812c-23f9-00000410ee70
+----------------------------------------------------------------
+----------------------------------------------------------------
+2011-03-04 14:01:33.322 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.5.3.0 - (802917): instance 7d1a480f-012e-812c-23f9-00000410ee70
+on database directory /Users/rikkola/Codes/drools/guvnor/repository/version/db  
+
+Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+2011-03-04 14:01:33.734 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.5.3.0 - (802917): instance 6d6b88cd-012e-812c-23f9-00000410ee70
+on database directory /Users/rikkola/Codes/drools/guvnor/repository/workspaces/default/db  
+
+Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+2011-03-04 14:01:34.503 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.5.3.0 - (802917): instance 80fdc98b-012e-812c-23f9-00000410ee70
+on database directory /Users/rikkola/Codes/drools/guvnor/repository/workspaces/security/db  
+
+Database Class Loader started - derby.database.classpath=''
+
+2011-03-04 14:01:35.770 GMT:
+Shutting down instance 6d6b88cd-012e-812c-23f9-00000410ee70
+----------------------------------------------------------------
+
+2011-03-04 14:01:35.987 GMT:
+Shutting down instance 80fdc98b-012e-812c-23f9-00000410ee70
+----------------------------------------------------------------
+
+2011-03-04 14:01:36.019 GMT:
+Shutting down instance 7d1a480f-012e-812c-23f9-00000410ee70
+----------------------------------------------------------------
+----------------------------------------------------------------
+2011-03-04 14:01:36.136 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.5.3.0 - (802917): instance 38834ab7-012e-812c-23f9-00000410ee70
+on database directory /Users/rikkola/Codes/drools/guvnor/repository/version/db  
+
+Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+2011-03-04 14:01:36.519 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.5.3.0 - (802917): instance a7008b75-012e-812c-23f9-00000410ee70
+on database directory /Users/rikkola/Codes/drools/guvnor/repository/workspaces/default/db  
+
+Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+2011-03-04 14:01:37.334 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.5.3.0 - (802917): instance 9db24c32-012e-812c-23f9-00000410ee70
+on database directory /Users/rikkola/Codes/drools/guvnor/repository/workspaces/security/db  
+
+Database Class Loader started - derby.database.classpath=''
+
+2011-03-04 14:01:38.213 GMT:
+Shutting down instance a7008b75-012e-812c-23f9-00000410ee70
+----------------------------------------------------------------
+
+2011-03-04 14:01:38.289 GMT:
+Shutting down instance 9db24c32-012e-812c-23f9-00000410ee70
+----------------------------------------------------------------
+
+2011-03-04 14:01:38.345 GMT:
+Shutting down instance 38834ab7-012e-812c-23f9-00000410ee70
+----------------------------------------------------------------
+----------------------------------------------------------------
+2011-03-04 14:01:38.555 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.5.3.0 - (802917): instance 7c24cd5e-012e-812c-23f9-00000410ee70
+on database directory /Users/rikkola/Codes/drools/guvnor/repository/version/db  
+
+Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+2011-03-04 14:01:38.902 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.5.3.0 - (802917): instance f89e8e1c-012e-812c-23f9-00000410ee70
+on database directory /Users/rikkola/Codes/drools/guvnor/repository/workspaces/default/db  
+
+Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+2011-03-04 14:01:39.578 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.5.3.0 - (802917): instance 58594eda-012e-812c-23f9-00000410ee70
+on database directory /Users/rikkola/Codes/drools/guvnor/repository/workspaces/security/db  
+
+Database Class Loader started - derby.database.classpath=''
+
+2011-03-04 14:01:41.652 GMT:
+Shutting down instance f89e8e1c-012e-812c-23f9-00000410ee70
+----------------------------------------------------------------
+
+2011-03-04 14:01:41.767 GMT:
+Shutting down instance 58594eda-012e-812c-23f9-00000410ee70
+----------------------------------------------------------------
+
+2011-03-04 14:01:41.837 GMT:
+Shutting down instance 7c24cd5e-012e-812c-23f9-00000410ee70
+----------------------------------------------------------------
+----------------------------------------------------------------
+2011-03-04 14:01:42.009 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.5.3.0 - (802917): instance 22091009-012e-812c-23f9-00000410ee70
+on database directory /Users/rikkola/Codes/drools/guvnor/repository/version/db  
+
+Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+2011-03-04 14:01:42.397 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.5.3.0 - (802917): instance 0d3d50c7-012e-812c-23f9-00000410ee70
+on database directory /Users/rikkola/Codes/drools/guvnor/repository/workspaces/default/db  
+
+Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+2011-03-04 14:01:43.011 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.5.3.0 - (802917): instance 9bb29185-012e-812c-23f9-00000410ee70
+on database directory /Users/rikkola/Codes/drools/guvnor/repository/workspaces/security/db  
+
+Database Class Loader started - derby.database.classpath=''
+
+2011-03-04 14:01:44.145 GMT:
+Shutting down instance 0d3d50c7-012e-812c-23f9-00000410ee70
+----------------------------------------------------------------
+
+2011-03-04 14:01:44.186 GMT:
+Shutting down instance 9bb29185-012e-812c-23f9-00000410ee70
+----------------------------------------------------------------
+
+2011-03-04 14:01:44.236 GMT:
+Shutting down instance 22091009-012e-812c-23f9-00000410ee70
+----------------------------------------------------------------
+----------------------------------------------------------------
+2011-03-04 14:01:44.419 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.5.3.0 - (802917): instance 0f7b92b4-012e-812c-23f9-00000410ee70
+on database directory /Users/rikkola/Codes/drools/guvnor/repository/version/db  
+
+Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+2011-03-04 14:01:44.777 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.5.3.0 - (802917): instance 496a5372-012e-812c-23f9-00000410ee70
+on database directory /Users/rikkola/Codes/drools/guvnor/repository/workspaces/default/db  
+
+Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+2011-03-04 14:01:45.598 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.5.3.0 - (802917): instance 498e542f-012e-812c-23f9-00000410ee70
+on database directory /Users/rikkola/Codes/drools/guvnor/repository/workspaces/security/db  
+
+Database Class Loader started - derby.database.classpath=''
+
+2011-03-04 14:01:46.446 GMT:
+Shutting down instance 496a5372-012e-812c-23f9-00000410ee70
+----------------------------------------------------------------
+
+2011-03-04 14:01:46.485 GMT:
+Shutting down instance 498e542f-012e-812c-23f9-00000410ee70
+----------------------------------------------------------------
+
+2011-03-04 14:01:46.507 GMT:
+Shutting down instance 0f7b92b4-012e-812c-23f9-00000410ee70
+----------------------------------------------------------------
+----------------------------------------------------------------
+2011-03-04 14:01:46.627 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.5.3.0 - (802917): instance c9c75557-012e-812c-23f9-00000410ee70
+on database directory /Users/rikkola/Codes/drools/guvnor/repository/version/db  
+
+Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+2011-03-04 14:01:46.933 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.5.3.0 - (802917): instance 30f49615-012e-812c-23f9-00000410ee70
+on database directory /Users/rikkola/Codes/drools/guvnor/repository/workspaces/default/db  
+
+Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+2011-03-04 14:01:47.507 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.5.3.0 - (802917): instance 1dae56d2-012e-812c-23f9-00000410ee70
+on database directory /Users/rikkola/Codes/drools/guvnor/repository/workspaces/security/db  
+
+Database Class Loader started - derby.database.classpath=''
+
+2011-03-04 14:01:48.271 GMT:
+Shutting down instance 30f49615-012e-812c-23f9-00000410ee70
+----------------------------------------------------------------
+
+2011-03-04 14:01:48.345 GMT:
+Shutting down instance 1dae56d2-012e-812c-23f9-00000410ee70
+----------------------------------------------------------------
+
+2011-03-04 14:01:48.427 GMT:
+Shutting down instance c9c75557-012e-812c-23f9-00000410ee70
+----------------------------------------------------------------
+----------------------------------------------------------------
+2011-03-04 14:01:48.569 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.5.3.0 - (802917): instance a10557fa-012e-812c-23f9-00000410ee70
+on database directory /Users/rikkola/Codes/drools/guvnor/repository/version/db  
+
+Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+2011-03-04 14:01:48.979 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.5.3.0 - (802917): instance 157118b8-012e-812c-23f9-00000410ee70
+on database directory /Users/rikkola/Codes/drools/guvnor/repository/workspaces/default/db  
+
+Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+2011-03-04 14:01:49.604 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.5.3.0 - (802917): instance 6d1dd976-012e-812c-23f9-00000410ee70
+on database directory /Users/rikkola/Codes/drools/guvnor/repository/workspaces/security/db  
+
+Database Class Loader started - derby.database.classpath=''
+
+2011-03-04 14:01:50.450 GMT:
+Shutting down instance 157118b8-012e-812c-23f9-00000410ee70
+----------------------------------------------------------------
+
+2011-03-04 14:01:50.520 GMT:
+Shutting down instance 6d1dd976-012e-812c-23f9-00000410ee70
+----------------------------------------------------------------
+
+2011-03-04 14:01:50.591 GMT:
+Shutting down instance a10557fa-012e-812c-23f9-00000410ee70
+----------------------------------------------------------------

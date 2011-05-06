@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Archiver-Version: Plexus Archiver
+Created-By: Apache Maven
+Built-By: hbraun
+Build-Jdk: 1.6.0_17
+Implementation-Title: JBoss BPM - Console::GUI::Profile::jbpm
+Implementation-Version: 2.1
+Implementation-Vendor-Id: org.jboss.bpm
+Implementation-Vendor: JBoss, a division of Red Hat
+
