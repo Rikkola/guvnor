@@ -35,11 +35,10 @@ import org.drools.guvnor.server.GuvnorAPIServlet;
 import org.drools.guvnor.server.builder.BRMSPackageBuilder;
 import org.drools.guvnor.server.builder.RuleFlowContentModelBuilder;
 import org.drools.guvnor.server.builder.RuleFlowProcessBuilder;
-import org.drools.guvnor.server.builder.ContentPackageAssembler.ErrorLogger;
+import org.drools.guvnor.server.builder.AssemblyErrorLogger;
 import org.drools.guvnor.server.util.LoggingHelper;
 import org.drools.ide.common.client.modeldriven.brl.PortableObject;
 import org.drools.repository.AssetItem;
-import org.drools.repository.PackageItem;
 import org.jbpm.bpmn2.xml.BPMNDISemanticModule;
 import org.jbpm.bpmn2.xml.BPMNSemanticModule;
 import org.jbpm.bpmn2.xml.XmlBPMNProcessDumper;
@@ -56,7 +55,6 @@ public class BPMN2ProcessHandler extends ContentHandler
     private static final LoggingHelper log = LoggingHelper.getLogger( BPMN2ProcessHandler.class );
 
     public void retrieveAssetContent(RuleAsset asset,
-                                     PackageItem pkg,
                                      AssetItem item) throws SerializationException {
         RuleFlowProcess process = readProcess( new ByteArrayInputStream( item.getContent().getBytes() ) );
         if ( process != null ) {
@@ -213,7 +211,7 @@ public class BPMN2ProcessHandler extends ContentHandler
 
     public void compile(BRMSPackageBuilder builder,
                         AssetItem asset,
-                        ErrorLogger logger) throws DroolsParserException,
+                        AssemblyErrorLogger logger) throws DroolsParserException,
                                            IOException {
         InputStream ins = asset.getBinaryContentAttachment();
         if ( ins != null ) {
@@ -223,7 +221,7 @@ public class BPMN2ProcessHandler extends ContentHandler
 
     public void compile(BRMSPackageBuilder builder,
                         RuleAsset asset,
-                        ErrorLogger logger) {
+                        AssemblyErrorLogger logger) {
         // This can not work, no binary data in RuleAsset
     }
 

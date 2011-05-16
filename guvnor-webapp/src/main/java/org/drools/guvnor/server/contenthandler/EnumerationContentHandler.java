@@ -28,7 +28,7 @@ import org.drools.repository.AssetItem;
 
 public class EnumerationContentHandler extends PlainTextContentHandler
     implements
-    IValidating {
+        IValidable {
 
     public BuilderResult validateAsset(AssetItem asset) {
 

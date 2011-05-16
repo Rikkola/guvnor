@@ -25,7 +25,7 @@ import org.drools.repository.AssetItem;
  * Each IRuleAsset can already do this, so its not really required for them. Only other non-rule type assets.
  * (eg supporting). The idea is that feedback can be provided where the user is entering stuff.
  */
-public interface IValidating {
+public interface IValidable {
 
     BuilderResult validateAsset(AssetItem asset);
 

@@ -15,31 +15,10 @@
  */
 package org.drools.guvnor.server;
 
-import java.text.DateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-
+import com.google.gwt.user.client.rpc.SerializationException;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.drools.guvnor.client.common.AssetFormats;
-import org.drools.guvnor.client.rpc.AdminArchivedPageRow;
-import org.drools.guvnor.client.rpc.AssetPageRequest;
-import org.drools.guvnor.client.rpc.AssetPageRow;
-import org.drools.guvnor.client.rpc.BuilderResult;
-import org.drools.guvnor.client.rpc.BuilderResultLine;
-import org.drools.guvnor.client.rpc.DiscussionRecord;
-import org.drools.guvnor.client.rpc.MetaData;
-import org.drools.guvnor.client.rpc.PackageConfigData;
-import org.drools.guvnor.client.rpc.PageRequest;
-import org.drools.guvnor.client.rpc.PageResponse;
-import org.drools.guvnor.client.rpc.PushResponse;
-import org.drools.guvnor.client.rpc.QueryPageRequest;
-import org.drools.guvnor.client.rpc.QueryPageRow;
-import org.drools.guvnor.client.rpc.RuleAsset;
-import org.drools.guvnor.client.rpc.TableDataResult;
-import org.drools.guvnor.client.rpc.TableDataRow;
+import org.drools.guvnor.client.rpc.*;
 import org.drools.guvnor.server.builder.BRMSPackageBuilder;
 import org.drools.guvnor.server.builder.ContentPackageAssembler;
 import org.drools.guvnor.server.builder.PageResponseBuilder;
@@ -47,11 +26,7 @@ import org.drools.guvnor.server.builder.pagerow.ArchivedAssetPageRowBuilder;
 import org.drools.guvnor.server.builder.pagerow.AssetPageRowBuilder;
 import org.drools.guvnor.server.builder.pagerow.QuickFindPageRowBuilder;
 import org.drools.guvnor.server.cache.RuleBaseCache;
-import org.drools.guvnor.server.contenthandler.BPMN2ProcessHandler;
-import org.drools.guvnor.server.contenthandler.ContentHandler;
-import org.drools.guvnor.server.contenthandler.ContentManager;
-import org.drools.guvnor.server.contenthandler.IRuleAsset;
-import org.drools.guvnor.server.contenthandler.IValidating;
+import org.drools.guvnor.server.contenthandler.*;
 import org.drools.guvnor.server.repository.MailboxService;
 import org.drools.guvnor.server.security.RoleTypes;
 import org.drools.guvnor.server.util.AssetFormatHelper;
@@ -73,7 +48,8 @@ import org.jboss.seam.annotations.Name;
 import org.jboss.seam.contexts.Contexts;
 import org.jboss.seam.security.Identity;
 
-import com.google.gwt.user.client.rpc.SerializationException;
+import java.text.DateFormat;
+import java.util.*;
 
 /**
  * Handles operations for Assets
@@ -101,52 +77,55 @@ public class RepositoryAssetOperations {
                                                  newName );
     }
 
-    protected BuilderResult buildAsset(RuleAsset asset) {
+    protected BuilderResult validateAsset(RuleAsset asset) {
         BuilderResult result = new BuilderResult();
+
+        BuilderResultHelper builderResultHelper = new BuilderResultHelper();
+        PackageAssembler packageAssembler;
+
         try {
             ContentHandler handler = ContentManager.getHandler( asset.getMetaData().getFormat() );
             BuilderResultHelper builderResultHelper = new BuilderResultHelper();
 
-            if ( asset.getMetaData().isBinary() ) {
-                AssetItem item = getRulesRepository().loadAssetByUUID( asset.getUuid() );
-                handler.storeAssetContent( asset,
-                                           item );
+                handler.storeAssetContent(asset,
+                        item);
 
-                if ( handler instanceof IValidating ) {
-                    return ((IValidating) handler).validateAsset( item );
+                if (handler instanceof IValidable) {
+                    return ((IValidable) handler).validateAsset(item);
+                } else {
+                    packageAssembler = new PackageAssembler(item.getPackage());
+                    packageAssembler.compile(item);
                 }
-
-                ContentPackageAssembler asm = new ContentPackageAssembler( item );
-                if ( !asm.hasErrors() ) {
-                    return null;
-                }
-                result.setLines( builderResultHelper.generateBuilderResults( asm ) );
-
             } else {
-                if ( handler instanceof IValidating ) {
-                    return ((IValidating) handler).validateAsset( asset );
-                }
+                if (handler instanceof IValidable) {
+                    return ((IValidable) handler).validateAsset(asset);
+                } else {
+                    PackageItem packageItem = getRulesRepository()
+                            .loadPackageByUUID(asset.metaData.packageUUID);
 
-                PackageItem packageItem = getRulesRepository().loadPackageByUUID( asset.getMetaData().getPackageUUID() );
-
-                ContentPackageAssembler asm = new ContentPackageAssembler( asset,
-                                                                           packageItem );
-                if ( !asm.hasErrors() ) {
-                    return null;
+                    packageAssembler = new PackageAssembler(packageItem);
+                    packageAssembler.compile(asset);
                 }
-                result.setLines( builderResultHelper.generateBuilderResults( asm ) );
             }
-        } catch ( Exception e ) {
-            log.error( "Unable to build asset.",
-                       e );
+        } catch (Exception e) {
+            log.error("Unable to build asset.",
+                    e);
             result = new BuilderResult();
 
-            BuilderResultLine res = new BuilderResultLine().setAssetName( asset.getName() ).setAssetFormat( asset.getMetaData().getFormat() ).setMessage( "Unable to validate this asset. (Check log for detailed messages)." ).setUuid( asset.getUuid() );
-            result.getLines().add( res );
+            BuilderResultLine res = new BuilderResultLine();
+            res.setAssetName(asset.name);
+            res.setAssetFormat(asset.metaData.format);
+            res.setMessage("Unable to validate this asset. (Check log for detailed messages).");
+            res.setUuid(asset.uuid);
+            result.getLines().add(res);
 
             return result;
 
         }
+        if (!packageAssembler.hasErrors()) {
+            return null;
+        }
+        result.setLines(builderResultHelper.generateBuilderResults(packageAssembler));
         return result;
     }
 
@@ -189,7 +168,7 @@ public class RepositoryAssetOperations {
         cal.setTime( date );
         return cal;
     }
-
+   
     private boolean isAssetUpdatedInRepository(RuleAsset asset,
                                                AssetItem repoAsset) {
         return asset.getLastModified().before( repoAsset.getLastModified().getTime() );

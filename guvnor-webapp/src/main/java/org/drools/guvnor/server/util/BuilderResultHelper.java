@@ -20,10 +20,10 @@ import java.util.List;
 
 import org.drools.guvnor.client.rpc.BuilderResultLine;
 import org.drools.guvnor.server.builder.ContentAssemblyError;
-import org.drools.guvnor.server.builder.ContentPackageAssembler;
+import org.drools.guvnor.server.builder.PackageAssembler;
 
 public class BuilderResultHelper {
-    public List<BuilderResultLine> generateBuilderResults(ContentPackageAssembler asm) {
+    public List<BuilderResultLine> generateBuilderResults(PackageAssembler asm) {
         List<BuilderResultLine> result = new ArrayList<BuilderResultLine>( asm.getErrors().size() );
         for ( int i = 0; i < asm.getErrors().size(); i++ ) {
             ContentAssemblyError err = asm.getErrors().get( i );

@@ -44,8 +44,7 @@ public class FactModelContentHandler extends ContentHandler {
 
     @Override
     public void retrieveAssetContent(RuleAsset asset,
-                                     PackageItem pkg,
-                                     AssetItem item) throws SerializationException {
+            AssetItem item) throws SerializationException {
         try {
             List<FactMetaModel> models = toModel( item.getContent() );
             FactModels ms = new FactModels();

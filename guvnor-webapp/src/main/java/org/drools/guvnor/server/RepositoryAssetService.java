@@ -375,9 +375,9 @@ public class RepositoryAssetService
 
     @WebRemote
     @Restrict("#{identity.loggedIn}")
-    public BuilderResult buildAsset(RuleAsset asset) throws SerializationException {
+    public BuilderResult validateAsset(RuleAsset asset) throws SerializationException {
         serviceSecurity.checkSecurityIsPackageDeveloper( asset );
-        return repositoryAssetOperations.buildAsset( asset );
+        return repositoryAssetOperations.validateAsset(asset);
     }
 
     public void unArchiveAsset(String uuid) {

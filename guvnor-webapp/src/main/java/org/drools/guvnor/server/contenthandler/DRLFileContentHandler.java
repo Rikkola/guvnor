@@ -23,8 +23,8 @@ import java.util.StringTokenizer;
 import org.drools.compiler.DroolsParserException;
 import org.drools.guvnor.client.rpc.RuleAsset;
 import org.drools.guvnor.client.rpc.RuleContentText;
+import org.drools.guvnor.server.builder.AssemblyErrorLogger;
 import org.drools.guvnor.server.builder.BRMSPackageBuilder;
-import org.drools.guvnor.server.builder.ContentPackageAssembler;
 import org.drools.repository.AssetItem;
 
 public class DRLFileContentHandler extends PlainTextContentHandler
@@ -33,7 +33,7 @@ public class DRLFileContentHandler extends PlainTextContentHandler
 
     public void compile(BRMSPackageBuilder builder,
                         AssetItem asset,
-                        ContentPackageAssembler.ErrorLogger logger) throws DroolsParserException,
+                        AssemblyErrorLogger logger) throws DroolsParserException,
                                                                    IOException {
         String content = getRawDRL( asset );
         if ( content != null && !content.trim().equals( "" ) ) {
@@ -43,7 +43,7 @@ public class DRLFileContentHandler extends PlainTextContentHandler
 
     public void compile(BRMSPackageBuilder builder,
                         RuleAsset asset,
-                        ContentPackageAssembler.ErrorLogger logger) throws DroolsParserException,
+                        AssemblyErrorLogger logger) throws DroolsParserException,
                                                                    IOException {
         String content = ((RuleContentText) asset.getContent()).content;
         if ( content != null && !content.trim().equals( "" ) ) {

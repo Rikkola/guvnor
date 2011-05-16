@@ -27,16 +27,15 @@ import com.google.gwt.user.client.rpc.SerializationException;
 
 public class BPELHandler extends ContentHandler {
 
-    public void retrieveAssetContent(RuleAsset ruleAsset,
-                                     PackageItem packageItem,
-                                     AssetItem assetItem) throws SerializationException {
+    public void retrieveAssetContent(RuleAsset asset,
+            AssetItem item) throws SerializationException {
 
-        InputStream inputStream = assetItem.getBinaryContentAttachment();
+        InputStream inputStream = asset.getBinaryContentAttachment();
 
         if ( inputStream != null ) {
             RuleContentText text = new RuleContentText();
-            text.content = ruleAsset.getName();
-            ruleAsset.setContent( text );
+            text.content = asset.getName();
+            asset.setContent( text );
         }
 
     }

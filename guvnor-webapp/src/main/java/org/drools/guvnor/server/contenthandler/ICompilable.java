@@ -20,8 +20,8 @@ import java.io.IOException;
 
 import org.drools.compiler.DroolsParserException;
 import org.drools.guvnor.client.rpc.RuleAsset;
+import org.drools.guvnor.server.builder.AssemblyErrorLogger;
 import org.drools.guvnor.server.builder.BRMSPackageBuilder;
-import org.drools.guvnor.server.builder.ContentPackageAssembler;
 import org.drools.repository.AssetItem;
 
 /**
@@ -36,12 +36,12 @@ public interface ICompilable {
      */
     public void compile(BRMSPackageBuilder builder,
                         AssetItem asset,
-                        ContentPackageAssembler.ErrorLogger logger) throws DroolsParserException,
+                        AssemblyErrorLogger logger) throws DroolsParserException,
                                                                    IOException;
 
     public void compile(BRMSPackageBuilder builder,
                         RuleAsset asset,
-                        ContentPackageAssembler.ErrorLogger logger) throws DroolsParserException,
+                        AssemblyErrorLogger logger) throws DroolsParserException,
                                                                    IOException;
 
 }

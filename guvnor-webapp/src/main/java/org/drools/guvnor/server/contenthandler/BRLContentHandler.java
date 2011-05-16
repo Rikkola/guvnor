@@ -21,15 +21,13 @@ import java.io.StringReader;
 
 import org.drools.compiler.DroolsParserException;
 import org.drools.guvnor.client.rpc.RuleAsset;
+import org.drools.guvnor.server.builder.AssemblyErrorLogger;
 import org.drools.guvnor.server.builder.BRMSPackageBuilder;
-import org.drools.guvnor.server.builder.ContentPackageAssembler;
-import org.drools.guvnor.server.builder.ContentPackageAssembler.ErrorLogger;
 import org.drools.ide.common.client.modeldriven.brl.RuleModel;
 import org.drools.ide.common.server.util.BRDRLPersistence;
 import org.drools.ide.common.server.util.BRLPersistence;
 import org.drools.ide.common.server.util.BRXMLPersistence;
 import org.drools.repository.AssetItem;
-import org.drools.repository.PackageItem;
 
 import com.google.gwt.user.client.rpc.SerializationException;
 
@@ -38,7 +36,6 @@ public class BRLContentHandler extends ContentHandler
     IRuleAsset {
 
     public void retrieveAssetContent(RuleAsset asset,
-                                     PackageItem pkg,
                                      AssetItem item) throws SerializationException {
         RuleModel ruleModel = getBrlXmlPersistence().unmarshal( item.getContent() );
 
@@ -58,7 +55,7 @@ public class BRLContentHandler extends ContentHandler
 
     public void compile(BRMSPackageBuilder builder,
                         AssetItem asset,
-                        ContentPackageAssembler.ErrorLogger logger) throws DroolsParserException,
+                        AssemblyErrorLogger logger) throws DroolsParserException,
                                                                    IOException {
         builder.addPackageFromDrl( new StringReader( getSourceDRL( buildModelFromAsset( asset ),
                                                                    builder ) ) );
@@ -66,7 +63,7 @@ public class BRLContentHandler extends ContentHandler
 
     public void compile(BRMSPackageBuilder builder,
                         RuleAsset asset,
-                        ErrorLogger logger) throws DroolsParserException,
+                        AssemblyErrorLogger logger) throws DroolsParserException,
                                            IOException {
         builder.addPackageFromDrl( new StringReader( getSourceDRL( (RuleModel) asset.getContent(),
                                                                    builder ) ) );
