@@ -15,12 +15,11 @@
  */
 package org.drools.guvnor.server.util;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.drools.guvnor.client.rpc.BuilderResultLine;
 import org.drools.guvnor.server.builder.ContentAssemblyError;
-import org.drools.guvnor.server.builder.PackageAssembler;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class BuilderResultHelper {
     public List<BuilderResultLine> generateBuilderResults(PackageAssembler asm) {
@@ -32,5 +31,4 @@ public class BuilderResultHelper {
         }
         return result;
     }
-
 }

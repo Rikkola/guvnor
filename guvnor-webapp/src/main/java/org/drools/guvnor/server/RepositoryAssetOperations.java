@@ -19,6 +19,7 @@ import com.google.gwt.user.client.rpc.SerializationException;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.drools.guvnor.client.common.AssetFormats;
 import org.drools.guvnor.client.rpc.*;
+import org.drools.guvnor.server.builder.AssetItemValidator;
 import org.drools.guvnor.server.builder.BRMSPackageBuilder;
 import org.drools.guvnor.server.builder.ContentPackageAssembler;
 import org.drools.guvnor.server.builder.PageResponseBuilder;
@@ -26,7 +27,10 @@ import org.drools.guvnor.server.builder.pagerow.ArchivedAssetPageRowBuilder;
 import org.drools.guvnor.server.builder.pagerow.AssetPageRowBuilder;
 import org.drools.guvnor.server.builder.pagerow.QuickFindPageRowBuilder;
 import org.drools.guvnor.server.cache.RuleBaseCache;
-import org.drools.guvnor.server.contenthandler.*;
+import org.drools.guvnor.server.contenthandler.BPMN2ProcessHandler;
+import org.drools.guvnor.server.contenthandler.ContentHandler;
+import org.drools.guvnor.server.contenthandler.ContentManager;
+import org.drools.guvnor.server.contenthandler.IRuleAsset;
 import org.drools.guvnor.server.repository.MailboxService;
 import org.drools.guvnor.server.security.RoleTypes;
 import org.drools.guvnor.server.util.AssetFormatHelper;
@@ -78,55 +82,33 @@ public class RepositoryAssetOperations {
     }
 
     protected BuilderResult validateAsset(RuleAsset asset) {
-        BuilderResult result = new BuilderResult();
-
-        BuilderResultHelper builderResultHelper = new BuilderResultHelper();
-        PackageAssembler packageAssembler;
-
         try {
-            ContentHandler handler = ContentManager.getHandler( asset.getMetaData().getFormat() );
-            BuilderResultHelper builderResultHelper = new BuilderResultHelper();
+            ContentHandler handler = ContentManager
+                    .getHandler(asset.metaData.format);
+            AssetItem item = getRulesRepository().loadAssetByUUID(asset.uuid);
 
-                handler.storeAssetContent(asset,
-                        item);
+            handler.storeAssetContent(asset,
+                    item);
 
-                if (handler instanceof IValidable) {
-                    return ((IValidable) handler).validateAsset(item);
-                } else {
-                    packageAssembler = new PackageAssembler(item.getPackage());
-                    packageAssembler.compile(item);
-                }
-            } else {
-                if (handler instanceof IValidable) {
-                    return ((IValidable) handler).validateAsset(asset);
-                } else {
-                    PackageItem packageItem = getRulesRepository()
-                            .loadPackageByUUID(asset.metaData.packageUUID);
+            AssetItemValidator assetItemValidator = new AssetItemValidator(handler);
+            return assetItemValidator.validate(item);
 
-                    packageAssembler = new PackageAssembler(packageItem);
-                    packageAssembler.compile(asset);
-                }
-            }
         } catch (Exception e) {
             log.error("Unable to build asset.",
                     e);
-            result = new BuilderResult();
-
-            BuilderResultLine res = new BuilderResultLine();
-            res.setAssetName(asset.name);
-            res.setAssetFormat(asset.metaData.format);
-            res.setMessage("Unable to validate this asset. (Check log for detailed messages).");
-            res.setUuid(asset.uuid);
-            result.getLines().add(res);
-
+            BuilderResult result = new BuilderResult();
+            result.getLines().add(createBuilderResultLine(asset));
             return result;
+        }
+    }
 
-        }
-        if (!packageAssembler.hasErrors()) {
-            return null;
-        }
-        result.setLines(builderResultHelper.generateBuilderResults(packageAssembler));
-        return result;
+    private BuilderResultLine createBuilderResultLine(RuleAsset asset) {
+        BuilderResultLine builderResultLine = new BuilderResultLine();
+        builderResultLine.setAssetName(asset.name);
+        builderResultLine.setAssetFormat(asset.metaData.format);
+        builderResultLine.setMessage("Unable to validate this asset. (Check log for detailed messages).");
+        builderResultLine.setUuid(asset.uuid);
+        return builderResultLine;
     }
 
     public String checkinVersion(RuleAsset asset) throws SerializationException {

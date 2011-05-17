@@ -19,7 +19,6 @@ package org.drools.guvnor.server.builder;
 import org.drools.compiler.DroolsError;
 import org.drools.compiler.DroolsParserException;
 import org.drools.guvnor.client.common.AssetFormats;
-import org.drools.guvnor.client.rpc.RuleAsset;
 import org.drools.guvnor.server.contenthandler.ContentHandler;
 import org.drools.guvnor.server.contenthandler.ContentManager;
 import org.drools.guvnor.server.contenthandler.ICompilable;
@@ -63,19 +62,6 @@ abstract class PackageAssemblerBase extends AssemblerBase {
         }
     }
 
-    protected void buildAsset(RuleAsset asset) {
-        ContentHandler contentHandler = ContentManager.getHandler(asset.metaData.format);
-        if (contentHandler instanceof ICompilable && !asset.metaData.disabled) {
-            try {
-                compile(asset, (ICompilable) contentHandler);
-            } catch (DroolsParserException e) {
-                errorLogger.addError(asset, e.getMessage());
-            } catch (IOException e) {
-                errorLogger.addError(asset, e.getMessage());
-            }
-        }
-    }
-
     private void compile(AssetItem asset, ICompilable contentHandler) throws DroolsParserException, IOException {
         contentHandler.compile(builder,
                 asset,
@@ -83,16 +69,6 @@ abstract class PackageAssemblerBase extends AssemblerBase {
 
         if (builder.hasErrors()) {
             logErrors(asset);
-        }
-    }
-
-    private void compile(RuleAsset asset, ICompilable contentHandler) throws DroolsParserException, IOException {
-        contentHandler.compile(builder,
-                asset,
-                errorLogger);
-
-        if (builder.hasErrors()) {
-            this.recordBuilderErrors(asset.metaData.format, asset.name, asset.uuid, false, true);
         }
     }
 
@@ -272,9 +248,4 @@ abstract class PackageAssemblerBase extends AssemblerBase {
     private void logErrors(AssetItem asset) {
         this.recordBuilderErrors(asset.getFormat(), asset.getName(), asset.getUUID(), false, true);
     }
-
-    public BRMSPackageBuilder getBuilder() {
-        return builder;
-    }
-
 }

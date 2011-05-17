@@ -21,14 +21,12 @@ import java.util.List;
 
 import org.drools.guvnor.client.rpc.BuilderResult;
 import org.drools.guvnor.client.rpc.BuilderResultLine;
-import org.drools.guvnor.client.rpc.RuleAsset;
-import org.drools.guvnor.client.rpc.RuleContentText;
 import org.drools.ide.common.server.util.DataEnumLoader;
 import org.drools.repository.AssetItem;
 
 public class EnumerationContentHandler extends PlainTextContentHandler
     implements
-        IValidable {
+        IHasCustomValidator {
 
     public BuilderResult validateAsset(AssetItem asset) {
 

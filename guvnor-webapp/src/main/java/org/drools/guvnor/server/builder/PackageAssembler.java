@@ -157,4 +157,7 @@ public class PackageAssembler extends PackageAssemblerBase {
         return builder.getPackage();
     }
 
+    public BRMSPackageBuilder getBuilder() {
+        return builder;
+    }
 }

@@ -17,18 +17,6 @@
 package org.drools.guvnor.server.contenthandler;
 
 
-import org.drools.guvnor.client.rpc.BuilderResult;
-import org.drools.guvnor.client.rpc.RuleAsset;
-import org.drools.repository.AssetItem;
+public class DSLDefinitionContentHandler extends PlainTextContentHandler {
 
-public class DSLDefinitionContentHandler extends PlainTextContentHandler
-        implements IValidable {
-
-    public BuilderResult validateAsset(AssetItem asset) {
-        return null;  //TODO: Generated code -Rikkola-
-    }
-
-    public BuilderResult validateAsset(RuleAsset asset) {
-        return null;  //TODO: Generated code -Rikkola-
-    }
 }

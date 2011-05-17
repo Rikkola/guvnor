@@ -16,9 +16,7 @@
 
 package org.drools.guvnor.server.contenthandler;
 
-import java.io.IOException;
-import java.io.StringReader;
-
+import com.google.gwt.user.client.rpc.SerializationException;
 import org.drools.compiler.DroolsParserException;
 import org.drools.guvnor.client.rpc.RuleAsset;
 import org.drools.guvnor.server.builder.AssemblyErrorLogger;
@@ -29,7 +27,8 @@ import org.drools.ide.common.server.util.BRLPersistence;
 import org.drools.ide.common.server.util.BRXMLPersistence;
 import org.drools.repository.AssetItem;
 
-import com.google.gwt.user.client.rpc.SerializationException;
+import java.io.IOException;
+import java.io.StringReader;
 
 public class BRLContentHandler extends ContentHandler
     implements
@@ -117,5 +116,4 @@ public class BRLContentHandler extends ContentHandler
     protected BRLPersistence getBrlXmlPersistence() {
         return BRXMLPersistence.getInstance();
     }
-
 }

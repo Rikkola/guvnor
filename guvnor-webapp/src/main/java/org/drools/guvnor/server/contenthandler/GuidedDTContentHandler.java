@@ -16,9 +16,7 @@
 
 package org.drools.guvnor.server.contenthandler;
 
-import java.io.IOException;
-import java.io.StringReader;
-
+import com.google.gwt.user.client.rpc.SerializationException;
 import org.drools.compiler.DroolsParserException;
 import org.drools.guvnor.client.rpc.RuleAsset;
 import org.drools.guvnor.server.builder.AssemblyErrorLogger;
@@ -28,7 +26,8 @@ import org.drools.ide.common.server.util.GuidedDTDRLPersistence;
 import org.drools.ide.common.server.util.GuidedDTXMLPersistence;
 import org.drools.repository.AssetItem;
 
-import com.google.gwt.user.client.rpc.SerializationException;
+import java.io.IOException;
+import java.io.StringReader;
 
 /**
  * For guided decision tables.

@@ -16,16 +16,16 @@
 
 package org.drools.guvnor.server.contenthandler;
 
-import java.io.IOException;
-import java.io.StringReader;
-import java.util.StringTokenizer;
-
 import org.drools.compiler.DroolsParserException;
 import org.drools.guvnor.client.rpc.RuleAsset;
 import org.drools.guvnor.client.rpc.RuleContentText;
 import org.drools.guvnor.server.builder.AssemblyErrorLogger;
 import org.drools.guvnor.server.builder.BRMSPackageBuilder;
 import org.drools.repository.AssetItem;
+
+import java.io.IOException;
+import java.io.StringReader;
+import java.util.StringTokenizer;
 
 public class DRLFileContentHandler extends PlainTextContentHandler
     implements
@@ -86,12 +86,12 @@ public class DRLFileContentHandler extends PlainTextContentHandler
                 return true;
             }
             //otherwise sniff for a suitable keyword at the start of a line
-            if ( startsWithWord( "package",
-                                 tok ) || startsWithWord( "rule",
-                                                          tok ) || startsWithWord( "end",
-                                                                                   tok ) || startsWithWord( "function",
-                                                                                                            tok ) || startsWithWord( "query",
-                                                                                                                                     tok ) ) {
+            if (startsWithWord("package",
+                    tok) || startsWithWord("rule",
+                    tok) || startsWithWord("end",
+                    tok) || startsWithWord("function",
+                    tok) || startsWithWord("query",
+                    tok)) {
                 return false;
             }
         }

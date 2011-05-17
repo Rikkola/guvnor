@@ -16,7 +16,6 @@
 
 package org.drools.guvnor.server.builder;
 
-import org.drools.guvnor.client.rpc.RuleAsset;
 import org.drools.repository.AssetItem;
 import org.drools.repository.PackageItem;
 
@@ -42,11 +41,6 @@ public class AssemblyErrorLogger {
     public void addError(AssetItem assetItem, String errorReport) {
         errors.add(new ContentAssemblyError(
                 errorReport, assetItem.getFormat(), assetItem.getName(), assetItem.getUUID(), false, true));
-    }
-
-    public void addError(RuleAsset asset, String message) {
-        errors.add(new ContentAssemblyError(
-                message, asset.metaData.format, asset.name, asset.uuid, false, true));
     }
 
     public void addError(String message, String format, String name, String uuid, boolean isPackageItem, boolean isAssetItem) {

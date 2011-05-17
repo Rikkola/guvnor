@@ -662,7 +662,7 @@ public class RepositoryPackageOperations {
         if (asm.hasErrors()) {
             BuilderResult result = new BuilderResult();
             BuilderResultHelper builderResultHelper = new BuilderResultHelper();
-            result.setLines(builderResultHelper.generateBuilderResults(asm));
+            result.setLines(builderResultHelper.generateBuilderResults(asm.getErrors()));
             return result;
         }
         try {
