@@ -143,7 +143,6 @@ public class RepositoryAssetService
 
         ContentHandler handler = ContentManager.getHandler( asset.getMetaData().getFormat() );
         handler.retrieveAssetContent( asset,
-                                      packageItem,
                                       item );
 
         asset.setReadonly( asset.getMetaData().isHasSucceedingVersion() );

@@ -21,7 +21,6 @@ import org.drools.guvnor.client.common.AssetFormats;
 import org.drools.guvnor.client.rpc.*;
 import org.drools.guvnor.server.builder.AssetItemValidator;
 import org.drools.guvnor.server.builder.BRMSPackageBuilder;
-import org.drools.guvnor.server.builder.ContentPackageAssembler;
 import org.drools.guvnor.server.builder.PageResponseBuilder;
 import org.drools.guvnor.server.builder.pagerow.ArchivedAssetPageRowBuilder;
 import org.drools.guvnor.server.builder.pagerow.AssetPageRowBuilder;
@@ -588,7 +587,6 @@ public class RepositoryAssetOperations {
         asset.setMetaData( populateMetaData( item ) );
         ContentHandler handler = ContentManager.getHandler( asset.getMetaData().getFormat() );
         handler.retrieveAssetContent( asset,
-                                      item.getPackage(),
                                       item );
 
         return asset;

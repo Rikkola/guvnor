@@ -1,17 +1,17 @@
 /*
  * Copyright 2011 JBoss Inc
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ *   Licensed under the Apache License, Version 2.0 (the "License");
+ *   you may not use this file except in compliance with the License.
+ *   You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *         http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ *   Unless required by applicable law or agreed to in writing, software
+ *   distributed under the License is distributed on an "AS IS" BASIS,
+ *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *   See the License for the specific language governing permissions and
+ *   limitations under the License.
  */
 package org.drools.guvnor.server;
 
@@ -826,7 +826,7 @@ public class RepositoyAssetServiceTest extends GuvnorTestBase {
         RepositoryAssetService repositoryAssetService = getRepositoryAssetService();
         RuleAsset rule = repositoryAssetService.loadRuleAsset( asset.getUUID() );
 
-        BuilderResult result = repositoryAssetService.buildAsset( rule );
+        BuilderResult result = repositoryAssetService.validateAsset( rule );
         assertNotNull( result );
         assertEquals( -1,
                       result.getLines().get( 0 ).getMessage().indexOf( "Check log for" ) );
@@ -861,7 +861,7 @@ public class RepositoyAssetServiceTest extends GuvnorTestBase {
         RuleAsset rule = repositoryAssetService.loadRuleAsset( asset.getUUID() );
 
         // check its all OK
-        BuilderResult result = repositoryAssetService.buildAsset( rule );
+        BuilderResult result = repositoryAssetService.validateAsset( rule );
         assertNull( result );
 
         RuleBaseCache.getInstance().clearCache();
@@ -871,7 +871,7 @@ public class RepositoyAssetServiceTest extends GuvnorTestBase {
         text.content = "rule 'MyBadRule' \n when Personx() then System.err.println(42); \n end";
         rule.setContent( text );
 
-        result = repositoryAssetService.buildAsset( rule );
+        result = repositoryAssetService.validateAsset( rule );
         assertNotNull( result );
         assertNotNull( result.getLines().get( 0 ).getMessage() );
         assertEquals( AssetFormats.DRL,
@@ -892,7 +892,7 @@ public class RepositoyAssetServiceTest extends GuvnorTestBase {
 
         rule = repositoryAssetService.loadRuleAsset( dslRule.getUUID() );
 
-        result = repositoryAssetService.buildAsset( rule );
+        result = repositoryAssetService.validateAsset( rule );
         assertNull( result );
 
         asset = pkg.addAsset( "someEnumThing",
@@ -900,7 +900,7 @@ public class RepositoyAssetServiceTest extends GuvnorTestBase {
         asset.updateFormat( AssetFormats.ENUMERATION );
         asset.updateContent( "goober boy" );
         asset.checkin( "" );
-        result = repositoryAssetService.buildAsset( repositoryAssetService.loadRuleAsset( asset.getUUID() ) );
+        result = repositoryAssetService.validateAsset( repositoryAssetService.loadRuleAsset( asset.getUUID() ) );
         assertFalse( result.getLines().size() == 0 );
 
     }
@@ -944,7 +944,7 @@ public class RepositoyAssetServiceTest extends GuvnorTestBase {
         t2.setContent( t2Content );
         repositoryAssetService.checkinVersion( t2 );
 
-        BuilderResult result = repositoryAssetService.buildAsset( t1 );
+        BuilderResult result = repositoryAssetService.validateAsset( t1 );
 
         assertNull( result );
 
@@ -1008,7 +1008,7 @@ public class RepositoyAssetServiceTest extends GuvnorTestBase {
         repositoryAssetService.checkinVersion( rule );
 
         // check its all OK
-        BuilderResult result = repositoryAssetService.buildAsset( rule );
+        BuilderResult result = repositoryAssetService.validateAsset( rule );
         if ( result != null ) {
             for ( int i = 0; i < result.getLines().size(); i++ ) {
                 System.err.println( result.getLines().get( i ).getMessage() );
@@ -1136,7 +1136,7 @@ public class RepositoyAssetServiceTest extends GuvnorTestBase {
         RuleAsset rule = repositoryAssetService.loadRuleAsset( asset.getUUID() );
 
         // check its all OK
-        BuilderResult result = repositoryAssetService.buildAsset( rule );
+        BuilderResult result = repositoryAssetService.validateAsset( rule );
         if ( !(result == null) ) {
             System.err.println( result.getLines().get( 0 ).getAssetName() + " " + result.getLines().get( 0 ).getMessage() );
         }
@@ -1145,7 +1145,7 @@ public class RepositoyAssetServiceTest extends GuvnorTestBase {
         DroolsHeader.updateDroolsHeader( "importxxxx",
                                                   pkg );
         repo.save();
-        result = repositoryAssetService.buildAsset( rule );
+        result = repositoryAssetService.validateAsset( rule );
         assertNotNull( result );
 
         assertEquals( 2,

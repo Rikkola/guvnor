@@ -88,7 +88,6 @@ public class RepositoryPackageOperations {
                                        RepositoryFilter filter,
                                        List<PackageConfigData> result,
                                        PackageIterator pkgs) {
-<<<<<<< HEAD
         pkgs.setArchivedIterator( archive );
         while ( pkgs.hasNext() ) {
             PackageItem packageItem = pkgs.next();
@@ -108,27 +107,7 @@ public class RepositoryPackageOperations {
                                                 archive,
                                                 null,
                                                 filter );
-=======
-        pkgs.setArchivedIterator(archive);
-        while (pkgs.hasNext()) {
-            PackageItem pkg = pkgs.next();
 
-            PackageConfigData data = new PackageConfigData();
-            data.uuid = pkg.getUUID();
-            data.name = pkg.getName();
-            data.archived = pkg.isArchived();
-            data.workspaces = pkg.getWorkspaces();
-            handleIsPackagesListed(archive,
-                    workspace,
-                    filter,
-                    result,
-                    data);
-
-            data.subPackages = listSubPackages(pkg,
-                    archive,
-                    null,
-                    filter);
->>>>>>> GUVNOR-1391 :DSL Editor's Validate is delayed, should validate the latest changes without a checking
         }
     }
 
@@ -138,20 +117,11 @@ public class RepositoryPackageOperations {
                                                 RepositoryFilter filter) {
         List<PackageConfigData> children = new LinkedList<PackageConfigData>();
 
-<<<<<<< HEAD
         handleIteratePackages( archive,
                                workspace,
                                filter,
                                children,
                                parentPkg.listSubPackages() );
-=======
-        PackageIterator pkgs = parentPkg.listSubPackages();
-        handleIteratePackages(archive,
-                workspace,
-                filter,
-                children,
-                pkgs);
->>>>>>> GUVNOR-1391 :DSL Editor's Validate is delayed, should validate the latest changes without a checking
 
         sortPackages(children);
         return children.toArray(new PackageConfigData[children.size()]);
@@ -161,17 +131,10 @@ public class RepositoryPackageOperations {
         Collections.sort(result,
                 new Comparator<PackageConfigData>() {
 
-<<<<<<< HEAD
                               public int compare(final PackageConfigData d1,
                                                  final PackageConfigData d2) {
                                   return d1.getName().compareTo( d2.getName() );
                               }
-=======
-                    public int compare(final PackageConfigData d1,
-                                       final PackageConfigData d2) {
-                        return d1.name.compareTo(d2.name);
-                    }
->>>>>>> GUVNOR-1391 :DSL Editor's Validate is delayed, should validate the latest changes without a checking
 
                 });
     }
@@ -181,7 +144,6 @@ public class RepositoryPackageOperations {
                                         RepositoryFilter filter,
                                         List<PackageConfigData> result,
                                         PackageConfigData data) {
-<<<<<<< HEAD
         if ( !archive && (filter == null || filter.accept( data,
                                                            RoleTypes.PACKAGE_READONLY )) && (workspace == null || isWorkspace( workspace,
                                                                                                                                data.getWorkspaces() )) ) {
@@ -190,29 +152,14 @@ public class RepositoryPackageOperations {
                                                                                       RoleTypes.PACKAGE_READONLY )) && (workspace == null || isWorkspace( workspace,
                                                                                                                                                           data.getWorkspaces() )) ) {
             result.add( data );
-=======
-        if (!archive && (filter == null || filter.accept(data,
-                RoleTypes.PACKAGE_READONLY)) && (workspace == null || isWorkspace(workspace,
-                data.workspaces))) {
-            result.add(data);
-        } else if (archive && data.archived && (filter == null || filter.accept(data,
-                RoleTypes.PACKAGE_READONLY)) && (workspace == null || isWorkspace(workspace,
-                data.workspaces))) {
-            result.add(data);
->>>>>>> GUVNOR-1391 :DSL Editor's Validate is delayed, should validate the latest changes without a checking
         }
     }
 
     private boolean isWorkspace(String workspace,
                                 String[] workspaces) {
-<<<<<<< HEAD
 
         for ( String w : workspaces ) {
             if ( w.equals( workspace ) ) {
-=======
-        for (String w : workspaces) {
-            if (w.equals(workspace)) {
->>>>>>> GUVNOR-1391 :DSL Editor's Validate is delayed, should validate the latest changes without a checking
                 return true;
             }
         }
@@ -224,13 +171,8 @@ public class RepositoryPackageOperations {
 
         PackageConfigData data = PackageConfigDataFactory.createPackageConfigDataWithOutDependencies(item);
 
-<<<<<<< HEAD
         if ( data.isSnapshot() ) {
             data.setSnapshotName( item.getSnapshotName() );
-=======
-        if (data.isSnapshot) {
-            data.snapshotName = item.getSnapshotName();
->>>>>>> GUVNOR-1391 :DSL Editor's Validate is delayed, should validate the latest changes without a checking
         }
 
         return data;
@@ -242,19 +184,11 @@ public class RepositoryPackageOperations {
         try {
             log.info("USER:" + getCurrentUserName() + " COPYING package [" + sourcePackageName + "] to  package [" + destPackageName + "]");
 
-<<<<<<< HEAD
             return getRulesRepository().copyPackage( sourcePackageName,
                                                      destPackageName );
         } catch ( RulesRepositoryException e ) {
             log.error( "Unable to copy package.",
                        e );
-=======
-            return getRulesRepository().copyPackage(sourcePackageName,
-                    destPackageName);
-        } catch (RulesRepositoryException e) {
-            log.error("Unable to copy package.",
-                    e);
->>>>>>> GUVNOR-1391 :DSL Editor's Validate is delayed, should validate the latest changes without a checking
             throw e;
         }
 
@@ -300,7 +234,6 @@ public class RepositoryPackageOperations {
         log.info("USER:" + getCurrentUserName() + " export package [name: " + packageName + "] ");
 
         try {
-<<<<<<< HEAD
             return getRulesRepository().dumpPackageFromRepositoryXml( packageName );
         } catch ( PathNotFoundException e ) {
             throw new RulesRepositoryException( e );
@@ -308,15 +241,6 @@ public class RepositoryPackageOperations {
             throw new RulesRepositoryException( e );
         } catch ( RepositoryException e ) {
             throw new RulesRepositoryException( e );
-=======
-            result = getRulesRepository().dumpPackageFromRepositoryXml(packageName);
-        } catch (PathNotFoundException e) {
-            throw new RulesRepositoryException(e);
-        } catch (IOException e) {
-            throw new RulesRepositoryException(e);
-        } catch (RepositoryException e) {
-            throw new RulesRepositoryException(e);
->>>>>>> GUVNOR-1391 :DSL Editor's Validate is delayed, should validate the latest changes without a checking
         }
     }
 
@@ -350,59 +274,33 @@ public class RepositoryPackageOperations {
     }
 
     protected PackageConfigData loadPackageConfig(PackageItem packageItem) {
-<<<<<<< HEAD
         PackageConfigData data = PackageConfigDataFactory.createPackageConfigDataWithDependencies( packageItem );
         if ( data.isSnapshot() ) {
             data.setSnapshotName( packageItem.getSnapshotName() );
-=======
-        PackageConfigData data = PackageConfigDataFactory.createPackageConfigDataWithDependencies(packageItem);
-        if (data.isSnapshot) {
-            data.snapshotName = packageItem.getSnapshotName();
->>>>>>> GUVNOR-1391 :DSL Editor's Validate is delayed, should validate the latest changes without a checking
         }
         return data;
     }
 
     public ValidatedResponse validatePackageConfiguration(PackageConfigData data) throws SerializationException {
-<<<<<<< HEAD
         log.info( "USER:" + getCurrentUserName() + " validatePackageConfiguration package [" + data.getName() + "]" );
-=======
-        log.info("USER:" + getCurrentUserName() + " validatePackageConfiguration package [" + data.name + "]");
-
-        PackageItem item = getRulesRepository().loadPackage(data.name);
-
-        RuleBaseCache.getInstance().remove(data.uuid);
->>>>>>> GUVNOR-1391 :DSL Editor's Validate is delayed, should validate the latest changes without a checking
 
         RuleBaseCache.getInstance().remove( data.getUuid() );
         BRMSSuggestionCompletionLoader loader = createBRMSSuggestionCompletionLoader();
-<<<<<<< HEAD
         loader.getSuggestionEngine( getRulesRepository().loadPackage( data.getName() ),
                                     data.getHeader() );
-=======
-        loader.getSuggestionEngine(item,
-                data.header);
->>>>>>> GUVNOR-1391 :DSL Editor's Validate is delayed, should validate the latest changes without a checking
 
         return validateBRMSSuggestionCompletionLoaderResponse(loader);
     }
 
     public void savePackage(PackageConfigData data) throws SerializationException {
-<<<<<<< HEAD
         log.info( "USER:" + getCurrentUserName() + " SAVING package [" + data.getName() + "]" );
 
         PackageItem item = getRulesRepository().loadPackage( data.getName() );
-=======
-        log.info("USER:" + getCurrentUserName() + " SAVING package [" + data.name + "]");
-
-        PackageItem item = getRulesRepository().loadPackage(data.name);
->>>>>>> GUVNOR-1391 :DSL Editor's Validate is delayed, should validate the latest changes without a checking
 
         // If package is being unarchived.
         boolean unarchived = (!data.isArchived() && item.isArchived());
         Calendar packageLastModified = item.getLastModified();
 
-<<<<<<< HEAD
         DroolsHeader.updateDroolsHeader( data.getHeader(),
                                          item );
         updateCategoryRules( data,
@@ -423,28 +321,6 @@ public class RepositoryPackageOperations {
             handleUnarchivedForSavePackage( data,
                                             item,
                                             packageLastModified );
-=======
-        DroolsHeader.updateDroolsHeader(data.header,
-                item);
-        updateCategoryRules(data,
-                item);
-
-        item.updateExternalURI(data.externalURI);
-        item.updateDescription(data.description);
-        item.archiveItem(data.archived);
-        item.updateBinaryUpToDate(false);
-        RuleBaseCache.getInstance().remove(data.uuid);
-        item.checkin(data.description);
-
-        // If package is archived, archive all the assets under it
-        if (data.archived) {
-            handleArchivedForSavePackage(data,
-                    item);
-        } else if (unarchived) {
-            handleUnarchivedForSavePackage(data,
-                    item,
-                    packageLastModified);
->>>>>>> GUVNOR-1391 :DSL Editor's Validate is delayed, should validate the latest changes without a checking
         }
     }
 
@@ -453,17 +329,10 @@ public class RepositoryPackageOperations {
     }
 
     void updateCategoryRules(PackageConfigData data,
-<<<<<<< HEAD
                                      PackageItem item) {
         KeyValueTO keyValueTO = convertMapToCsv( data.getCatRules() );
         item.updateCategoryRules( keyValueTO.getKeys(),
                                   keyValueTO.getValues() );
-=======
-                             PackageItem item) {
-        KeyValueTO keyValueTO = convertMapToCsv(data.catRules);
-        item.updateCategoryRules(keyValueTO.getKeys(),
-                keyValueTO.getValues());
->>>>>>> GUVNOR-1391 :DSL Editor's Validate is delayed, should validate the latest changes without a checking
     }
 
     // HashMap DOES NOT guarantee order in different iterations!
@@ -510,15 +379,9 @@ public class RepositoryPackageOperations {
                                       PackageItem item) {
         for (Iterator<AssetItem> iter = item.getAssets(); iter.hasNext();) {
             AssetItem assetItem = iter.next();
-<<<<<<< HEAD
             if ( !assetItem.isArchived() ) {
                 assetItem.archiveItem( true );
                 assetItem.checkin( data.getDescription() );
-=======
-            if (!assetItem.isArchived()) {
-                assetItem.archiveItem(true);
-                assetItem.checkin(data.description);
->>>>>>> GUVNOR-1391 :DSL Editor's Validate is delayed, should validate the latest changes without a checking
             }
         }
     }
@@ -530,15 +393,9 @@ public class RepositoryPackageOperations {
             AssetItem assetItem = iter.next();
             // Unarchive the assets archived after the package
             // ( == at the same time that the package was archived)
-<<<<<<< HEAD
             if ( assetItem.getLastModified().compareTo( packageLastModified ) >= 0 ) {
                 assetItem.archiveItem( false );
                 assetItem.checkin( data.getDescription() );
-=======
-            if (assetItem.getLastModified().compareTo(packageLastModified) >= 0) {
-                assetItem.archiveItem(false);
-                assetItem.checkin(data.description);
->>>>>>> GUVNOR-1391 :DSL Editor's Validate is delayed, should validate the latest changes without a checking
             }
         }
     }
@@ -728,31 +585,17 @@ public class RepositoryPackageOperations {
         // load package
         PackageItem item = getRulesRepository().loadPackage(packageName);
 
-<<<<<<< HEAD
-        ContentPackageAssembler assembler = createContentPackageAssembler( item,
-                                                                           false );
-=======
-        PackageDRLAssembler asm = createPackageDRLAssembler(item);
->>>>>>> GUVNOR-1391 :DSL Editor's Validate is delayed, should validate the latest changes without a checking
+        PackageDRLAssembler assembler = createPackageDRLAssembler(item);
 
         List<String> result = new ArrayList<String>();
         try {
 
-<<<<<<< HEAD
             String drl = assembler.getDRL();
             if ( drl == null || "".equals( drl ) ) {
                 return new String[0];
             } else {
                 parseRulesToPackageList( assembler,
                                          result );
-=======
-            String drl = asm.getDRL();
-            if (drl == null || "".equals(drl)) {
-                return new String[0];
-            } else {
-                parseRulesToPackageList(asm,
-                        result);
->>>>>>> GUVNOR-1391 :DSL Editor's Validate is delayed, should validate the latest changes without a checking
             }
 
             return result.toArray(new String[result.size()]);
@@ -915,7 +758,6 @@ public class RepositoryPackageOperations {
         log.debug("Search time: " + (System.currentTimeMillis() - start));
 
         // Populate response
-<<<<<<< HEAD
         response.setLeftSnapshotName( diffs.leftName );
         response.setRightSnapshotName( diffs.rightName );
 
@@ -929,19 +771,6 @@ public class RepositoryPackageOperations {
         response.setTotalRowSize( diffs.diffs.length );
         response.setTotalRowSizeExact( true );
         response.setLastPage( (request.getStartRowIndex() + rowList.size() == diffs.diffs.length) );
-=======
-        response.setLeftSnapshotName(diffs.leftName);
-        response.setRightSnapshotName(diffs.rightName);
-
-        SnapshotComparisonPageRowBuilder snapshotComparisonPageRowBuilder = new SnapshotComparisonPageRowBuilder();
-        List<SnapshotComparisonPageRow> rowList = snapshotComparisonPageRowBuilder.createRows(request, diffs);
-
-        response.setPageRowList(rowList);
-        response.setStartRowIndex(request.getStartRowIndex());
-        response.setTotalRowSize(diffs.diffs.length);
-        response.setTotalRowSizeExact(true);
-        response.setLastPage((request.getStartRowIndex() + rowList.size() == diffs.diffs.length));
->>>>>>> GUVNOR-1391 :DSL Editor's Validate is delayed, should validate the latest changes without a checking
 
         long methodDuration = System.currentTimeMillis() - start;
         log.debug("Compared Snapshots ('" + request.getFirstSnapshotName() + "') and ('" + request.getSecondSnapshotName() + "') in package ('" + request.getPackageName() + "') in " + methodDuration + " ms.");
