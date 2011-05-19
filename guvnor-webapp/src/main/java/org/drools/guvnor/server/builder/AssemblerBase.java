@@ -16,14 +16,12 @@
 
 package org.drools.guvnor.server.builder;
 
-import org.drools.builder.conf.DefaultPackageNameOption;
-import org.drools.guvnor.client.common.AssetFormats;
-import org.drools.repository.*;
+import org.drools.repository.AssetItem;
+import org.drools.repository.PackageItem;
+import org.drools.repository.VersionedAssetItemIterator;
 
-import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Properties;
 
 /**
  * This assembles packages in the BRMS into binary package objects, and deals
@@ -45,32 +43,7 @@ abstract class AssemblerBase {
     }
 
     public void createBuilder() {
-        try {
-            Properties properties = loadConfigurationProperties();
-            properties.setProperty(DefaultPackageNameOption.PROPERTY_NAME,
-                    this.packageItem.getName());
-            builder = BRMSPackageBuilder.getInstance(BRMSPackageBuilder.getJars(packageItem),
-                    properties);
-        } catch (IOException e) {
-            throw new RulesRepositoryException("Unable to load configuration properties for package.",
-                    e);
-        }
-    }
-
-    /**
-     * Load all the .properties and .conf files into one big happy Properties instance.
-     */
-    private Properties loadConfigurationProperties() throws IOException {
-        Properties bigHappyProperties = new Properties();
-        AssetItemIterator assetItemIterator = getAssetItemIterator(AssetFormats.PROPERTIES, AssetFormats.CONFIGURATION);
-        while (assetItemIterator.hasNext()) {
-            AssetItem assetItem = assetItemIterator.next();
-            assetItem.getContent();
-            Properties properties = new Properties();
-            properties.load(assetItem.getBinaryContentAttachment());
-            bigHappyProperties.putAll(properties);
-        }
-        return bigHappyProperties;
+        builder = new BRMSPackageBuilder(packageItem);
     }
 
     public boolean hasErrors() {
@@ -79,12 +52,6 @@ abstract class AssemblerBase {
 
     public List<ContentAssemblyError> getErrors() {
         return this.errorLogger.getErrors();
-    }
-
-    protected AssetItemIterator getAssetItemIterator(String... assetFormats) {
-        AssetItemIterator assetItemIterator = this.packageItem.listAssetsByFormat(assetFormats);
-        ((VersionedAssetItemIterator) assetItemIterator).setReturnAssetsWithVersionsSpecifiedByDependencies(true);
-        return assetItemIterator;
     }
 
     protected Iterator<AssetItem> getAllAssets() {

@@ -15,21 +15,9 @@
  */
 package org.drools.guvnor.server;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-import java.util.jar.JarEntry;
-import java.util.jar.JarInputStream;
-
+import com.google.gwt.user.client.rpc.SerializationException;
 import org.apache.commons.io.IOUtils;
-import org.drools.ClockType;
-import org.drools.RuleBase;
-import org.drools.RuleBaseConfiguration;
-import org.drools.RuleBaseFactory;
-import org.drools.SessionConfiguration;
+import org.drools.*;
 import org.drools.base.ClassTypeResolver;
 import org.drools.common.AbstractRuleBase;
 import org.drools.common.InternalRuleBase;
@@ -38,22 +26,9 @@ import org.drools.compiler.DrlParser;
 import org.drools.compiler.DroolsParserException;
 import org.drools.core.util.DroolsStreamUtils;
 import org.drools.guvnor.client.common.AssetFormats;
-import org.drools.guvnor.client.rpc.BuilderResult;
-import org.drools.guvnor.client.rpc.BulkTestRunResult;
-import org.drools.guvnor.client.rpc.DetailedSerializationException;
-import org.drools.guvnor.client.rpc.PackageConfigData;
-import org.drools.guvnor.client.rpc.PackageService;
-import org.drools.guvnor.client.rpc.RuleAsset;
-import org.drools.guvnor.client.rpc.ScenarioResultSummary;
-import org.drools.guvnor.client.rpc.ScenarioRunResult;
-import org.drools.guvnor.client.rpc.SingleScenarioResult;
-import org.drools.guvnor.client.rpc.SnapshotComparisonPageRequest;
-import org.drools.guvnor.client.rpc.SnapshotComparisonPageResponse;
-import org.drools.guvnor.client.rpc.SnapshotDiffs;
-import org.drools.guvnor.client.rpc.SnapshotInfo;
-import org.drools.guvnor.client.rpc.ValidatedResponse;
+import org.drools.guvnor.client.rpc.*;
 import org.drools.guvnor.server.builder.AuditLogReporter;
-import org.drools.guvnor.server.builder.BRMSPackageBuilder;
+import org.drools.guvnor.server.builder.ClassLoaderBuilder;
 import org.drools.guvnor.server.cache.RuleBaseCache;
 import org.drools.guvnor.server.contenthandler.ModelContentHandler;
 import org.drools.guvnor.server.security.PackageUUIDType;
@@ -62,12 +37,7 @@ import org.drools.guvnor.server.util.LoggingHelper;
 import org.drools.ide.common.client.modeldriven.testing.Scenario;
 import org.drools.lang.descr.PackageDescr;
 import org.drools.lang.descr.TypeDeclarationDescr;
-import org.drools.repository.AssetItem;
-import org.drools.repository.AssetItemIterator;
-import org.drools.repository.PackageItem;
-import org.drools.repository.RepositoryFilter;
-import org.drools.repository.RulesRepository;
-import org.drools.repository.RulesRepositoryException;
+import org.drools.repository.*;
 import org.drools.rule.Package;
 import org.drools.runtime.rule.ConsequenceException;
 import org.drools.testframework.RuleCoverageListener;
@@ -81,7 +51,10 @@ import org.jboss.seam.annotations.security.Restrict;
 import org.jboss.seam.contexts.Contexts;
 import org.jboss.seam.security.Identity;
 
-import com.google.gwt.user.client.rpc.SerializationException;
+import java.io.IOException;
+import java.util.*;
+import java.util.jar.JarEntry;
+import java.util.jar.JarInputStream;
 
 @Name("org.drools.guvnor.client.rpc.PackageService")
 @AutoCreate
@@ -583,8 +556,8 @@ public class RepositoryPackageService
             rb = RuleBaseCache.getInstance().get( item.getUUID() );
         } else {
             // load up the classloader we are going to use
-            List<JarInputStream> jars = BRMSPackageBuilder.getJars( item );
-            ClassLoader buildCl = BRMSPackageBuilder.createClassLoader( jars );
+            ClassLoaderBuilder classLoaderBuilder = new ClassLoaderBuilder(packageItem.listAssetsWithVersionsSpecifiedByDependenciesByFormat(AssetFormats.MODEL));
+            ClassLoader buildCl = classLoaderBuilder.buildClassLoader();
 
             // we have to build the package, and try again.
             if ( item.isBinaryUpToDate() ) {
@@ -740,9 +713,9 @@ public class RepositoryPackageService
                 Thread.currentThread().setContextClassLoader( classloader );
             } else {
                 // load up the classloader we are going to use
-                List<JarInputStream> jars = BRMSPackageBuilder.getJars( item );
-                classloader = BRMSPackageBuilder.createClassLoader( jars );
-                Thread.currentThread().setContextClassLoader( classloader );
+                ClassLoaderBuilder classLoaderBuilder = new ClassLoaderBuilder(packageItem.listAssetsWithVersionsSpecifiedByDependenciesByFormat(AssetFormats.MODEL));
+                classloader = classLoaderBuilder.buildClassLoader();
+                Thread.currentThread().setContextClassLoader(classloader);
 
                 // we have to build the package, and try again.
                 if ( item.isBinaryUpToDate() ) {

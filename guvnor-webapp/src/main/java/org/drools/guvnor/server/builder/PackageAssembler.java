@@ -36,7 +36,7 @@ public class PackageAssembler extends PackageAssemblerBase {
 
     private static final LoggingHelper log = LoggingHelper.getLogger(PackageAssembler.class);
 
-    private PackageAssemblerConfiguration configuration;
+    private final PackageAssemblerConfiguration configuration;
     private AssetSelector selector;
 
     public PackageAssembler(PackageItem packageItem) {
@@ -86,7 +86,7 @@ public class PackageAssembler extends PackageAssemblerBase {
     }
 
     private void loadDRLAssets(StringBuilder includedAssets) {
-        Iterator<AssetItem> drlAssetItemIterator = getAssetItemIterator(AssetFormats.DRL);
+        Iterator<AssetItem> drlAssetItemIterator = packageItem.listAssetsWithVersionsSpecifiedByDependenciesByFormat(AssetFormats.DRL);
         while (drlAssetItemIterator.hasNext()) {
             AssetItem asset = drlAssetItemIterator.next();
             if (assetCanBeAdded(asset)) {

@@ -63,14 +63,14 @@ public class PackageDRLAssembler extends AssemblerBase {
     }
 
     private void loadDeclaredTypes() {
-        AssetItemIterator assetItemIterator = getAssetItemIterator(AssetFormats.DRL_MODEL);
+        AssetItemIterator assetItemIterator = this.packageItem.listAssetsWithVersionsSpecifiedByDependenciesByFormat(AssetFormats.DRL_MODEL);
         while (assetItemIterator.hasNext()) {
             addAsset(assetItemIterator.next());
         }
     }
 
     private void loadFunctions() {
-        AssetItemIterator assetItemIterator = getAssetItemIterator(AssetFormats.FUNCTION);
+        AssetItemIterator assetItemIterator = this.packageItem.listAssetsWithVersionsSpecifiedByDependenciesByFormat(AssetFormats.FUNCTION);
         while (assetItemIterator.hasNext()) {
             addAsset(assetItemIterator.next());
         }

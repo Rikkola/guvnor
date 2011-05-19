@@ -35,7 +35,6 @@ import org.drools.lang.descr.PackageDescr;
 import org.drools.lang.descr.TypeDeclarationDescr;
 import org.drools.lang.descr.TypeFieldDescr;
 import org.drools.repository.AssetItem;
-import org.drools.repository.PackageItem;
 
 import com.google.gwt.user.client.rpc.SerializationException;
 
@@ -130,7 +129,7 @@ public class FactModelContentHandler extends ContentHandler {
                 mm.annotations.add( am );
             }
 
-            list.add( mm );
+            list.add(mm);
         }
         return list;
     }
