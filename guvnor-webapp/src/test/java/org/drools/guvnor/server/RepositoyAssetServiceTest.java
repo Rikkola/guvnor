@@ -862,7 +862,7 @@ public class RepositoyAssetServiceTest extends GuvnorTestBase {
 
         // check its all OK
         BuilderResult result = repositoryAssetService.validateAsset( rule );
-        assertNull( result );
+        assertTrue(result.getLines().isEmpty());
 
         RuleBaseCache.getInstance().clearCache();
 
@@ -893,7 +893,7 @@ public class RepositoyAssetServiceTest extends GuvnorTestBase {
         rule = repositoryAssetService.loadRuleAsset( dslRule.getUUID() );
 
         result = repositoryAssetService.validateAsset( rule );
-        assertNull( result );
+        assertTrue(result.getLines().isEmpty());
 
         asset = pkg.addAsset( "someEnumThing",
                               "" );
@@ -946,7 +946,7 @@ public class RepositoyAssetServiceTest extends GuvnorTestBase {
 
         BuilderResult result = repositoryAssetService.validateAsset( t1 );
 
-        assertNull( result );
+        assertTrue(result.getLines().isEmpty());
 
     }
 
@@ -1009,12 +1009,7 @@ public class RepositoyAssetServiceTest extends GuvnorTestBase {
 
         // check its all OK
         BuilderResult result = repositoryAssetService.validateAsset( rule );
-        if ( result != null ) {
-            for ( int i = 0; i < result.getLines().size(); i++ ) {
-                System.err.println( result.getLines().get( i ).getMessage() );
-            }
-        }
-        assertNull( result );
+        assertTrue(result.getLines().isEmpty());
 
         List<AssetItem> assets = iteratorToList( pkg.getAssets() );
         assertEquals( 3,
@@ -1137,10 +1132,7 @@ public class RepositoyAssetServiceTest extends GuvnorTestBase {
 
         // check its all OK
         BuilderResult result = repositoryAssetService.validateAsset( rule );
-        if ( !(result == null) ) {
-            System.err.println( result.getLines().get( 0 ).getAssetName() + " " + result.getLines().get( 0 ).getMessage() );
-        }
-        assertNull( result );
+        assertTrue(result.getLines().isEmpty());
 
         DroolsHeader.updateDroolsHeader( "importxxxx",
                                                   pkg );
