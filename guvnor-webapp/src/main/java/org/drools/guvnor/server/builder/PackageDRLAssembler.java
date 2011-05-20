@@ -39,22 +39,12 @@ public class PackageDRLAssembler extends AssemblerBase {
         src = new StringBuilder();
 
         loadHeader();
-        setUpDSLFiles();
+        loadDSLFiles();
         loadDeclaredTypes();
         loadFunctions();
         loadRuleAssets();
 
         return src.toString();
-    }
-
-    private void setUpDSLFiles() {
-        builder.setDSLFiles(BRMSPackageBuilder.getDSLMappingFiles(packageItem,
-                new BRMSPackageBuilder.DSLErrorEvent() {
-                    public void recordError(AssetItem asset,
-                                            String message) {
-                        errorLogger.addError(asset, message);
-                    }
-                }));
     }
 
     private void loadHeader() {

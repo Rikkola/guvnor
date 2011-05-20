@@ -56,6 +56,7 @@ public class ClassLoaderBuilder {
                 try {
                     jarInputStreams.add(new JarInputStream(item.getBinaryContentAttachment(), false));
                 } catch (IOException e) {
+                    //TODO: Not a place for RulesRepositoryException -Rikkola-
                     throw new RulesRepositoryException(e);
                 }
             }
@@ -71,18 +72,7 @@ public class ClassLoaderBuilder {
      * For a given list of Jars, create a class loader.
      */
     public MapBackedClassLoader buildClassLoader() {
-        ClassLoader parentClassLoader = Thread.currentThread().getContextClassLoader();
-        if (parentClassLoader == null) {
-            parentClassLoader = BRMSPackageBuilder.class.getClassLoader();
-        }
-
-        final ClassLoader p = parentClassLoader;
-
-        MapBackedClassLoader loader = AccessController.doPrivileged(new PrivilegedAction<MapBackedClassLoader>() {
-            public MapBackedClassLoader run() {
-                return new MapBackedClassLoader(p);
-            }
-        });
+        MapBackedClassLoader mapBackedClassLoader = getMapBackedClassLoader();
 
         try {
             for (JarInputStream jis : jarInputStreams) {
@@ -96,15 +86,33 @@ public class ClassLoaderBuilder {
                             out.write(buf, 0, len);
                         }
 
-                        loader.addResource(entry.getName(), out.toByteArray());
+                        mapBackedClassLoader.addResource(entry.getName(), out.toByteArray());
                     }
                 }
 
             }
         } catch (IOException e) {
+            //TODO: Not a place for RulesRepositoryException -Rikkola-
             throw new RulesRepositoryException(e);
         }
-        return loader;
+
+        return mapBackedClassLoader;
+    }
+
+    private MapBackedClassLoader getMapBackedClassLoader() {
+        return AccessController.doPrivileged(new PrivilegedAction<MapBackedClassLoader>() {
+            public MapBackedClassLoader run() {
+                return new MapBackedClassLoader(getParentClassLoader());
+            }
+        });
+    }
+
+    private ClassLoader getParentClassLoader() {
+        ClassLoader parentClassLoader = Thread.currentThread().getContextClassLoader();
+        if (parentClassLoader == null) {
+            parentClassLoader = BRMSPackageBuilder.class.getClassLoader();
+        }
+        return parentClassLoader;
     }
 
     public boolean hasJars() {

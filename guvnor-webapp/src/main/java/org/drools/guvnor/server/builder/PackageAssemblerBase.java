@@ -193,17 +193,6 @@ abstract class PackageAssemblerBase extends AssemblerBase {
         return content == null || content.trim().length() == 0;
     }
 
-    private void loadDSLFiles() {
-        // now we load up the DSL files
-        builder.setDSLFiles(BRMSPackageBuilder.getDSLMappingFiles(packageItem,
-                new BRMSPackageBuilder.DSLErrorEvent() {
-                    public void recordError(AssetItem asset,
-                                            String message) {
-                        errorLogger.addError(asset, message);
-                    }
-                }));
-    }
-
     /**
      * This will return true if there is an error in the package configuration
      * or functions.

@@ -31,9 +31,7 @@ import java.util.List;
 abstract class AssemblerBase {
 
     protected PackageItem packageItem;
-
     protected BRMSPackageBuilder builder;
-
     protected AssemblyErrorLogger errorLogger = new AssemblyErrorLogger();
 
     protected AssemblerBase(PackageItem packageItem) {
@@ -58,5 +56,15 @@ abstract class AssemblerBase {
         Iterator<AssetItem> iterator = packageItem.getAssets();
         ((VersionedAssetItemIterator) iterator).setReturnAssetsWithVersionsSpecifiedByDependencies(true);
         return iterator;
+    }
+
+    protected void loadDSLFiles() {
+        builder.setDSLFiles(BRMSPackageBuilder.getDSLMappingFiles(packageItem,
+                new BRMSPackageBuilder.DSLErrorEvent() {
+                    public void recordError(AssetItem asset,
+                                            String message) {
+                        errorLogger.addError(asset, message);
+                    }
+                }));
     }
 }
