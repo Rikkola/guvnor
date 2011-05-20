@@ -367,7 +367,7 @@ public class RepositoryPackageService
     @WebRemote
     @Restrict("#{identity.loggedIn}")
     public SnapshotInfo[] listSnapshots(String packageName) {
-        serviceSecurity.checkSecurityIsPackageDeveloperForName( packageName );
+        serviceSecurity.checkSecurityIsPackageDeveloperForName(packageName);
 
         String[] snaps = getRulesRepository().listPackageSnapshots( packageName );
         SnapshotInfo[] res = new SnapshotInfo[snaps.length];
@@ -501,7 +501,7 @@ public class RepositoryPackageService
     @Restrict("#{identity.loggedIn}")
     public SingleScenarioResult runScenario(String packageName,
                                             Scenario scenario) throws SerializationException {
-        serviceSecurity.checkSecurityIsPackageDeveloperForName( packageName );
+        serviceSecurity.checkSecurityIsPackageDeveloperForName(packageName);
 
         return runScenario( packageName,
                             scenario,
@@ -550,28 +550,28 @@ public class RepositoryPackageService
     /*
      * Set the Rule base in a cache
      */
-    private RuleBase loadCacheRuleBase(PackageItem item) throws DetailedSerializationException {
+    private RuleBase loadCacheRuleBase(PackageItem packageItem) throws DetailedSerializationException {
         RuleBase rb = null;
-        if ( item.isBinaryUpToDate() && RuleBaseCache.getInstance().contains( item.getUUID() ) ) {
-            rb = RuleBaseCache.getInstance().get( item.getUUID() );
+        if ( packageItem.isBinaryUpToDate() && RuleBaseCache.getInstance().contains( packageItem.getUUID() ) ) {
+            rb = RuleBaseCache.getInstance().get( packageItem.getUUID() );
         } else {
             // load up the classloader we are going to use
             ClassLoaderBuilder classLoaderBuilder = new ClassLoaderBuilder(packageItem.listAssetsWithVersionsSpecifiedByDependenciesByFormat(AssetFormats.MODEL));
             ClassLoader buildCl = classLoaderBuilder.buildClassLoader();
 
             // we have to build the package, and try again.
-            if ( item.isBinaryUpToDate() ) {
-                rb = loadRuleBase( item,
+            if ( packageItem.isBinaryUpToDate() ) {
+                rb = loadRuleBase( packageItem,
                                    buildCl );
-                RuleBaseCache.getInstance().put( item.getUUID(),
+                RuleBaseCache.getInstance().put( packageItem.getUUID(),
                                                  rb );
             } else {
-                BuilderResult result = repositoryPackageOperations.buildPackage( item,
+                BuilderResult result = repositoryPackageOperations.buildPackage( packageItem,
                                                                                  false );
                 if ( result == null || result.getLines().size() == 0 ) {
-                    rb = loadRuleBase( item,
+                    rb = loadRuleBase( packageItem,
                                        buildCl );
-                    RuleBaseCache.getInstance().put( item.getUUID(),
+                    RuleBaseCache.getInstance().put( packageItem.getUUID(),
                                                      rb );
                 } else throw new DetailedSerializationException( "Build error",
                                                                  result.getLines() );
@@ -699,15 +699,15 @@ public class RepositoryPackageService
         return runScenariosInPackage( item );
     }
 
-    public BulkTestRunResult runScenariosInPackage(PackageItem item) throws DetailedSerializationException,
+    public BulkTestRunResult runScenariosInPackage(PackageItem packageItem) throws DetailedSerializationException,
                                                                     SerializationException {
         ClassLoader originalClassloader = Thread.currentThread().getContextClassLoader();
         ClassLoader classloader = null;
 
         try {
-            if ( item.isBinaryUpToDate() && RuleBaseCache.getInstance().contains( item.getUUID() ) ) {
+            if ( packageItem.isBinaryUpToDate() && RuleBaseCache.getInstance().contains( packageItem.getUUID() ) ) {
 
-                AbstractRuleBase arb = (AbstractRuleBase) RuleBaseCache.getInstance().get( item.getUUID() );
+                AbstractRuleBase arb = (AbstractRuleBase) RuleBaseCache.getInstance().get( packageItem.getUUID() );
                 // load up the existing class loader from before
                 classloader = arb.getConfiguration().getClassLoader();
                 Thread.currentThread().setContextClassLoader( classloader );
@@ -718,16 +718,16 @@ public class RepositoryPackageService
                 Thread.currentThread().setContextClassLoader(classloader);
 
                 // we have to build the package, and try again.
-                if ( item.isBinaryUpToDate() ) {
-                    RuleBaseCache.getInstance().put( item.getUUID(),
-                                                     loadRuleBase( item,
+                if ( packageItem.isBinaryUpToDate() ) {
+                    RuleBaseCache.getInstance().put( packageItem.getUUID(),
+                                                     loadRuleBase( packageItem,
                                                                    classloader ) );
                 } else {
-                    BuilderResult result = repositoryPackageOperations.buildPackage( item,
+                    BuilderResult result = repositoryPackageOperations.buildPackage( packageItem,
                                                                                      false );
                     if ( result == null || result.getLines().size() == 0 ) {
-                        RuleBaseCache.getInstance().put( item.getUUID(),
-                                                         loadRuleBase( item,
+                        RuleBaseCache.getInstance().put( packageItem.getUUID(),
+                                                         loadRuleBase( packageItem,
                                                                        classloader ) );
                     } else {
                         return new BulkTestRunResult( result,
@@ -738,9 +738,9 @@ public class RepositoryPackageService
                 }
             }
 
-            AssetItemIterator it = item.listAssetsByFormat( AssetFormats.TEST_SCENARIO );
+            AssetItemIterator it = packageItem.listAssetsByFormat( AssetFormats.TEST_SCENARIO );
             List<ScenarioResultSummary> resultSummaries = new ArrayList<ScenarioResultSummary>();
-            RuleBase rb = RuleBaseCache.getInstance().get( item.getUUID() );
+            RuleBase rb = RuleBaseCache.getInstance().get( packageItem.getUUID() );
             Package bin = rb.getPackages()[0];
 
             RuleCoverageListener coverage = new RuleCoverageListener( expectedRules( bin ) );
@@ -750,7 +750,7 @@ public class RepositoryPackageService
                 if ( !as.getDisabled() ) {
                     RuleAsset asset = repositoryAssetOperations.loadAsset( as );
                     Scenario sc = (Scenario) asset.getContent();
-                    runScenario( item.getName(),
+                    runScenario( packageItem.getName(),
                                  sc,
                                  coverage );// runScenario(sc, res,
                     // workingMemory).scenario;
