@@ -20,12 +20,13 @@ import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.ui.Label;
 import org.drools.guvnor.client.explorer.AcceptItem;
 import org.drools.guvnor.client.util.Activity;
+import org.jboss.bpm.console.client.task.AssignedTasksView;
 
 public class PersonalTasksActivity extends Activity {
 
     @Override
     public void start(AcceptItem tabbedPanel, EventBus eventBus) {
-        tabbedPanel.add("hello",new Label("gg"));
+        tabbedPanel.add("hello",new AssignedTasksView());
         //TODO: Generated code -Rikkola-
     }
 }

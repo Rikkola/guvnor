@@ -10,6 +10,17 @@
   <inherits name="pl.balon.gwt.diagrams.Diagrams" />
   <inherits name="org.cobogw.gwt.user.User" />
   <inherits name="org.drools.ide.common.Common" />
+
+  <inherits name="org.jboss.bpm.console.Screens"/>
+   <inherits name='com.mvc4g.Mvc4gModule'/>
+   <inherits name="org.jboss.errai.common.ErraiCommon"/>
+   <inherits name="org.jboss.errai.bus.ErraiBus"/>
+   <inherits name='com.google.gwt.json.JSON'/>
+   <inherits name="com.google.gwt.user.ImageBundle"/>
+   <inherits name="com.google.gwt.xml.XML" />
+   <inherits name='org.jboss.bpm.report.BPMReport' />
+  <inherits name="com.allen_sauer.gwt.log.gwt-log-OFF" />
+
   <inherits name="com.google.gwt.activity.Activity" />
   <inherits name="com.allen_sauer.gwt.dnd.gwt-dnd" />
 
