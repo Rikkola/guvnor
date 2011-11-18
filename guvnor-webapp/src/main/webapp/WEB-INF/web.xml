@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
 
   <display-name>JBoss Drools Guvnor</display-name>
 
@@ -10,17 +10,35 @@
   </welcome-file-list>
 
   <!--<filter>-->
-    <!--<filter-name>Seam Filter</filter-name>-->
-    <!--<filter-class>org.jboss.seam.web.ContextFilter</filter-class>-->
+  <!--<filter-name>Seam Filter</filter-name>-->
+  <!--<filter-class>org.jboss.seam.web.ContextFilter</filter-class>-->
   <!--</filter>-->
   <!--<filter-mapping>-->
-    <!--<filter-name>Seam Filter</filter-name>-->
-    <!--<url-pattern>/*</url-pattern>-->
+  <!--<filter-name>Seam Filter</filter-name>-->
+  <!--<url-pattern>/*</url-pattern>-->
   <!--</filter-mapping>-->
   <listener>
     <listener-class>org.drools.guvnor.server.repository.SafeWeldListener</listener-class>
   </listener>
 
+  <!--<context-param>-->
+    <!--<param-name>javax.ws.rs.core.Application</param-name>-->
+    <!--<param-value>org.jboss.bpm.console.server.ConsoleServerApplication</param-value>-->
+  <!--</context-param>-->
+
+  <!--<context-param>-->
+    <!--<param-name>resteasy.servlet.mapping.prefix</param-name>-->
+    <!--<param-value>/rs</param-value>-->
+  <!--</context-param>-->
+
+  <!--<context-param>-->
+    <!--<param-name>resteasy.providers</param-name>-->
+    <!--<param-value>org.jboss.bpm.report.util.FileWriter</param-value>-->
+  <!--</context-param>-->
+  <context-param>
+    <param-name>resteasy.use.deployment.sensitive.factory</param-name>
+    <param-value>false</param-value>
+  </context-param>
   <!-- TODO this might be needed due to the migration from seam 2 to seam 3
     TODO Or instead, all the usages of @WebRemote are dead code (GUVNOR-1520):
     - there is no SeamResourceServlet to activate them
@@ -28,13 +46,13 @@
     - jaxrs does the new REST stuff
   -->
   <!--<servlet>-->
-    <!--<servlet-name>Remoting Servlet</servlet-name>-->
-    <!--<servlet-class>org.jboss.seam.remoting.Remoting</servlet-class>-->
-    <!--<load-on-startup>1</load-on-startup>-->
+  <!--<servlet-name>Remoting Servlet</servlet-name>-->
+  <!--<servlet-class>org.jboss.seam.remoting.Remoting</servlet-class>-->
+  <!--<load-on-startup>1</load-on-startup>-->
   <!--</servlet>-->
   <!--<servlet-mapping>-->
-    <!--<servlet-name>Remoting Servlet</servlet-name>-->
-    <!--<url-pattern>/seam/resource/remoting/*</url-pattern>-->
+  <!--<servlet-name>Remoting Servlet</servlet-name>-->
+  <!--<url-pattern>/seam/resource/remoting/*</url-pattern>-->
   <!--</servlet-mapping>-->
 
   <!-- servlets - mostly to do with file management -->
@@ -45,22 +63,22 @@
       <param-name>jaxrs.serviceClasses</param-name>
       <param-value>
         org.drools.guvnor.server.jaxrs.PackageResource
-        org.drools.guvnor.server.jaxrs.CategoryResource		      
+        org.drools.guvnor.server.jaxrs.CategoryResource
       </param-value>
     </init-param>
     <init-param>
       <param-name>jaxrs.providers</param-name>
       <param-value>
-          org.apache.cxf.jaxrs.provider.AtomEntryProvider
-          org.apache.cxf.jaxrs.provider.AtomFeedProvider	
-          org.drools.guvnor.server.jaxrs.CXFAuthenticationHandler
-        </param-value>
+        org.apache.cxf.jaxrs.provider.AtomEntryProvider
+        org.apache.cxf.jaxrs.provider.AtomFeedProvider
+        org.drools.guvnor.server.jaxrs.CXFAuthenticationHandler
+      </param-value>
     </init-param>
     <!-- Use per-request life-cycle -->
     <!-- Enabling this breaks CDI injection in HackInjectCXFNonSpringJaxrsServlet -->
     <!--<init-param>-->
-      <!--<param-name>jaxrs.scope</param-name>-->
-      <!--<param-value>prototype</param-value>-->
+    <!--<param-name>jaxrs.scope</param-name>-->
+    <!--<param-value>prototype</param-value>-->
     <!--</init-param>-->
   </servlet>
   <servlet>
