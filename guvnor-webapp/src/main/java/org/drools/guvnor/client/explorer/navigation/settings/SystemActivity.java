@@ -14,31 +14,27 @@
  * limitations under the License.
  */
 
-package org.drools.guvnor.client.explorer.navigation.reporting;
+package org.drools.guvnor.client.explorer.navigation.settings;
 
 import com.google.gwt.event.shared.EventBus;
-import com.google.gwt.user.client.ui.Widget;
 import org.drools.guvnor.client.explorer.AcceptItem;
 import org.drools.guvnor.client.util.Activity;
 import org.jboss.bpm.console.client.ClientFactory;
+import org.jboss.bpm.console.client.ServerStatusView;
 import org.jboss.bpm.console.client.messages.Constants;
-import org.jboss.bpm.console.client.report.ReportView;
 
-public class ReportTemplatesActivity extends Activity {
+public class SystemActivity extends Activity {
 
     private final ClientFactory clientFactory;
 
-    public ReportTemplatesActivity(ClientFactory clientFactory) {
+    public SystemActivity(ClientFactory clientFactory) {
         this.clientFactory = clientFactory;
     }
 
     @Override
     public void start(AcceptItem tabbedPanel, EventBus eventBus) {
-        ReportView reportView = new ReportView(clientFactory);
-        reportView.setController(clientFactory.getController());
-        Widget widget = reportView.asWidget();
-        widget.setHeight("600px");
-        tabbedPanel.add(Constants.INSTANCE.ReportTemplates(), widget);
-
+        ServerStatusView serverStatusView = new ServerStatusView(clientFactory);
+        serverStatusView.setController(clientFactory.getController());
+        tabbedPanel.add(Constants.INSTANCE.System(), serverStatusView);
     }
 }

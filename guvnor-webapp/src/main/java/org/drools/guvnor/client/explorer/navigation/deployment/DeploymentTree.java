@@ -27,7 +27,7 @@ import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.TreeItem;
 import org.drools.guvnor.client.common.GenericCallback;
 import org.drools.guvnor.client.configurations.Capability;
-import org.drools.guvnor.client.configurations.UserCapabilities;
+import org.drools.guvnor.client.configurations.User;
 import org.drools.guvnor.client.explorer.ClientFactory;
 import org.drools.guvnor.client.explorer.DeploymentNewMenu;
 import org.drools.guvnor.client.explorer.ExplorerNodeConfig;
@@ -58,7 +58,7 @@ public class DeploymentTree extends NavigationItemBuilderOld
     }
 
     public MenuBar createMenu() {
-        if ( UserCapabilities.INSTANCE.hasCapability( Capability.SHOW_CREATE_NEW_ASSET ) ) {
+        if ( User.INSTANCE.hasCapability( Capability.SHOW_CREATE_NEW_ASSET ) ) {
             return DeploymentNewMenu.getMenu( this );
         } else {
             return null;

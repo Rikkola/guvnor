@@ -21,7 +21,7 @@ import java.util.Map;
 import org.drools.guvnor.client.common.GenericCallback;
 import org.drools.guvnor.client.configurations.ApplicationPreferences;
 import org.drools.guvnor.client.configurations.Capability;
-import org.drools.guvnor.client.configurations.UserCapabilities;
+import org.drools.guvnor.client.configurations.User;
 import org.drools.guvnor.client.explorer.navigation.modules.Folder;
 import org.drools.guvnor.client.explorer.navigation.modules.PackageView;
 import org.drools.guvnor.client.explorer.navigation.modules.PackageHierarchicalView;
@@ -134,7 +134,7 @@ public class ExplorerNodeConfig {
             }
 
             private void newRepoDialogIfShowAdminAndPathMatches( final String path ) {
-                if ( path.equals( "/" ) && UserCapabilities.INSTANCE.hasCapability( Capability.SHOW_ADMIN ) ) {
+                if ( path.equals( "/" ) && User.INSTANCE.hasCapability( Capability.SHOW_ADMIN ) ) {
                     RepositoryServiceFactory.getPackageService().listPackages( createGenericCallbackForListPackages() );
                 }
             }

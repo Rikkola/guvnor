@@ -37,7 +37,6 @@
           <exclude>WEB-INF/lib/javax.inject-*.jar</exclude>
           <exclude>WEB-INF/lib/jsr250-api-*.jar</exclude>
           <exclude>WEB-INF/lib/weld-*.jar</exclude>
-          <exclude>WEB-INF/lib/guava-*.jar</exclude>
           <!-- TODO exclude slf4j? -->
           <exclude>WEB-INF/lib/cal10n-*.jar</exclude>
           <exclude>WEB-INF/lib/jboss-interceptor-*.jar</exclude>
@@ -45,7 +44,12 @@
           <exclude>WEB-INF/lib/javassist-3.12.0.GA.jar</exclude>
           
           <exclude>WEB-INF/lib/ejb-api-*.jar</exclude>
-          
+
+          <!-- Temporaly excludes the magic jars that comes from bpm-console -->
+          <exclude>WEB-INF/lib/jboss-seam-*.jar</exclude>
+          <exclude>WEB-INF/lib/gwt-servlet-2.0.4.jar</exclude>
+          <exclude>WEB-INF/jboss-web.xml</exclude>
+
           <!-- Start workaround for GUVNOR-1160: MalformedParameterizedTypeException when deploying -->
           <exclude>WEB-INF/lib/jta-*.jar</exclude>
           <exclude>WEB-INF/lib/jsf-api-*.jar</exclude>

@@ -17,7 +17,32 @@
 package org.drools.guvnor.client.explorer.navigation.settings;
 
 import com.google.gwt.place.shared.Place;
+import com.google.gwt.place.shared.PlaceTokenizer;
 
-public class SystemPlace extends Place{
+public class SystemPlace extends Place {
 
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof SystemPlace) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        return 0;
+    }
+
+    public static class Tokenizer implements PlaceTokenizer<SystemPlace> {
+
+        public SystemPlace getPlace(String token) {
+            return new SystemPlace();
+        }
+
+        public String getToken(SystemPlace place) {
+            return "SYSTEM";
+        }
+    }
 }

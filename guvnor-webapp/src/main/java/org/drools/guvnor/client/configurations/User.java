@@ -16,7 +16,6 @@
 
 package org.drools.guvnor.client.configurations;
 
-
 import java.util.List;
 
 /**
@@ -25,18 +24,26 @@ import java.util.List;
  * (however the Capabilities do not enforce actions on the server - these are more for GUI convenience so elements are not displayed
  * that are not relevant to a given users role).
  */
-public class UserCapabilities {
+public class User {
 
-    public static UserCapabilities INSTANCE;
+    public static User INSTANCE;
+
+    private final String userName;
 
     private final List<Capability> capabilities;
 
-    private UserCapabilities(List<Capability> capabilities) {
+    private User(String userName, List<Capability> capabilities) {
+        this.userName = userName;
         this.capabilities = capabilities;
+
     }
 
-    static void setUp(List<Capability> capabilities) {
-        INSTANCE = new UserCapabilities(capabilities);
+    static void setUp(String userName, List<Capability> capabilities) {
+        INSTANCE = new User(userName, capabilities);
+    }
+
+    public String getUserName() {
+        return userName;
     }
 
     public boolean hasCapability(Capability... capabilities) {

@@ -89,4 +89,8 @@
     </any>
   </replace-with>
 
+  <replace-with class="org.drools.guvnor.client.perspective.runtime.RuntimeAuthentication">
+    <when-type-is class="org.jboss.bpm.console.client.Authentication"/>
+  </replace-with>
+
 </module>

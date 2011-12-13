@@ -20,7 +20,7 @@ import com.google.gwt.user.client.ui.IsWidget;
 import org.drools.guvnor.client.common.StackItemHeader;
 import org.drools.guvnor.client.common.StackItemHeaderViewImpl;
 import org.drools.guvnor.client.configurations.Capability;
-import org.drools.guvnor.client.configurations.UserCapabilities;
+import org.drools.guvnor.client.configurations.User;
 import org.drools.guvnor.client.explorer.ClientFactory;
 import org.drools.guvnor.client.explorer.navigation.NavigationItemBuilder;
 
@@ -34,7 +34,7 @@ public class QATreeBuilder extends NavigationItemBuilder {
 
     @Override
     public boolean hasPermissionToBuild() {
-        return UserCapabilities.INSTANCE.hasCapability( Capability.SHOW_QA );
+        return User.INSTANCE.hasCapability( Capability.SHOW_QA );
     }
 
     @Override

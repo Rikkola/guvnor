@@ -14,31 +14,27 @@
  * limitations under the License.
  */
 
-package org.drools.guvnor.client.explorer.navigation.reporting;
+package org.drools.guvnor.client.explorer.navigation.processes;
 
 import com.google.gwt.event.shared.EventBus;
-import com.google.gwt.user.client.ui.Widget;
+import com.mvc4g.client.Controller;
 import org.drools.guvnor.client.explorer.AcceptItem;
 import org.drools.guvnor.client.util.Activity;
-import org.jboss.bpm.console.client.ClientFactory;
+import org.jboss.bpm.console.client.ExecutionHistoryView;
 import org.jboss.bpm.console.client.messages.Constants;
-import org.jboss.bpm.console.client.report.ReportView;
 
-public class ReportTemplatesActivity extends Activity {
+public class ExecutionHistoryActivity extends Activity {
 
-    private final ClientFactory clientFactory;
+    private Controller controller;
 
-    public ReportTemplatesActivity(ClientFactory clientFactory) {
-        this.clientFactory = clientFactory;
+    public ExecutionHistoryActivity(Controller controller) {
+        this.controller = controller;
     }
 
     @Override
     public void start(AcceptItem tabbedPanel, EventBus eventBus) {
-        ReportView reportView = new ReportView(clientFactory);
-        reportView.setController(clientFactory.getController());
-        Widget widget = reportView.asWidget();
-        widget.setHeight("600px");
-        tabbedPanel.add(Constants.INSTANCE.ReportTemplates(), widget);
-
+        ExecutionHistoryView executionHistoryView = new ExecutionHistoryView();
+        executionHistoryView.setController(controller);
+        tabbedPanel.add(Constants.INSTANCE.ExecutionHistory(), executionHistoryView);
     }
 }

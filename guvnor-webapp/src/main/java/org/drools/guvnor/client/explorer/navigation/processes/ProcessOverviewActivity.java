@@ -19,11 +19,20 @@ package org.drools.guvnor.client.explorer.navigation.processes;
 import com.google.gwt.event.shared.EventBus;
 import org.drools.guvnor.client.explorer.AcceptItem;
 import org.drools.guvnor.client.util.Activity;
+import org.jboss.bpm.console.client.ClientFactory;
+import org.jboss.bpm.console.client.messages.Constants;
+import org.jboss.bpm.console.client.process.MergedProcessView;
 
 public class ProcessOverviewActivity extends Activity {
 
+    private ClientFactory clientFactory;
+
+    public ProcessOverviewActivity(ClientFactory clientFactory) {
+        this.clientFactory = clientFactory;
+    }
+
     @Override
     public void start(AcceptItem tabbedPanel, EventBus eventBus) {
-        //TODO: Generated code -Rikkola-
+        tabbedPanel.add(Constants.INSTANCE.ProcessOverview(), new MergedProcessView(clientFactory));
     }
 }

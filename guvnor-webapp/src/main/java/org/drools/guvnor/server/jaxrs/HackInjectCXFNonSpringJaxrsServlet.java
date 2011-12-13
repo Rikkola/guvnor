@@ -17,6 +17,7 @@
 package org.drools.guvnor.server.jaxrs;
 
 import java.util.List;
+import java.util.Map;
 import javax.inject.Inject;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -66,7 +67,8 @@ public class HackInjectCXFNonSpringJaxrsServlet extends CXFNonSpringJaxrsServlet
         Object singletonInstance = super.createSingletonInstance(cls, sc);
         if (singletonInstance instanceof Resource) {
             Resource resource = (Resource) singletonInstance;
-            resource.inject(serviceImplementation, repositoryPackageService, repositoryAssetService, rulesRepository,
+            resource.inject(serviceImplementation, repositoryPackageService, repositoryAssetService,
+                    rulesRepository,
                     fileManagerService);
         }
         return singletonInstance;

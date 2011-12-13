@@ -350,6 +350,10 @@ public class MockWorkingMemory implements InternalWorkingMemory {
         return null;
     }
 
+    public void dispose() {
+        //TODO: Generated code -Rikkola-
+    }
+
     public void halt() {
         // TODO Auto-generated method stub
         

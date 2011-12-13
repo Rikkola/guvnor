@@ -14,25 +14,18 @@
  * limitations under the License.
  */
 
-package org.drools.guvnor.client.explorer.navigation.settings;
+package org.drools.guvnor.client.perspective.runtime;
 
-import com.google.gwt.event.shared.EventBus;
-import com.google.gwt.user.client.ui.Label;
-import com.mvc4g.client.Controller;
-import org.drools.guvnor.client.explorer.AcceptItem;
-import org.drools.guvnor.client.util.Activity;
+import org.drools.guvnor.client.configurations.User;
+import org.jboss.bpm.console.client.Authentication;
 
-public class PreferencesActivity extends Activity {
+public class RuntimeAuthentication implements Authentication {
 
-    private Controller controller;
-
-    public PreferencesActivity(Controller controller) {
-        this.controller = controller;
+    public String getUsername() {
+        return User.INSTANCE.getUserName();
     }
 
-    @Override
-    public void start(AcceptItem tabbedPanel, EventBus eventBus) {
+    public void handleSessionTimeout() {
         //TODO: Generated code -Rikkola-
-        tabbedPanel.add("unimplemented", new Label("Nothing to see here"));
     }
 }

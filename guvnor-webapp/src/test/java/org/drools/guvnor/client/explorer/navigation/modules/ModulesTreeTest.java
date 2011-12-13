@@ -2,10 +2,9 @@ package org.drools.guvnor.client.explorer.navigation.modules;
 
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.ui.MenuBar;
-import com.google.gwt.user.client.ui.Widget;
 
 import org.drools.guvnor.client.configurations.Capability;
-import org.drools.guvnor.client.configurations.UserCapabilities;
+import org.drools.guvnor.client.configurations.User;
 import org.drools.guvnor.client.explorer.ClientFactory;
 import org.drools.guvnor.client.explorer.navigation.NavigationViewFactory;
 import org.drools.guvnor.client.perspective.author.AuthorPerspective;
@@ -111,8 +110,8 @@ public class ModulesTreeTest {
     }
 
     private void setUpUserCapabilities( boolean canMakeNewAssets ) {
-        UserCapabilities userCapabilities = mock( UserCapabilities.class );
-        UserCapabilities.INSTANCE = userCapabilities;
-        when( userCapabilities.hasCapability( Capability.SHOW_CREATE_NEW_ASSET ) ).thenReturn( canMakeNewAssets );
+        User user = mock( User.class );
+        User.INSTANCE = user;
+        when( user.hasCapability( Capability.SHOW_CREATE_NEW_ASSET ) ).thenReturn( canMakeNewAssets );
     }
 }
