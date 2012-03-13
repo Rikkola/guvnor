@@ -32,7 +32,7 @@ public class SampleRepositoryTest extends GuvnorTestBase {
                       cfgs.length );
         assertTrue( cfgs[0].getName().equals( "mortgages" ) || cfgs[1].getName().equals( "mortgages" ) );
         String puuid = (cfgs[0].getName().equals( "mortgages" )) ? cfgs[0].getUuid() : cfgs[1].getUuid();
-        BulkTestRunResult bulkTestRunResult = repositoryPackageService.runScenariosInPackage( puuid );
+        BulkTestRunResult bulkTestRunResult = new TestScenarioServiceImplementation().runScenariosInPackage( puuid );
         assertNull(bulkTestRunResult.getResult());
     }
 

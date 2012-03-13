@@ -17,6 +17,7 @@ package org.drools.guvnor.client.asseteditor.drools.workitem;
 
 import java.util.Map;
 
+import com.google.gwt.core.client.GWT;
 import org.drools.guvnor.client.common.ErrorPopup;
 import org.drools.guvnor.client.messages.Constants;
 import org.drools.guvnor.client.rpc.Module;
@@ -33,6 +34,7 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import org.drools.guvnor.client.rpc.WorkItemServiceAsync;
 
 public class WorkitemDefinitionElementsBrowser extends Composite {
 
@@ -71,7 +73,8 @@ public class WorkitemDefinitionElementsBrowser extends Composite {
         this.elementSelectedItem = elementSelectedItem;
 
         // load Workitem Definition Element data from server
-        RepositoryServiceFactory.getService()
+        WorkItemServiceAsync workItemService = GWT.create(WorkItemServiceAsync.class);
+        workItemService
                 .loadWorkitemDefinitionElementData(
                         new AsyncCallback<Map<String, String>>() {
                             public void onFailure(Throwable caught) {

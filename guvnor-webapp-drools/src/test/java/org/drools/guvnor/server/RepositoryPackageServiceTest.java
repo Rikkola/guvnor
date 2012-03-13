@@ -65,7 +65,6 @@ import org.drools.repository.ModuleItem;
 import org.drools.repository.RulesRepository;
 import org.drools.repository.RulesRepositoryException;
 import org.drools.rule.Package;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.google.gwt.user.client.rpc.SerializationException;
@@ -738,6 +737,7 @@ public class RepositoryPackageServiceTest extends GuvnorTestBase {
 
     @Test
     public void testPackageConfSave() throws Exception {
+
         String uuid = repositoryPackageService.createModule( "testPackageConfSave",
                                                              "a desc",
                                                              "package" );
@@ -748,7 +748,7 @@ public class RepositoryPackageServiceTest extends GuvnorTestBase {
         data.setExternalURI( "new URI" );
         repositoryPackageService.saveModule( data );
 
-        ValidatedResponse res = repositoryPackageService.validateModule( data );
+        ValidatedResponse res = droolsServiceImplementation.validateModule(data);
         assertNotNull( res );
         assertTrue( res.hasErrors );
         assertNotNull( res.errorMessage );
@@ -762,7 +762,7 @@ public class RepositoryPackageServiceTest extends GuvnorTestBase {
                       data.getExternalURI() );
 
         data.setHeader( "" );
-        res = repositoryPackageService.validateModule( data );
+        res = droolsServiceImplementation.validateModule( data );
         if ( res.hasErrors ) {
             System.out.println( "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" );
             System.out.println( res.errorMessage );

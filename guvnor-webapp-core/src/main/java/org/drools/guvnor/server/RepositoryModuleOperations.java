@@ -33,7 +33,6 @@ import javax.inject.Inject;
 
 import javax.jcr.PathNotFoundException;
 import javax.jcr.RepositoryException;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.*;
 
@@ -275,17 +274,6 @@ public class RepositoryModuleOperations {
         return data;
     }
 
-    public ValidatedResponse validateModule(Module data) throws SerializationException {
-        log.info( "USER:" + getCurrentUserName() + " validateModule module [" + data.getName() + "]" );
-
-        RuleBaseCache.getInstance().remove( data.getUuid() );
-        BRMSSuggestionCompletionLoader loader = createBRMSSuggestionCompletionLoader();
-        loader.getSuggestionEngine( rulesRepository.loadModule( data.getName() ),
-                data.getHeader() );
-
-        return validateBRMSSuggestionCompletionLoaderResponse( loader );
-    }
-
     public void saveModule(Module data) throws SerializationException {
         log.info( "USER:" + getCurrentUserName() + " SAVING module [" + data.getName() + "]" );
 
@@ -320,10 +308,6 @@ public class RepositoryModuleOperations {
                     moduleItem,
                     lastModified );
         }
-    }
-
-    BRMSSuggestionCompletionLoader createBRMSSuggestionCompletionLoader() {
-        return new BRMSSuggestionCompletionLoader();
     }
 
     void updateCategoryRules(Module data,
@@ -396,21 +380,6 @@ public class RepositoryModuleOperations {
                 assetItem.checkin( data.getDescription() );
             }
         }
-    }
-
-    private ValidatedResponse validateBRMSSuggestionCompletionLoaderResponse(BRMSSuggestionCompletionLoader loader) {
-        ValidatedResponse res = new ValidatedResponse();
-        if ( loader.hasErrors() ) {
-            res.hasErrors = true;
-            String err = "";
-            for (Iterator iter = loader.getErrors().iterator(); iter.hasNext(); ) {
-                err += (String) iter.next();
-                if ( iter.hasNext() ) err += "\n";
-            }
-            res.errorHeader = "Package validation errors";
-            res.errorMessage = err;
-        }
-        return res;
     }
 
     public void createModuleSnapshot(String moduleName,

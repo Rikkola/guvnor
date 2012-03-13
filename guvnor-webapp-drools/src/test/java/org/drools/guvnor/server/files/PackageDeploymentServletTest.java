@@ -20,21 +20,15 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.inject.Inject;
 
 import org.drools.guvnor.server.GuvnorTestBase;
-import org.drools.guvnor.server.RepositoryModuleService;
-import org.drools.guvnor.server.ServiceImplementation;
 import org.drools.repository.AssetItem;
 import org.drools.repository.ModuleItem;
-import org.drools.repository.RulesRepository;
 import org.drools.util.codec.Base64;
-import org.junit.Before;
 import org.junit.Test;
 
 public class PackageDeploymentServletTest extends GuvnorTestBase {

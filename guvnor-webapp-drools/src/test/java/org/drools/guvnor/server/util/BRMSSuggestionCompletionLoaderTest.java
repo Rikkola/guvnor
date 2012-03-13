@@ -18,7 +18,6 @@ package org.drools.guvnor.server.util;
 
 import org.drools.guvnor.client.common.AssetFormats;
 import org.drools.guvnor.server.GuvnorTestBase;
-import org.drools.guvnor.server.ServiceImplementation;
 import org.drools.ide.common.client.modeldriven.FieldAccessorsAndMutators;
 import org.drools.ide.common.client.modeldriven.SuggestionCompletionEngine;
 import org.drools.ide.common.server.rules.SuggestionCompletionLoader;

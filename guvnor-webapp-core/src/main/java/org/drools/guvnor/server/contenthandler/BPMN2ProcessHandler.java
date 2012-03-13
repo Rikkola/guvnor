@@ -1,11 +1,11 @@
 /*
- * Copyright 2005 JBoss Inc
+ * Copyright 2012 JBoss Inc
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *       http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -27,7 +27,6 @@ import org.drools.guvnor.server.builder.BRMSPackageBuilder;
 import org.drools.guvnor.server.builder.RuleFlowContentModelBuilder;
 import org.drools.guvnor.server.builder.RuleFlowProcessBuilder;
 import org.drools.guvnor.server.util.LoggingHelper;
-import org.drools.ide.common.client.modeldriven.brl.PortableObject;
 import org.drools.repository.AssetItem;
 import org.jbpm.bpmn2.xml.BPMNDISemanticModule;
 import org.jbpm.bpmn2.xml.BPMNSemanticModule;
@@ -218,7 +217,7 @@ public class BPMN2ProcessHandler extends ContentHandler
         }
     }
 
-    public void assembleSource(PortableObject assetContent,
+    public void assembleSource(Serializable assetContent,
                                StringBuilder stringBuilder) {
         RuleFlowContentModel content = (RuleFlowContentModel) assetContent;
         if ( content.getXml() != null && content.getXml().length() > 0 ) {
