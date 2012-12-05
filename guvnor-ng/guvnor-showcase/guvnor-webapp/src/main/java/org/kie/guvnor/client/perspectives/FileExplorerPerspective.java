@@ -79,9 +79,7 @@ public class FileExplorerPerspective {
         subMenuBar.addItem(new DefaultMenuItemCommand("pom.xml", new Command() {
             @Override
             public void execute() {
-                // TODO Create pom.xml
-                // TODO Go to pom.xml editor
-//                placeManager.goTo("newProjectPopup");
+                placeManager.goTo("newProjectPopup");
             }
         }));
 
