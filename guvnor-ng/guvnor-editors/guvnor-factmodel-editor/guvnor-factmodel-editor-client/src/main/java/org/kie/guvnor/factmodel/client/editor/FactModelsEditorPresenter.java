@@ -106,9 +106,6 @@ public class FactModelsEditorPresenter {
     private Event<ResourceCopiedEvent> resourceCopiedEvent;
 
     @Inject
-    private Event<RestoreEvent> restoreEvent;
-
-    @Inject
     private PlaceManager placeManager;
 
     @Inject
@@ -184,7 +181,7 @@ public class FactModelsEditorPresenter {
                     public void callback( final String response ) {
                         viewSource.setContent( response );
                     }
-                } ).toSource( view.getContent() );
+                } ).toSource( path, view.getContent() );
             }
 
             @Override

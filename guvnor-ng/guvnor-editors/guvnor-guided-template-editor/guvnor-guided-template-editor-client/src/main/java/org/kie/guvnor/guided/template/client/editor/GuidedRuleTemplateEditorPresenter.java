@@ -219,7 +219,7 @@ public class GuidedRuleTemplateEditorPresenter {
                     public void callback( final String response ) {
                         viewSource.setContent( response );
                     }
-                } ).toSource( view.getContent() );
+                } ).toSource(path, view.getContent() );
             }
 
             @Override
