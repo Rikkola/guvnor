@@ -41,4 +41,9 @@ public interface CommonImages
     @Source("images/mandatory.png")
     ImageResource mandatory();
 
+    @Source("images/delete_item_small.gif")
+    ImageResource DeleteItemSmall();
+
+    @Source("images/warning.gif")
+    ImageResource warning();
 }
