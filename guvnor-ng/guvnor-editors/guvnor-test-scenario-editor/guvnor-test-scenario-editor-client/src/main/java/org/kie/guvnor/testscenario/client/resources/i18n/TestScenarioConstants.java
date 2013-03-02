@@ -2,8 +2,6 @@ package org.kie.guvnor.testscenario.client.resources.i18n;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.Messages;
-import com.google.gwt.safehtml.shared.SafeHtml;
-import com.google.gwt.user.client.ui.Image;
 
 public interface TestScenarioConstants
         extends Messages {
@@ -43,8 +41,6 @@ public interface TestScenarioConstants
     String OK();
 
     String pleaseChoose1();
-
-    String AddFieldToFact();
 
     String AddAnotherFieldToThisSoYouCanSetItsValue();
 
