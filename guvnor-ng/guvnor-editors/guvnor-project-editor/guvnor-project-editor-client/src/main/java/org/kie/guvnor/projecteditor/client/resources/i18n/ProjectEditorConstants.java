@@ -132,4 +132,8 @@ public interface ProjectEditorConstants
     String ProjectScreen();
 
     String NewProject();
+
+    String ImportSuggestions();
+
+    String ImportSuggestionsMetadata();
 }

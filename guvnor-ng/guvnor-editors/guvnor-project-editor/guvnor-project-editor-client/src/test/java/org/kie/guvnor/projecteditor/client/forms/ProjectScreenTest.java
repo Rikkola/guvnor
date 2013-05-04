@@ -22,6 +22,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.kie.guvnor.commons.ui.client.popups.file.CommandWithCommitMessage;
 import org.kie.guvnor.commons.ui.client.popups.file.SaveOperationService;
+import org.kie.guvnor.configresource.client.widget.unbound.ImportsWidgetPresenter;
 import org.kie.guvnor.services.metadata.model.Metadata;
 import org.mockito.ArgumentCaptor;
 import org.uberfire.backend.vfs.Path;
@@ -60,7 +61,8 @@ public class ProjectScreenTest {
 
         MockProjectServiceCaller projectServiceCaller = new MockProjectServiceCaller();
 
-        screen = new ProjectScreenPresenter(view, pomPanel, kModuleEditorPanel, workbenchContext, projectServiceCaller, projectEditorServiceCaller, buildServiceCaller, metadataServiceCaller, saveOperationService);
+        ImportsWidgetPresenter importsWidgetPresenter = mock(ImportsWidgetPresenter.class);
+        screen = new ProjectScreenPresenter(view, pomPanel, kModuleEditorPanel, importsWidgetPresenter, workbenchContext, projectServiceCaller, projectEditorServiceCaller, buildServiceCaller, metadataServiceCaller, saveOperationService);
         screen.getMenus();
     }
 
@@ -117,7 +119,7 @@ public class ProjectScreenTest {
         clickOkToCommitPopup();
 
         verify(pomPanel).save(anyString(), any(Command.class), any(Metadata.class));
-        verify(kModuleEditorPanel, never()).save(anyString(), any(Metadata.class));
+        verify(kModuleEditorPanel, never()).save(anyString(), any(Command.class), any(Metadata.class));
     }
 
     @Test
@@ -136,7 +138,7 @@ public class ProjectScreenTest {
         ArgumentCaptor<Command> commandArgumentCaptor = ArgumentCaptor.forClass(Command.class);
         verify(pomPanel).save(anyString(), commandArgumentCaptor.capture(), any(Metadata.class));
         commandArgumentCaptor.getValue().execute();
-        verify(kModuleEditorPanel).save(anyString(), any(Metadata.class));
+        verify(kModuleEditorPanel).save(anyString(), any(Command.class), any(Metadata.class));
     }
 
     @Test

@@ -1,10 +1,10 @@
 package org.kie.guvnor.configresource.client.widget.unbound;
 
 import com.google.gwt.user.client.ui.IsWidget;
-import org.drools.guvnor.models.commons.shared.imports.Imports;
+import org.kie.guvnor.commons.ui.client.widget.HasBusyIndicator;
 
 public interface ImportsWidgetView
-        extends IsWidget {
+        extends IsWidget, HasBusyIndicator {
 
     interface Presenter {
 
@@ -12,20 +12,21 @@ public interface ImportsWidgetView
 
         void onRemoveImport();
 
-        void setContent( final Imports resourceImports,
-                         final boolean isReadOnly );
-
     }
 
-    void addImport( final String type );
+    void addImport(final String type);
 
     String getSelected();
 
-    void removeImport( final String selected );
+    void removeImport(final String selected);
 
-    void setReadOnly( final boolean isReadOnly );
+    void setReadOnly(final boolean isReadOnly);
 
-    void setPresenter( final Presenter presenter );
+    void setPresenter(final Presenter presenter);
 
     void showPleaseSelectAnImport();
+
+    void showBusyIndicator(String text);
+
+    void hideBusyIndicator();
 }
