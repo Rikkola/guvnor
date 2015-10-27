@@ -19,14 +19,12 @@ package org.guvnor.common.services.project.backend.server;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.util.Properties;
+import java.util.ArrayList;
 import javax.enterprise.context.Dependent;
 
 import org.apache.maven.model.Build;
-import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.Parent;
-import org.apache.maven.model.Plugin;
 import org.apache.maven.model.Repository;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 import org.apache.maven.model.io.xpp3.MavenXpp3Writer;
@@ -37,85 +35,73 @@ import org.guvnor.common.services.project.model.POM;
 @Dependent
 public class POMContentHandler {
 
-    private static String MULTI_MODULE                     = "pom";
-    private static String PACKAGING                        = "kjar";
-    private static String KIE_PLUGIN_VERSION_FILENAME      = "/kie-plugin-version.properties";
-    private static String KIE_PLUGIN_VERSION_PROPERTY_NAME = "kie_plugin_version";
-
-    private static String kieMavenPluginGroupId    = "org.kie";
-    private static String kieMavenPluginArtifactId = "kie-maven-plugin";
-    private static String kieMavenPluginVersion    = getKiePluginVersion();
-
-    private static Plugin kieMavenPlugin = getKieMavenPlugin();
-
     public POMContentHandler() {
         // Weld needs this for proxying.
     }
 
-    public String toString(POM pomModel)
+    public String toString( final POM pomModel )
             throws IOException {
-        return toString(pomModel, new Model());
+        return toString( pomModel,
+                         new Model() );
     }
 
-    private String toString(POM pom,
-                            Model model)
-            throws IOException {
+    private String toString( final POM pom,
+                             final Model model ) throws IOException {
         model.setName(pom.getName());
         model.setDescription(pom.getDescription());
         model.setArtifactId(pom.getGav().getArtifactId());
         model.setModelVersion(pom.getModelVersion());
 
-        if (pom.isMultiModule()) { // if it is a parent pom
-            model.setPackaging(MULTI_MODULE);
-            model.setGroupId(pom.getGav().getGroupId());
-            model.setVersion(pom.getGav().getVersion());
-            model.getModules().clear();
-            for (String module : pom.getModules()) {
-                model.addModule(module);
-            }
-            model.getRepositories().clear();
-            for (org.guvnor.common.services.project.model.Repository repository : pom.getRepositories()) {
-                model.addRepository(fromClientModelToPom(repository));
-            }
-        } else { // If it is a kjar
+        model.setGroupId( pom.getGav().getGroupId() );
+        model.setVersion( pom.getGav().getVersion() );
 
-            if (isPackagingNotSet(model)) {
-                // Currently we only support multimodules and kjars.
-                // But since the user can change and customers have actually changed the packaging to jar
-                // we do not overwrite the setting.
-                model.setPackaging(PACKAGING);
-            }
-            if (pom.getParent() != null) {
-                Parent parent = new Parent();
-                parent.setGroupId(pom.getParent().getGroupId());
-                parent.setArtifactId(pom.getParent().getArtifactId());
-                parent.setVersion(pom.getParent().getVersion());
-                model.setParent(parent);
-            }
-            model.setGroupId(pom.getGav().getGroupId());
-            model.setVersion(pom.getGav().getVersion());
+        model.setPackaging( pom.getPackaging().getName() );
 
-            Build build = model.getBuild();
-            if (build == null) {
-                build = new Build();
-                model.setBuild(build);
-            }
-            if (!build.getPlugins().contains(kieMavenPlugin)) {
-                build.addPlugin(kieMavenPlugin);
-            }
-
-            new DependencyUpdater(model).updateDependencies(pom.getDependencies());
-
-        }
+        model.setParent( getParent( pom ) );
+        model.setBuild( getBuild( pom, model ) );
+        model.setModules( getModules( pom ) );
+        model.setRepositories( getRepositories( pom ) );
+        new DependencyUpdater( model.getDependencies() ).updateDependencies( pom.getDependencies() );
 
         StringWriter stringWriter = new StringWriter();
-        new MavenXpp3Writer().write(stringWriter, model);
-
+        new MavenXpp3Writer().write( stringWriter, model );
         return stringWriter.toString();
     }
 
-    private boolean isPackagingNotSet(Model model) {
-        return model.getPackaging() == null || model.getPackaging().isEmpty();
+    private Build getBuild( final POM pom,
+                            final Model model ) {
+        return new BuildContentHandler().handle( pom.getBuild(),
+                                                 model.getBuild() );
+    }
+
+    private ArrayList<Repository> getRepositories( final POM pom ) {
+        ArrayList<Repository> result = new ArrayList<Repository>();
+        for (org.guvnor.common.services.project.model.Repository repository : pom.getRepositories()) {
+            result.add( fromClientModelToPom( repository ) );
+        }
+        return result;
+    }
+
+    private ArrayList<String> getModules( final POM pom ) {
+        ArrayList<String> result = new ArrayList<String>();
+        if ( pom.getModules() != null ) {
+            for (String module : pom.getModules()) {
+                result.add( module );
+            }
+        }
+        return result;
+    }
+
+    private Parent getParent( final POM pom ) {
+        if ( pom.getParent() == null ) {
+            return null;
+        } else {
+            Parent parent = new Parent();
+            parent.setGroupId( pom.getParent().getGroupId() );
+            parent.setArtifactId( pom.getParent().getArtifactId() );
+            parent.setVersion( pom.getParent().getVersion() );
+            return parent;
+        }
     }
 
     /**
@@ -124,14 +110,13 @@ public class POMContentHandler {
      * @return pom.xml for saving, The original pom.xml with the fields edited in gavModel replaced.
      * @throws IOException
      */
-    public String toString(POM gavModel,
-                           String originalPomAsText)
-            throws IOException, XmlPullParserException {
+    public String toString( final POM gavModel,
+                            final String originalPomAsText ) throws IOException, XmlPullParserException {
 
         return toString(gavModel, new MavenXpp3Reader().read(new StringReader(originalPomAsText)));
     }
 
-    private Repository fromClientModelToPom(org.guvnor.common.services.project.model.Repository from) {
+    private Repository fromClientModelToPom( final org.guvnor.common.services.project.model.Repository from ) {
         Repository to = new Repository();
         to.setId(from.getId());
         to.setName(from.getName());
@@ -140,11 +125,10 @@ public class POMContentHandler {
         return to;
     }
 
-    public POM toModel(String pomAsString)
-            throws IOException, XmlPullParserException {
+    public POM toModel( final String pomAsString ) throws IOException, XmlPullParserException {
         Model model = new MavenXpp3Reader().read(new StringReader(pomAsString));
 
-        POM gavModel = new POM(
+        POM pomModel = new POM(
                 model.getName(),
                 model.getDescription(),
                 new GAV(
@@ -154,27 +138,29 @@ public class POMContentHandler {
                 )
         );
 
+        pomModel.setPackaging( model.getPackaging() );
+
         if (model.getParent() != null) {
-            gavModel.setParent(new GAV(model.getParent().getGroupId(), model.getParent().getArtifactId(), model.getParent().getVersion()));
+            pomModel.setParent( new GAV( model.getParent().getGroupId(), model.getParent().getArtifactId(), model.getParent().getVersion() ) );
         }
 
-        gavModel.getModules().clear();
+        pomModel.getModules().clear();
         for (String module : model.getModules()) {
-            gavModel.getModules().add(module);
-            gavModel.setMultiModule(true);
+            pomModel.getModules().add( module );
+            pomModel.setMultiModule( true );
         }
         for (Repository repository : model.getRepositories()) {
-            gavModel.addRepository(fromPomModelToClientModel(repository));
+            pomModel.addRepository( fromPomModelToClientModel( repository ) );
         }
 
-        for (Dependency dependency : model.getDependencies()) {
-            gavModel.getDependencies().add(fromPomModelToClientModel(dependency));
-        }
+        pomModel.setDependencies( new DependencyContentHandler().fromPomModelToClientModel( model.getDependencies() ) );
 
-        return gavModel;
+        pomModel.setBuild( new BuildContentHandler().fromPomModelToClientModel( model.getBuild() ) );
+
+        return pomModel;
     }
 
-    private org.guvnor.common.services.project.model.Repository fromPomModelToClientModel(Repository from) {
+    private org.guvnor.common.services.project.model.Repository fromPomModelToClientModel( final Repository from ) {
         org.guvnor.common.services.project.model.Repository to = new org.guvnor.common.services.project.model.Repository();
 
         to.setId(from.getId());
@@ -183,36 +169,4 @@ public class POMContentHandler {
 
         return to;
     }
-
-    private org.guvnor.common.services.project.model.Dependency fromPomModelToClientModel(Dependency from) {
-        org.guvnor.common.services.project.model.Dependency dependency = new org.guvnor.common.services.project.model.Dependency();
-
-        dependency.setArtifactId(from.getArtifactId());
-        dependency.setGroupId(from.getGroupId());
-        dependency.setVersion(from.getVersion());
-        dependency.setScope(from.getScope());
-
-        return dependency;
-    }
-
-    private static Plugin getKieMavenPlugin() {
-        final Plugin plugin = new Plugin();
-        plugin.setGroupId(kieMavenPluginGroupId);
-        plugin.setArtifactId(kieMavenPluginArtifactId);
-        plugin.setVersion(kieMavenPluginVersion);
-        plugin.setExtensions(true);
-        return plugin;
-    }
-
-    //Used by tests; hence public accessor
-    public static String getKiePluginVersion() {
-        Properties p = new Properties();
-        try {
-            p.load(POMContentHandler.class.getResourceAsStream(KIE_PLUGIN_VERSION_FILENAME));
-        } catch (IOException e) {
-
-        }
-        return p.getProperty(KIE_PLUGIN_VERSION_PROPERTY_NAME);
-    }
-
 }

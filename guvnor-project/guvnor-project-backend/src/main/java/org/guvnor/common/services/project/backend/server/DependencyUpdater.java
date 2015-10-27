@@ -19,15 +19,14 @@ package org.guvnor.common.services.project.backend.server;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.maven.model.Model;
 import org.guvnor.common.services.project.model.Dependency;
 
 class DependencyUpdater {
 
-    private Model model;
+    private final List<org.apache.maven.model.Dependency> dependencies;
 
-    DependencyUpdater(Model model) {
-        this.model = model;
+    DependencyUpdater( List<org.apache.maven.model.Dependency> dependencies ) {
+        this.dependencies = dependencies;
     }
 
     void updateDependencies(List<Dependency> dependencies) {
@@ -38,7 +37,7 @@ class DependencyUpdater {
 
     private void updateTheRest(List<Dependency> dependencies) {
         for (Dependency dependency : dependencies) {
-            for (org.apache.maven.model.Dependency modelDep : model.getDependencies()) {
+            for (org.apache.maven.model.Dependency modelDep : this.dependencies) {
                 if (hasSameID(dependency, modelDep)) {
                     updateDependency(dependency, modelDep);
                 }
@@ -48,14 +47,14 @@ class DependencyUpdater {
 
     private void addTheOnesThatDoNotExist(List<Dependency> dependencies) {
         for (Dependency dependency : dependencies) {
-            if (!depsContains(model.getDependencies(), dependency)) {
-                model.addDependency(fromClientModelToPom(dependency));
+            if ( !depsContains( this.dependencies, dependency ) ) {
+                this.dependencies.add( fromClientModelToPom( dependency ) );
             }
         }
     }
 
     private void removeAllThatDoNotExist(List<Dependency> dependencies) {
-        Iterator<org.apache.maven.model.Dependency> iterator = model.getDependencies().iterator();
+        Iterator<org.apache.maven.model.Dependency> iterator = this.dependencies.iterator();
         while (iterator.hasNext()) {
             org.apache.maven.model.Dependency dependency = iterator.next();
             if (!depsContains(dependencies, dependency)) {

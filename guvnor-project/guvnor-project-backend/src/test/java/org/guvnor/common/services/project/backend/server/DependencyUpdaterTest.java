@@ -36,7 +36,7 @@ public class DependencyUpdaterTest {
 
         assertTrue(model.getDependencies().isEmpty());
 
-        new DependencyUpdater(model).updateDependencies(dependencies);
+        new DependencyUpdater(model.getDependencies()).updateDependencies(dependencies);
 
         assertEquals(1, model.getDependencies().size());
         assertEquals("group", model.getDependencies().get(0).getGroupId());
@@ -53,7 +53,7 @@ public class DependencyUpdaterTest {
 
         assertFalse(model.getDependencies().isEmpty());
 
-        new DependencyUpdater(model).updateDependencies(Collections.EMPTY_LIST);
+        new DependencyUpdater(model.getDependencies()).updateDependencies(Collections.EMPTY_LIST);
 
         assertTrue(model.getDependencies().isEmpty());
     }
@@ -68,7 +68,7 @@ public class DependencyUpdaterTest {
 
         assertFalse(model.getDependencies().isEmpty());
 
-        new DependencyUpdater(model).updateDependencies(dependencies);
+        new DependencyUpdater(model.getDependencies()).updateDependencies(dependencies);
 
         assertEquals(1, model.getDependencies().size());
         assertEquals("group", model.getDependencies().get(0).getGroupId());
