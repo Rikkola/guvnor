@@ -24,26 +24,6 @@ import org.jboss.errai.common.client.api.annotations.Portable;
 @Portable
 public class POM {
 
-    public void setPackaging( String packaging ) {
-
-    }
-
-    @Portable
-    public enum Packaging {
-        MULTI_MODULE( "pom" ),
-        KJAR( "kjar" );
-
-        private final String name;
-
-        Packaging( String name ) {
-            this.name = name;
-        }
-
-        public String getName() {
-            return name;
-        }
-    }
-
     private static final String MODEL_VERSION = "4.0.0";
 
     private GAV parent;
@@ -51,7 +31,7 @@ public class POM {
     private String name;
     private String description;
 
-    private Packaging packaging = Packaging.KJAR;
+    private String packaging;
 
     private Build build;
 
@@ -86,7 +66,7 @@ public class POM {
         this.description = description;
         this.gav = gav;
         if ( multiModule ) {
-            packaging = Packaging.MULTI_MODULE;
+            packaging = "pom";
         }
     }
 
@@ -155,18 +135,14 @@ public class POM {
     }
 
     public boolean isMultiModule() {
-        return packaging.equals( Packaging.MULTI_MODULE );
+        return packaging.equals( "pom" );
     }
 
-    public void setMultiModule(boolean multiModule) {
-        if ( multiModule ) {
-            packaging = Packaging.MULTI_MODULE;
-        } else {
-            packaging = Packaging.KJAR;
-        }
+    public void setPackaging( String packaging ) {
+        this.packaging = packaging;
     }
 
-    public Packaging getPackaging() {
+    public String getPackaging() {
         return packaging;
     }
 
@@ -223,7 +199,7 @@ public class POM {
         result = ~~result;
         result = 31 * result + ( description != null ? description.hashCode() : 0 );
         result = ~~result;
-        result = 31 * result + (packaging != null ? packaging.getName().hashCode() : 0);
+        result = 31 * result + (packaging != null ? packaging.hashCode() : 0);
         result = ~~result;
         result = 31 * result + ( dependencies != null ? dependencies.hashCode() : 0 );
         result = ~~result;

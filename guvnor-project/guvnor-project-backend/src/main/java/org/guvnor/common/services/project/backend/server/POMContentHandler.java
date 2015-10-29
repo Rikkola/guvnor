@@ -55,7 +55,7 @@ public class POMContentHandler {
         model.setGroupId( pom.getGav().getGroupId() );
         model.setVersion( pom.getGav().getVersion() );
 
-        model.setPackaging( pom.getPackaging().getName() );
+        model.setPackaging( pom.getPackaging() );
 
         model.setParent( getParent( pom ) );
         model.setBuild( getBuild( pom, model ) );
@@ -70,7 +70,7 @@ public class POMContentHandler {
 
     private Build getBuild( final POM pom,
                             final Model model ) {
-        return new BuildContentHandler().handle( pom.getBuild(),
+        return new BuildContentHandler().update( pom.getBuild(),
                                                  model.getBuild() );
     }
 
@@ -113,7 +113,8 @@ public class POMContentHandler {
     public String toString( final POM gavModel,
                             final String originalPomAsText ) throws IOException, XmlPullParserException {
 
-        return toString(gavModel, new MavenXpp3Reader().read(new StringReader(originalPomAsText)));
+        return toString( gavModel,
+                         new MavenXpp3Reader().read( new StringReader( originalPomAsText ) ) );
     }
 
     private Repository fromClientModelToPom( final org.guvnor.common.services.project.model.Repository from ) {
@@ -147,7 +148,7 @@ public class POMContentHandler {
         pomModel.getModules().clear();
         for (String module : model.getModules()) {
             pomModel.getModules().add( module );
-            pomModel.setMultiModule( true );
+            pomModel.setPackaging( "pom" );
         }
         for (Repository repository : model.getRepositories()) {
             pomModel.addRepository( fromPomModelToClientModel( repository ) );

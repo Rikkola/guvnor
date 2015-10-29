@@ -21,24 +21,38 @@ import org.apache.maven.model.Plugin;
 class BuildContentHandler {
 
     org.guvnor.common.services.project.model.Build fromPomModelToClientModel( final Build from ) {
-        org.guvnor.common.services.project.model.Build build = new org.guvnor.common.services.project.model.Build();
 
-        for (Plugin plugin : from.getPlugins()) {
-            build.getPlugins().add( fromPomModelToClientModel( plugin ) );
+        if ( from != null ) {
+            org.guvnor.common.services.project.model.Build build = new org.guvnor.common.services.project.model.Build();
+            if ( from.getPlugins() != null ) {
+                for (Plugin plugin : from.getPlugins()) {
+                    build.getPlugins().add( fromPomModelToClientModel( plugin ) );
+                }
+            }
+            return build;
+        } else {
+            return null;
         }
-
-        return build;
     }
 
-    public Build handle( final org.guvnor.common.services.project.model.Build from,
-                         final Build to ) {
+    public Build update( final org.guvnor.common.services.project.model.Build from,
+                         Build to ) {
+        if ( from == null ) {
+            return null;
+        } else {
+            if ( to == null ) {
+                to = new Build();
+            }
 
-        to.setPlugins( new PluginUpdater( to.getPlugins() ).update( from.getPlugins() ) );
+            if ( from.getPlugins() != null ) {
+                to.setPlugins( new PluginUpdater( to.getPlugins() ).update( from.getPlugins() ) );
+            }
 
-        return to;
+            return to;
+        }
     }
 
-    private Plugin handle( org.guvnor.common.services.project.model.Plugin from,
+    private Plugin update( org.guvnor.common.services.project.model.Plugin from,
                            Plugin to ) {
 
         to.setGroupId( from.getGroupId() );

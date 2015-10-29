@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+         xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.test</groupId>
   <artifactId>my-test</artifactId>
   <version>1.0</version>
-  <packaging>jar</packaging>
 
 
   <dependencies>
@@ -21,6 +20,17 @@
       <groupId>org.jboss.weld</groupId>
       <artifactId>weld-core</artifactId>
       <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.guvnor</groupId>
+      <artifactId>guvnor-project-api</artifactId>
+      <exclusions>
+        <exclusion>
+          <artifactId>uberfire-client-api</artifactId>
+          <groupId>org.uberfire</groupId>
+        </exclusion>
+      </exclusions>
     </dependency>
 
   </dependencies>

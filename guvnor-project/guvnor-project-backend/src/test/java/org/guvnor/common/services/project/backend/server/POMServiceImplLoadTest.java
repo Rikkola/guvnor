@@ -67,7 +67,11 @@ public class POMServiceImplLoadTest
         for (Dependency dependency : dependencies) {
             if ( groupID.equals( dependency.getGroupId() )
                     && artifactID.equals( dependency.getArtifactId() )
-                    && scope.equals( dependency.getScope() ) ) {
+                    &&
+                    (
+                            scope.equals( dependency.getScope() )
+                                    || (scope.equals( "compile" ) && dependency.getScope() == null)
+                    ) ) {
                 foundOne = true;
             }
         }

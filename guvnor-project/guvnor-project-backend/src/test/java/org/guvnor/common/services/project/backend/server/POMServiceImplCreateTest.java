@@ -65,7 +65,6 @@ public class POMServiceImplCreateTest
         String pomXML = stringArgumentCaptor.getValue();
 
         assertTrue( pomXML.contains( "<id>guvnor-m2-repo</id>" ) );
-        assertTrue( pomXML.contains( "<artifactId>kie-maven-plugin</artifactId>" ) );
 
     }
 

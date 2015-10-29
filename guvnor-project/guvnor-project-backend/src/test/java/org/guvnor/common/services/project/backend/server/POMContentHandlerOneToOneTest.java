@@ -41,9 +41,9 @@ public class POMContentHandlerOneToOneTest {
 
         POM model = new POMContentHandler().toModel( pomxml );
 
-        assertEquals( pomxml,
-                      new POMContentHandler().toString( model,
-                                                        pomxml ) );
+        assertContainsIgnoreWhitespace( pomxml,
+                                        new POMContentHandler().toString( model,
+                                                                          pomxml ) );
     }
 
     public POMContentHandlerOneToOneTest( String fileName ) {
@@ -67,5 +67,15 @@ public class POMContentHandlerOneToOneTest {
             out.append( line ).append( "\n" );
         }
         return out.toString();
+    }
+
+    private void assertContainsIgnoreWhitespace( final String expected,
+                                                 final String xml ) {
+        final String cleanExpected = expected.replaceAll( "\\s+",
+                                                          "" );
+        final String cleanActual = xml.replaceAll( "\\s+",
+                                                   "" );
+
+        assertEquals( cleanActual, cleanExpected );
     }
 }
