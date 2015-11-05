@@ -516,7 +516,6 @@ public abstract class AbstractProjectService<T extends Project>
     @Override
     public abstract T newProject(
             final org.guvnor.structure.repositories.Repository repository,
-            final String projectName,
             final POM pom,
             final String baseUrl );
 

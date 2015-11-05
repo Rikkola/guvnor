@@ -350,7 +350,7 @@ public class RepositoryStructurePresenter
                         repository );
 
             } else if ( model.isSingleProject() ) {
-                wizard.initialise();
+                wizard.setContent( new POM() );
                 wizard.start( new Callback<Project>() {
                     @Override
                     public void callback( Project result ) {
@@ -510,14 +510,22 @@ public class RepositoryStructurePresenter
     @Override
     public void onAddModule() {
         if ( model.isMultiModule() ) {
-            final GAV gav = new GAV( view.getDataView().getGroupId(),
-                                     null,
-                                     view.getDataView().getVersionId() );
-            wizard.initialise( gav );
+            wizzard.setContent( null,
+                                view.getDataView().getGroupId(),
+                                view.getDataView().getVersionId() );
         } else {
-            wizard.initialise();
+            wizzard.setContent( null,
+                                null,
+                                null );
 
+        if ( model.isMultiModule() ) {
+            GAV parentGAV = new GAV();
+            parentGAV.setGroupId( view.getDataView().getGroupId() );
+            parentGAV.setVersion( view.getDataView().getVersionId() );
+            pom.setParent( parentGAV );
         }
+
+        wizzard.setContent( pom );
 
         wizard.start( getModuleAddedSuccessCallback(), false );
     }

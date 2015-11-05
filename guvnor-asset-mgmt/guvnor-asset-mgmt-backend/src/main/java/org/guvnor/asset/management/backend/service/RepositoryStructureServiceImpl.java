@@ -125,7 +125,7 @@ public class RepositoryStructureServiceImpl
             return pathToPom;
 
         } else {
-            Project project = projectService.newProject( repo, pom.getName(), pom, baseUrl );
+            Project project = projectService.newProject( repo, pom, baseUrl );
             return project.getPomXMLPath();
         }
     }

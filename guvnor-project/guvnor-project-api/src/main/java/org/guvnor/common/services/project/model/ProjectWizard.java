@@ -20,7 +20,7 @@ import org.uberfire.client.callbacks.Callback;
 
 public interface ProjectWizard {
 
-    void initialise();
+    void setContent( final POM pom );
 
     void initialise( final GAV gav );
 
