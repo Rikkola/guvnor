@@ -28,20 +28,37 @@ import static org.junit.Assert.*;
 public class DependencyUpdaterTest {
 
     @Test
-    public void testAdd() throws Exception {
+    public void testEmptyDependency() throws Exception {
 
         Model model = new Model();
         ArrayList<Dependency> dependencies = new ArrayList<Dependency>();
-        dependencies.add(makeWorkbenchDependency("group", "artifact-id", "1.0"));
+        dependencies.add( new Dependency() );
 
         assertTrue(model.getDependencies().isEmpty());
 
         new DependencyUpdater(model.getDependencies()).updateDependencies(dependencies);
 
         assertEquals(1, model.getDependencies().size());
-        assertEquals("group", model.getDependencies().get(0).getGroupId());
-        assertEquals("artifact-id", model.getDependencies().get(0).getArtifactId());
-        assertEquals("1.0", model.getDependencies().get(0).getVersion());
+        assertNull( model.getDependencies().get( 0 ).getGroupId() );
+        assertNull( model.getDependencies().get( 0 ).getArtifactId() );
+        assertNull( model.getDependencies().get( 0 ).getVersion() );
+    }
+
+    @Test
+    public void testAdd() throws Exception {
+
+        Model model = new Model();
+        ArrayList<Dependency> dependencies = new ArrayList<Dependency>();
+        dependencies.add( makeWorkbenchDependency( "group", "artifact-id", "1.0" ) );
+
+        assertTrue( model.getDependencies().isEmpty() );
+
+        new DependencyUpdater( model.getDependencies() ).updateDependencies( dependencies );
+
+        assertEquals( 1, model.getDependencies().size() );
+        assertEquals( "group", model.getDependencies().get( 0 ).getGroupId() );
+        assertEquals( "artifact-id", model.getDependencies().get( 0 ).getArtifactId() );
+        assertEquals( "1.0", model.getDependencies().get( 0 ).getVersion() );
     }
 
     @Test

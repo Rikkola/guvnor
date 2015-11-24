@@ -68,6 +68,10 @@ public class GAV {
         return groupId + ":" + artifactId + ":" + version;
     }
 
+    public boolean isGAVEqual( Object o ) {
+        return equals( o );
+    }
+    
     @Override
     public boolean equals( Object o ) {
         if ( this == o ) {

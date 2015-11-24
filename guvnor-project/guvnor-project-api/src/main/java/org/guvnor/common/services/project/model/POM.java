@@ -74,8 +74,8 @@ public class POM {
         return gav;
     }
 
-    public List<Dependency> getDependencies() {
-        return dependencies;
+    public Dependencies getDependencies() {
+        return new Dependencies( dependencies );
     }
 
     public void setDependencies( List<Dependency> dependencies ) {
