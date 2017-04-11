@@ -22,6 +22,8 @@ import org.jboss.errai.common.client.api.annotations.Portable;
 public class Overview {
 
     private Metadata metadata;
+
+    // TODO: Is this project or module name?
     private String projectName;
 
     public Metadata getMetadata() {

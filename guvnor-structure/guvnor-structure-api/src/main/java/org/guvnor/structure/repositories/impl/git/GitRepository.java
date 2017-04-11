@@ -21,10 +21,11 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
+import org.guvnor.structure.repositories.Branch;
 import org.guvnor.structure.repositories.PublicURI;
 import org.guvnor.structure.repositories.Repository;
-import org.guvnor.structure.security.RepositoryResourceType;
 import org.jboss.errai.common.client.api.annotations.Portable;
 import org.uberfire.backend.vfs.Path;
 import org.uberfire.security.ResourceType;
@@ -37,28 +38,25 @@ public class GitRepository
 
     private final Map<String, Object> environment = new HashMap<String, Object>();
     private final List<PublicURI> publicURIs = new ArrayList<PublicURI>();
-
+    private final Map<String, Branch> branches = new HashMap<>();
     private String alias = null;
     private Path root;
-
     private Collection<String> groups = new ArrayList<String>();
-
     private boolean requiresRefresh = true;
-    private final Map<String, Path> branches = new HashMap<String, Path>();
 
     public GitRepository() {
     }
 
-    public GitRepository( final String alias ) {
+    public GitRepository(final String alias) {
         this.alias = alias;
     }
 
-    public GitRepository( final String alias,
-                          final List<PublicURI> publicURIs ) {
-        this( alias );
+    public GitRepository(final String alias,
+                         final List<PublicURI> publicURIs) {
+        this(alias);
 
-        if ( publicURIs != null && !publicURIs.isEmpty() ) {
-            this.publicURIs.addAll( publicURIs );
+        if (publicURIs != null && !publicURIs.isEmpty()) {
+            this.publicURIs.addAll(publicURIs);
         }
     }
 
@@ -78,23 +76,24 @@ public class GitRepository
     }
 
     @Override
-    public void addEnvironmentParameter( String key,
-                                         Object value ) {
-        environment.put( key, value );
+    public void addEnvironmentParameter(String key,
+                                        Object value) {
+        environment.put(key,
+                        value);
     }
 
-    public void setRoot( final Path root ) {
+    public void setRoot(final Path root) {
         this.root = root;
     }
 
-    public void setBranches( final Map<String, Path> branches ) {
+    public void setBranches(final Map<String, Branch> branches) {
         this.branches.clear();
-        this.branches.putAll( branches );
+        this.branches.putAll(branches);
     }
 
     @Override
-    public Collection<String> getBranches() {
-        return Collections.unmodifiableSet( branches.keySet() );
+    public Collection<Branch> getBranches() {
+        return Collections.unmodifiableCollection(branches.values());
     }
 
     @Override
@@ -103,8 +102,12 @@ public class GitRepository
     }
 
     @Override
-    public Path getBranchRoot( String branch ) {
-        return branches.get( branch );
+    public Optional<Branch> getBranch(final String branchName) {
+        if (branches.containsKey(branchName)) {
+            return Optional.of(branches.get(branchName));
+        } else {
+            return Optional.empty();
+        }
     }
 
     @Override
@@ -122,10 +125,10 @@ public class GitRepository
         return publicURIs;
     }
 
-    public void setPublicURIs( final List<PublicURI> publicURIs ) {
-        if ( publicURIs != null && !publicURIs.isEmpty() ) {
+    public void setPublicURIs(final List<PublicURI> publicURIs) {
+        if (publicURIs != null && !publicURIs.isEmpty()) {
             this.publicURIs.clear();
-            this.publicURIs.addAll( publicURIs );
+            this.publicURIs.addAll(publicURIs);
         }
     }
 
@@ -143,48 +146,48 @@ public class GitRepository
         return groups;
     }
 
-    public void setGroups( Collection<String> groups ) {
-        this.groups = new ArrayList<String>( groups );
+    public void setGroups(Collection<String> groups) {
+        this.groups = new ArrayList<String>(groups);
     }
 
     @Override
-    public String getDefaultBranch() {
-        if ( branches.containsKey( "master" ) ) {
-            return "master";
-        } else if ( !branches.isEmpty() ) {
-            return branches.keySet().iterator().next();
+    public Optional<Branch> getDefaultBranch() {
+        if (branches.containsKey("master")) {
+            return getBranch("master");
+        } else if (!branches.isEmpty()) {
+            return Optional.of(branches.values().iterator().next());
         } else {
-            return null;
+            return Optional.empty();
         }
     }
 
     @Override
-    public boolean equals( Object o ) {
-        if ( this == o ) {
+    public boolean equals(Object o) {
+        if (this == o) {
             return true;
         }
-        if ( !( o instanceof GitRepository ) ) {
+        if (!(o instanceof GitRepository)) {
             return false;
         }
 
         final GitRepository that = (GitRepository) o;
 
-        if ( alias != null ? !alias.equals( that.alias ) : that.alias != null ) {
+        if (alias != null ? !alias.equals(that.alias) : that.alias != null) {
             return false;
         }
-        if ( !environment.equals( that.environment ) ) {
+        if (!environment.equals(that.environment)) {
             return false;
         }
-        if ( !publicURIs.equals( that.publicURIs ) ) {
+        if (!publicURIs.equals(that.publicURIs)) {
             return false;
         }
-        if ( groups != null ? !groups.equals( that.groups ) : that.groups != null ) {
+        if (groups != null ? !groups.equals(that.groups) : that.groups != null) {
             return false;
         }
-        if ( root != null ? !root.equals( that.root ) : that.root != null ) {
+        if (root != null ? !root.equals(that.root) : that.root != null) {
             return false;
         }
-        if ( branches != null ? !branches.equals( that.branches ) : that.branches != null ) {
+        if (branches != null ? !branches.equals(that.branches) : that.branches != null) {
             return false;
         }
 
@@ -195,15 +198,15 @@ public class GitRepository
     public int hashCode() {
         int result = environment.hashCode();
         result = ~~result;
-        result = 31 * result + ( publicURIs.hashCode() );
+        result = 31 * result + (publicURIs.hashCode());
         result = ~~result;
-        result = 31 * result + ( alias != null ? alias.hashCode() : 0 );
+        result = 31 * result + (alias != null ? alias.hashCode() : 0);
         result = ~~result;
-        result = 31 * result + ( root != null ? root.hashCode() : 0 );
+        result = 31 * result + (root != null ? root.hashCode() : 0);
         result = ~~result;
-        result = 31 * result + ( groups != null ? groups.hashCode() : 0 );
+        result = 31 * result + (groups != null ? groups.hashCode() : 0);
         result = ~~result;
-        result = 31 * result + ( branches != null ? branches.hashCode() : 0 );
+        result = 31 * result + (branches != null ? branches.hashCode() : 0);
         result = ~~result;
         return result;
     }
@@ -224,8 +227,8 @@ public class GitRepository
         return requiresRefresh;
     }
 
-    public void addBranch( final String branchName,
-                           final Path path ) {
-        branches.put( branchName, path );
+    public void addBranch(final Branch branch) {
+        branches.put(branch.getName(),
+                     branch);
     }
 }

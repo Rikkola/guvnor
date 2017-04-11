@@ -31,37 +31,52 @@ public class ProjectController {
     private User user;
 
     @Inject
-    public ProjectController(AuthorizationManager authorizationManager, User user) {
+    public ProjectController(final AuthorizationManager authorizationManager,
+                             final User user) {
         this.authorizationManager = authorizationManager;
         this.user = user;
     }
 
-
     public boolean canCreateProjects() {
-        return authorizationManager.authorize(Project.RESOURCE_TYPE, ProjectAction.CREATE, user);
+        return authorizationManager.authorize(Project.RESOURCE_TYPE,
+                                              ProjectAction.CREATE,
+                                              user);
     }
 
     public boolean canReadProjects() {
-        return authorizationManager.authorize(Project.RESOURCE_TYPE, ProjectAction.READ, user);
+        return authorizationManager.authorize(Project.RESOURCE_TYPE,
+                                              ProjectAction.READ,
+                                              user);
     }
 
     public boolean canBuildProjects() {
-        return authorizationManager.authorize(Project.RESOURCE_TYPE, ProjectAction.BUILD, user);
+        // TODO Project not Module?
+        return authorizationManager.authorize(Project.RESOURCE_TYPE,
+                                              ProjectAction.BUILD,
+                                              user);
     }
 
-    public boolean canReadProject(Project repository) {
-        return authorizationManager.authorize(repository, ProjectAction.READ, user);
+    public boolean canReadProject(final Project repository) {
+        return authorizationManager.authorize(repository,
+                                              ProjectAction.READ,
+                                              user);
     }
 
-    public boolean canUpdateProject(Project repository) {
-        return authorizationManager.authorize(repository, ProjectAction.UPDATE, user);
+    public boolean canUpdateProject(final Project repository) {
+        return authorizationManager.authorize(repository,
+                                              ProjectAction.UPDATE,
+                                              user);
     }
 
-    public boolean canDeleteProject(Project repository) {
-        return authorizationManager.authorize(repository, ProjectAction.DELETE, user);
+    public boolean canDeleteProject(final Project repository) {
+        return authorizationManager.authorize(repository,
+                                              ProjectAction.DELETE,
+                                              user);
     }
 
-    public boolean canBuildProject(Project repository) {
-        return authorizationManager.authorize(repository, ProjectAction.BUILD, user);
+    public boolean canBuildProject(final Project repository) {
+        return authorizationManager.authorize(repository,
+                                              ProjectAction.BUILD,
+                                              user);
     }
 }

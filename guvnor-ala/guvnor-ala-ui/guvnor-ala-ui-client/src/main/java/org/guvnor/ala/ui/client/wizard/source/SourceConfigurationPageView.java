@@ -78,12 +78,12 @@ public class SourceConfigurationPageView
     private Select branches;
 
     @Inject
-    @DataField("project-form")
-    private Div projectForm;
+    @DataField("module-form")
+    private Div moduleForm;
 
     @Inject
     @DataField
-    private Select projects;
+    private Select modules;
 
     @Inject
     private TranslationService translationService;
@@ -121,8 +121,8 @@ public class SourceConfigurationPageView
     }
 
     @Override
-    public String getProject() {
-        return projects.getValue();
+    public String getModule() {
+        return modules.getValue();
     }
 
     @Override
@@ -173,7 +173,7 @@ public class SourceConfigurationPageView
     public void setProjectStatus(final FormStatus status) {
         checkNotNull("status",
                      status);
-        setFormStatus(projectForm,
+        setFormStatus(moduleForm,
                       status);
     }
 
@@ -183,12 +183,12 @@ public class SourceConfigurationPageView
         clearOrganizationUnits();
         clearRepositories();
         clearBranches();
-        clearProjects();
+        clearModules();
         this.runtimeName.setValue("");
         this.ous.setValue("");
         this.repos.setValue("");
         this.branches.setValue("");
-        this.projects.setValue("");
+        this.modules.setValue("");
     }
 
     @Override
@@ -210,9 +210,9 @@ public class SourceConfigurationPageView
     }
 
     @Override
-    public void addProject(String projectName) {
-        projects.add(newOption(projectName,
-                               projectName));
+    public void addProject(String moduleName) {
+        modules.add(newOption(moduleName,
+                              moduleName));
     }
 
     @Override
@@ -231,8 +231,8 @@ public class SourceConfigurationPageView
     }
 
     @Override
-    public void clearProjects() {
-        clear(projects);
+    public void clearModules() {
+        clear(modules);
     }
 
     @EventHandler("runtime-name")
@@ -255,9 +255,9 @@ public class SourceConfigurationPageView
         presenter.onBranchChange();
     }
 
-    @EventHandler("projects")
+    @EventHandler("modules")
     private void onProjectChange(@ForEvent("change") final Event event) {
-        presenter.onProjectChange();
+        presenter.onModuleChange();
     }
 
     private void enable(boolean enabled) {
@@ -265,7 +265,7 @@ public class SourceConfigurationPageView
         this.ous.setDisabled(!enabled);
         this.repos.setDisabled(!enabled);
         this.branches.setDisabled(!enabled);
-        this.projects.setDisabled(!enabled);
+        this.modules.setDisabled(!enabled);
     }
 
     private void resetFormState() {
@@ -277,7 +277,7 @@ public class SourceConfigurationPageView
                       FormStatus.VALID);
         setFormStatus(branchForm,
                       FormStatus.VALID);
-        setFormStatus(projectForm,
+        setFormStatus(moduleForm,
                       FormStatus.VALID);
     }
 

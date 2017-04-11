@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Red Hat, Inc. and/or its affiliates.
+ * Copyright 2017 Red Hat, Inc. and/or its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,82 +19,62 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.guvnor.common.services.project.security.ProjectResourceType;
+import org.guvnor.structure.organizationalunit.OrganizationalUnit;
+import org.guvnor.structure.repositories.Branch;
+import org.guvnor.structure.repositories.Repository;
 import org.jboss.errai.common.client.api.annotations.Portable;
 import org.uberfire.backend.vfs.Path;
 import org.uberfire.commons.data.Cacheable;
-import org.uberfire.commons.validation.PortablePreconditions;
 import org.uberfire.security.ResourceType;
 import org.uberfire.security.authz.RuntimeContentResource;
 import org.uberfire.util.URIUtil;
 
-/**
- * An item representing a project
- */
+import static org.uberfire.commons.validation.PortablePreconditions.checkNotNull;
+
 @Portable
-public class Project implements RuntimeContentResource,
-                                Cacheable {
+public class Project
+        implements RuntimeContentResource,
+                   Cacheable {
 
     public static final ProjectResourceType RESOURCE_TYPE = new ProjectResourceType();
-
-    protected Path rootPath;
-    protected Path pomXMLPath;
-    protected String projectName;
-
-    protected Collection<String> modules = new ArrayList<String>();
-    private Collection<String> groups = new ArrayList<String>();
-
+    private Repository repository;
+    private Branch branch;
+    private Module mainModule;
+    private OrganizationalUnit organizationalUnit;
     private boolean requiresRefresh = true;
 
-    // only loaded by ProjectService.getProjects()
-    private POM pom;
+    private Collection<String> groups = new ArrayList<>();
 
     public Project() {
-        //For Errai-marshalling
     }
 
-    public Project( final Path rootPath,
-                    final Path pomXMLPath,
-                    final String projectName ) {
-        this.rootPath = PortablePreconditions.checkNotNull( "rootPath",
-                                                            rootPath );
-        this.pomXMLPath = PortablePreconditions.checkNotNull( "pomXMLPath",
-                                                              pomXMLPath );
-        this.projectName = PortablePreconditions.checkNotNull( "projectName",
-                                                               projectName );
+    public Project(final OrganizationalUnit organizationalUnit,
+                   final Repository repository,
+                   final Branch branch,
+                   final Module mainModule) {
+        this.organizationalUnit = checkNotNull("organizationalUnit",
+                                               organizationalUnit);
+        this.repository = checkNotNull("repository",
+                                       repository);
+        this.branch = checkNotNull("branch",
+                                   branch);
+        this.mainModule = mainModule;
     }
 
-    public Project( final Path rootPath,
-                    final Path pomXMLPath,
-                    final String projectName,
-                    final Collection<String> modules ) {
-        this( rootPath, pomXMLPath, projectName );
-        this.modules = modules;
+    public OrganizationalUnit getOrganizationalUnit() {
+        return organizationalUnit;
     }
 
-    public Path getRootPath() {
-        return this.rootPath;
+    public Repository getRepository() {
+        return repository;
     }
 
-    public Path getPomXMLPath() {
-        return this.pomXMLPath;
+    public Branch getBranch() {
+        return branch;
     }
 
-    public String getProjectName() {
-        return this.projectName;
-    }
-
-    @Override
-    public String getIdentifier() {
-        return getRootPath().toURI();
-    }
-
-    public String getEncodedIdentifier() {
-        return URIUtil.encodeQueryString( getIdentifier() );
-    }
-
-    @Override
-    public ResourceType getResourceType() {
-        return RESOURCE_TYPE;
+    public Module getMainModule() {
+        return mainModule;
     }
 
     public Collection<String> getGroups() {
@@ -102,8 +82,17 @@ public class Project implements RuntimeContentResource,
     }
 
     @Override
-    public void markAsCached() {
-        this.requiresRefresh = false;
+    public String getIdentifier() {
+        return branch.getPath().toURI();
+    }
+
+    public String getEncodedIdentifier() {
+        return URIUtil.encodeQueryString(getIdentifier());
+    }
+
+    @Override
+    public ResourceType getResourceType() {
+        return RESOURCE_TYPE;
     }
 
     @Override
@@ -111,59 +100,60 @@ public class Project implements RuntimeContentResource,
         return requiresRefresh;
     }
 
-    public Collection<String> getModules() {
-        return modules;
+    public String getName() {
+        if (mainModule != null && mainModule.getModuleName() != null) {
+            return mainModule.getModuleName();
+        } else {
+            return repository.getAlias();
+        }
     }
 
-    public POM getPom() {
-        return pom;
+    @Override
+    public void markAsCached() {
+        this.requiresRefresh = false;
     }
 
-    public void setPom( POM pom ) {
-        this.pom = pom;
+    public Path getRootPath() {
+        return branch.getPath();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        Project project = (Project) o;
+
+        if (requiresRefresh != project.requiresRefresh) {
+            return false;
+        }
+        if (!repository.equals(project.repository)) {
+            return false;
+        }
+        if (!branch.equals(project.branch)) {
+            return false;
+        }
+        if (mainModule != null ? !mainModule.equals(project.mainModule) : project.mainModule != null) {
+            return false;
+        }
+        if (!organizationalUnit.equals(project.organizationalUnit)) {
+            return false;
+        }
+        return groups.equals(project.groups);
     }
 
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 17 * hash + ( this.rootPath != null ? this.rootPath.hashCode() : 0 );
-        hash = ~~hash;
-        hash = 17 * hash + ( this.pomXMLPath != null ? this.pomXMLPath.hashCode() : 0 );
-        hash = ~~hash;
-        hash = 17 * hash + ( this.projectName != null ? this.projectName.hashCode() : 0 );
-        hash = ~~hash;
-        hash = 17 * hash + ( this.modules != null ? this.modules.hashCode() : 0 );
-        hash = ~~hash;
-        hash = 17 * hash + ( this.groups != null ? this.groups.hashCode() : 0 );
-        hash = ~~hash;
-        return hash;
+        int result = ~~repository.hashCode();
+        result = 31 * result + ~~branch.hashCode();
+        result = 31 * result + (mainModule != null ? ~~mainModule.hashCode() : 0);
+        result = 31 * result + ~~organizationalUnit.hashCode();
+        result = 31 * result + (requiresRefresh ? 1 : 0);
+        result = 31 * result + ~~groups.hashCode();
+        return result;
     }
-
-    @Override
-    public boolean equals( Object obj ) {
-        if ( obj == null ) {
-            return false;
-        }
-        if ( getClass() != obj.getClass() ) {
-            return false;
-        }
-        final Project other = (Project) obj;
-        if ( this.rootPath != other.rootPath && ( this.rootPath == null || !this.rootPath.equals( other.rootPath ) ) ) {
-            return false;
-        }
-        if ( this.pomXMLPath != other.pomXMLPath && ( this.pomXMLPath == null || !this.pomXMLPath.equals( other.pomXMLPath ) ) ) {
-            return false;
-        }
-        if ( ( this.projectName == null ) ? ( other.projectName != null ) : !this.projectName.equals( other.projectName ) ) {
-            return false;
-        }
-        if ( this.modules != other.modules && ( this.modules == null || !this.modules.equals( other.modules ) ) ) {
-            return false;
-        }
-        if ( this.groups != other.groups && ( this.groups == null || !this.groups.equals( other.groups ) ) ) {
-            return false;
-        }
-        return true;
-    }
-
 }

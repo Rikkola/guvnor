@@ -22,24 +22,23 @@ import javax.enterprise.event.Event;
 import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 
+import org.guvnor.common.services.project.model.Module;
 import org.guvnor.common.services.project.model.Package;
 import org.guvnor.common.services.project.model.Project;
 import org.guvnor.structure.organizationalunit.OrganizationalUnit;
 import org.guvnor.structure.organizationalunit.UpdatedOrganizationalUnitEvent;
-import org.guvnor.structure.repositories.Repository;
 import org.guvnor.structure.repositories.RepositoryRemovedEvent;
 import org.uberfire.backend.vfs.Path;
 
 /**
- * A specialized implementation that also has Project and Package scope
+ * A specialized implementation that also has Module and Package scope
  */
 @ApplicationScoped
 public class ProjectContext {
 
     private OrganizationalUnit activeOrganizationalUnit;
-    private Repository activeRepository;
-    private String activeBranch;
     private Project activeProject;
+    private Module activeModule;
     private Package activePackage;
 
     private Map<ProjectContextChangeHandle, ProjectContextChangeHandler> changeHandlers = new HashMap<ProjectContextChangeHandle, ProjectContextChangeHandler>();
@@ -55,7 +54,7 @@ public class ProjectContext {
     }
 
     public void onRepositoryRemoved(final @Observes RepositoryRemovedEvent event) {
-        if (event.getRepository().equals(activeRepository)) {
+        if (event.getRepository().equals(activeProject.getRepository())) {
             contextChangeEvent.fire(new ProjectContextChangeEvent(activeOrganizationalUnit));
         }
     }
@@ -66,9 +65,8 @@ public class ProjectContext {
 
     public void onProjectContextChanged(@Observes final ProjectContextChangeEvent event) {
         this.setActiveOrganizationalUnit(event.getOrganizationalUnit());
-        this.setActiveRepository(event.getRepository());
-        this.setActiveBranch(event.getBranch());
         this.setActiveProject(event.getProject());
+        this.setActiveModule(event.getModule());
         this.setActivePackage(event.getPackage());
 
         for (ProjectContextChangeHandler handler : changeHandlers.values()) {
@@ -76,8 +74,8 @@ public class ProjectContext {
         }
     }
 
-    public Path getActiveRepositoryRoot(){
-        return getActiveRepository().getBranchRoot( getActiveBranch() );
+    public Path getActiveRepositoryRoot() {
+        return activeProject.getBranch().getPath();
     }
 
     public void setActiveOrganizationalUnit(final OrganizationalUnit activeOrganizationalUnit) {
@@ -88,41 +86,34 @@ public class ProjectContext {
         return this.activeOrganizationalUnit;
     }
 
-    public void setActiveRepository(final Repository activeRepository) {
-        this.activeRepository = activeRepository;
-    }
-
-    public String getActiveBranch() {
-        return activeBranch;
-    }
-
-    public void setActiveBranch( final String activeBranch ) {
-        this.activeBranch = activeBranch;
-    }
-
-    public Repository getActiveRepository() {
-        return this.activeRepository;
+    public void setActiveProject(final Project activeProject) {
+        this.activeProject = activeProject;
     }
 
     public Project getActiveProject() {
         return this.activeProject;
     }
 
-    public void setActiveProject(final Project activeProject) {
-        this.activeProject = activeProject;
+    public Module getActiveModule() {
+        return this.activeModule;
+    }
+
+    public void setActiveModule(final Module activeModule) {
+        this.activeModule = activeModule;
     }
 
     public Package getActivePackage() {
         return this.activePackage;
     }
 
-    public void setActivePackage( final Package activePackage ) {
+    public void setActivePackage(final Package activePackage) {
         this.activePackage = activePackage;
     }
 
     public ProjectContextChangeHandle addChangeHandler(final ProjectContextChangeHandler changeHandler) {
         ProjectContextChangeHandle handle = new ProjectContextChangeHandle();
-        changeHandlers.put(handle, changeHandler);
+        changeHandlers.put(handle,
+                           changeHandler);
         return handle;
     }
 

@@ -30,6 +30,7 @@ import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 import org.apache.maven.model.io.xpp3.MavenXpp3Writer;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 import org.guvnor.common.services.project.model.GAV;
+import org.guvnor.common.services.project.model.MavenRepository;
 import org.guvnor.common.services.project.model.POM;
 
 @Dependent
@@ -76,8 +77,8 @@ public class POMContentHandler {
 
     private ArrayList<Repository> getRepositories( final POM pom ) {
         ArrayList<Repository> result = new ArrayList<Repository>();
-        for (org.guvnor.common.services.project.model.Repository repository : pom.getRepositories()) {
-            result.add( fromClientModelToPom( repository ) );
+        for (MavenRepository mavenRepository : pom.getRepositories()) {
+            result.add( fromClientModelToPom(mavenRepository) );
         }
         return result;
     }
@@ -117,7 +118,7 @@ public class POMContentHandler {
                          new MavenXpp3Reader().read( new StringReader( originalPomAsText ) ) );
     }
 
-    private Repository fromClientModelToPom( final org.guvnor.common.services.project.model.Repository from ) {
+    private Repository fromClientModelToPom( final MavenRepository from ) {
         Repository to = new Repository();
         to.setId(from.getId());
         to.setName(from.getName());
@@ -161,8 +162,8 @@ public class POMContentHandler {
         return pomModel;
     }
 
-    private org.guvnor.common.services.project.model.Repository fromPomModelToClientModel( final Repository from ) {
-        org.guvnor.common.services.project.model.Repository to = new org.guvnor.common.services.project.model.Repository();
+    private MavenRepository fromPomModelToClientModel(final Repository from ) {
+        MavenRepository to = new MavenRepository();
 
         to.setId(from.getId());
         to.setName(from.getName());

@@ -27,7 +27,7 @@ import org.guvnor.common.services.project.builder.model.BuildMessage;
 import org.guvnor.common.services.project.builder.model.BuildResults;
 import org.guvnor.common.services.project.builder.service.BuildService;
 import org.guvnor.common.services.project.context.ProjectContextChangeEvent;
-import org.guvnor.common.services.project.model.Project;
+import org.guvnor.common.services.project.model.Module;
 import org.guvnor.messageconsole.client.console.resources.MessageConsoleResources;
 import org.guvnor.messageconsole.events.MessageUtils;
 import org.guvnor.messageconsole.events.PublishBatchMessagesEvent;
@@ -61,7 +61,7 @@ public class MessageConsoleScreen implements RefreshMenuBuilder.SupportsRefresh 
     @Inject
     private MessageConsoleViewImpl view;
 
-    private Project project;
+    private Module module;
 
     private Menus menus;
 
@@ -87,7 +87,7 @@ public class MessageConsoleScreen implements RefreshMenuBuilder.SupportsRefresh 
                 publishBatchMessagesEvent.fire( batchMessages );
                 view.hideBusyIndicator();
             }
-        }, new HasBusyIndicatorDefaultErrorCallback( view ) ).build( project );
+        }, new HasBusyIndicatorDefaultErrorCallback( view ) ).build(module);
     }
 
     private void makeMenuBar() {
@@ -110,8 +110,8 @@ public class MessageConsoleScreen implements RefreshMenuBuilder.SupportsRefresh 
     }
 
     public void selectedProjectChanged( @Observes final ProjectContextChangeEvent event ) {
-        this.project = event.getProject();
-        this.menus.getItems().get( 0 ).setEnabled( project != null );
+        this.module = event.getModule();
+        this.menus.getItems().get( 0 ).setEnabled(module != null );
     }
 
     @DefaultPosition

@@ -22,10 +22,11 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.guvnor.common.services.project.model.Project;
-import org.guvnor.common.services.project.service.ProjectService;
+import org.guvnor.common.services.project.model.Module;
+import org.guvnor.common.services.project.service.ModuleService;
 import org.guvnor.structure.organizationalunit.OrganizationalUnit;
 import org.guvnor.structure.organizationalunit.OrganizationalUnitService;
+import org.guvnor.structure.repositories.Branch;
 import org.guvnor.structure.repositories.Repository;
 import org.guvnor.structure.repositories.RepositoryService;
 import org.jboss.errai.security.shared.api.identity.User;
@@ -34,6 +35,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.uberfire.backend.vfs.Path;
 import org.uberfire.security.authz.AuthorizationManager;
 
 import static org.junit.Assert.*;
@@ -59,7 +61,7 @@ public class SourceServiceImplTest {
     private RepositoryService repositoryService;
 
     @Mock
-    private ProjectService<? extends Project> projectService;
+    private ModuleService<? extends Module> moduleService;
 
     @Mock
     private AuthorizationManager authorizationManager;
@@ -78,7 +80,7 @@ public class SourceServiceImplTest {
 
         service = new SourceServiceImpl(organizationalUnitService,
                                         repositoryService,
-                                        projectService,
+                                        moduleService,
                                         authorizationManager,
                                         identity);
     }
@@ -136,10 +138,13 @@ public class SourceServiceImplTest {
 
     @Test
     public void testGetBranches() {
-        List<String> branches = new ArrayList<>();
-        branches.add("branch1");
-        branches.add("branch2");
-        branches.add("branch3");
+        List<Branch> branches = new ArrayList<>();
+        branches.add(new Branch("branch1",
+                                mock(Path.class)));
+        branches.add(new Branch("branch2",
+                                mock(Path.class)));
+        branches.add(new Branch("branch3",
+                                mock(Path.class)));
         Repository repository = mock(Repository.class);
         when(repository.getBranches()).thenReturn(branches);
 
@@ -153,16 +158,18 @@ public class SourceServiceImplTest {
     @Test
     public void testProjects() {
         Repository repository = mock(Repository.class);
+        Branch branch = new Branch(BRANCH_NAME,
+                                   mock(Path.class));
+        doReturn(branch).when(repository).getBranch(eq(BRANCH_NAME));
         @SuppressWarnings("unchecked")
-        Set<Project> projects = mock(Set.class);
+        Set<Module> modules = mock(Set.class);
 
         when(repositoryService.getRepository(REPO_NAME)).thenReturn(repository);
-        when(projectService.getProjects(repository,
-                                        BRANCH_NAME)).thenReturn(projects);
+        when(moduleService.getModules(branch)).thenReturn(modules);
 
-        Collection<Project> result = service.getProjects(REPO_NAME,
-                                                         BRANCH_NAME);
-        assertEquals(projects,
+        Collection<Module> result = service.getModules(REPO_NAME,
+                                                       BRANCH_NAME);
+        assertEquals(modules,
                      result);
     }
 

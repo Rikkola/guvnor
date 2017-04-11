@@ -16,9 +16,11 @@
 
 package org.guvnor.common.services.project.context;
 
+import org.guvnor.common.services.project.model.Module;
 import org.guvnor.common.services.project.model.Package;
 import org.guvnor.common.services.project.model.Project;
 import org.guvnor.structure.organizationalunit.OrganizationalUnit;
+import org.guvnor.structure.repositories.Branch;
 import org.guvnor.structure.repositories.Repository;
 import org.guvnor.structure.repositories.RepositoryRemovedEvent;
 import org.guvnor.structure.repositories.impl.git.GitRepository;
@@ -35,7 +37,7 @@ import org.uberfire.mocks.EventSourceMock;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-@RunWith( MockitoJUnitRunner.class )
+@RunWith(MockitoJUnitRunner.class)
 public class ProjectContextTest {
 
     @Spy
@@ -45,94 +47,112 @@ public class ProjectContextTest {
 
     @Before
     public void setUp() throws Exception {
-        context = new ProjectContext( changeEvent );
+        context = new ProjectContext(changeEvent);
 
-        doAnswer( new Answer() {
+        doAnswer(new Answer() {
             @Override
-            public Object answer( InvocationOnMock invocationOnMock ) throws Throwable {
-                context.onProjectContextChanged( ( ProjectContextChangeEvent ) invocationOnMock.getArguments()[0] );
+            public Object answer(InvocationOnMock invocationOnMock) throws Throwable {
+                context.onProjectContextChanged((ProjectContextChangeEvent) invocationOnMock.getArguments()[0]);
                 return null;
             }
-        } ).when( changeEvent ).fire( any( ProjectContextChangeEvent.class ) );
-
+        }).when(changeEvent).fire(any(ProjectContextChangeEvent.class));
     }
 
     @Test
     public void testGetActiveRepositoryRoot() throws Exception {
-        final Repository repository = mock( Repository.class );
 
-        context.setActiveRepository( repository );
-        context.setActiveBranch( "dev" );
+        final Path devRoot = mock(Path.class);
 
-        final Path devRoot = mock( Path.class );
-        when( repository.getBranchRoot( "dev" ) ).thenReturn( devRoot );
+        context.setActiveProject(new Project(mock(OrganizationalUnit.class),
+                                             mock(Repository.class),
+                                             new Branch("dev",
+                                                        devRoot),
+                                             mock(Module.class)));
 
-        assertEquals( devRoot, context.getActiveRepositoryRoot() );
+        assertEquals(devRoot,
+                     context.getActiveRepositoryRoot());
     }
 
     @Test
     public void testRepositoryDeleted() throws Exception {
-        OrganizationalUnit organizationalUnit = mock( OrganizationalUnit.class );
-        GitRepository repository = new GitRepository();
+        final OrganizationalUnit organizationalUnit = mock(OrganizationalUnit.class);
+        final GitRepository repository = new GitRepository();
 
-        context.setActiveOrganizationalUnit( organizationalUnit );
-        context.setActiveRepository( repository );
+        context.setActiveOrganizationalUnit(organizationalUnit);
+        context.setActiveProject(new Project(organizationalUnit,
+                                             repository,
+                                             mock(Branch.class),
+                                             mock(Module.class)));
 
-        RepositoryRemovedEvent repositoryRemovedEvent = new RepositoryRemovedEvent( repository );
+        assertNotNull(context.getActiveProject());
 
-        context.onRepositoryRemoved( repositoryRemovedEvent );
+        final RepositoryRemovedEvent repositoryRemovedEvent = new RepositoryRemovedEvent(repository);
+        context.onRepositoryRemoved(repositoryRemovedEvent);
 
-        assertEquals( organizationalUnit, context.getActiveOrganizationalUnit() );
-        assertNull( context.getActiveRepository() );
+        assertEquals(organizationalUnit,
+                     context.getActiveOrganizationalUnit());
+        assertNull(context.getActiveProject());
     }
 
     @Test
     public void testIgnoreRepositoryDeletedEventIfTheActiveRepositoryWasNotDeleted() throws Exception {
 
-        GitRepository activeRepository = new GitRepository( "active repo" );
-        GitRepository deletedRepository = new GitRepository( "deleted repo" );
+        GitRepository deletedRepository = new GitRepository("deleted repo");
 
-        context.setActiveRepository( activeRepository );
+        final Project activeProject = new Project(mock(OrganizationalUnit.class),
+                                                  new GitRepository("active repo"),
+                                                  mock(Branch.class),
+                                                  mock(Module.class));
+        context.setActiveProject(activeProject);
 
-        RepositoryRemovedEvent repositoryRemovedEvent = new RepositoryRemovedEvent(deletedRepository);
+        final RepositoryRemovedEvent repositoryRemovedEvent = new RepositoryRemovedEvent(deletedRepository);
 
         context.onRepositoryRemoved(repositoryRemovedEvent);
 
-        assertEquals(activeRepository, context.getActiveRepository());
-
+        assertEquals(activeProject,
+                     context.getActiveProject());
     }
 
     @Test
     public void testContextChanged() throws Exception {
-        OrganizationalUnit oldOrganizationalUnit = mock(OrganizationalUnit.class);
-        Repository oldRepository = mock(Repository.class);
-        Package oldPackage = new Package();
-        Project oldProject = new Project();
+        final OrganizationalUnit oldOrganizationalUnit = mock(OrganizationalUnit.class);
+        final Repository oldRepository = mock(Repository.class);
+        final Package oldPackage = new Package();
+        final Module oldModule = new Module();
 
         context.setActiveOrganizationalUnit(oldOrganizationalUnit);
-        context.setActiveRepository(oldRepository);
+        context.setActiveProject(new Project(oldOrganizationalUnit,
+                                             oldRepository,
+                                             mock(Branch.class),
+                                             mock(Module.class)));
         context.setActivePackage(oldPackage);
-        context.setActiveProject(oldProject);
+        context.setActiveModule(oldModule);
 
-        OrganizationalUnit newOrganizationalUnit = mock(OrganizationalUnit.class);
-        Repository newRepository = mock(Repository.class);
-        String newBranch = "master";
-        Package newPackage = new Package();
-        Project newProject = new Project();
+        final OrganizationalUnit newOrganizationalUnit = mock(OrganizationalUnit.class);
+        final Branch newBranch = new Branch("master",
+                                            mock(Path.class));
+        final Package newPackage = new Package();
+        final Module newModule = new Module();
 
-        ProjectContextChangeHandler changeHandler = mock(ProjectContextChangeHandler.class);
+        final ProjectContextChangeHandler changeHandler = mock(ProjectContextChangeHandler.class);
         context.addChangeHandler(changeHandler);
 
-        context.onProjectContextChanged(new ProjectContextChangeEvent(newOrganizationalUnit,
-                                                                      newRepository,
-                                                                      newBranch,
-                                                                      newProject,
+        final Project newProject = new Project(newOrganizationalUnit,
+                                               mock(Repository.class),
+                                               newBranch,
+                                               mock(Module.class));
+        context.onProjectContextChanged(new ProjectContextChangeEvent(newProject,
+                                                                      newModule,
                                                                       newPackage));
 
-        assertEquals(newOrganizationalUnit, context.getActiveOrganizationalUnit());
-        assertEquals(newRepository, context.getActiveRepository());
-        assertEquals(newProject, context.getActiveProject());
-        assertEquals(newPackage, context.getActivePackage());
+        assertEquals(newOrganizationalUnit,
+                     context.getActiveOrganizationalUnit());
+        assertEquals(newProject,
+                     context.getActiveProject());
+        assertEquals(newModule,
+                     context.getActiveModule());
+        assertEquals(newPackage,
+                     context.getActivePackage());
         verify(changeHandler).onChange();
     }
 
@@ -151,8 +171,7 @@ public class ProjectContextTest {
 
         context.onProjectContextChanged(new ProjectContextChangeEvent());
 
-        verify(changeHandler, never()).onChange();
-
+        verify(changeHandler,
+               never()).onChange();
     }
-
 }

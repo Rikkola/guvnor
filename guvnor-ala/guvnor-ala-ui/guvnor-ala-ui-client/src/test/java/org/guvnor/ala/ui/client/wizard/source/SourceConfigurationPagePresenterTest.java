@@ -23,7 +23,7 @@ import com.google.gwtmockito.GwtMockitoTestRunner;
 import org.guvnor.ala.ui.client.widget.FormStatus;
 import org.guvnor.ala.ui.model.InternalGitSource;
 import org.guvnor.ala.ui.service.SourceService;
-import org.guvnor.common.services.project.model.Project;
+import org.guvnor.common.services.project.model.Module;
 import org.jboss.errai.common.client.api.Caller;
 import org.junit.Assert;
 import org.junit.Before;
@@ -34,7 +34,7 @@ import org.uberfire.ext.widgets.core.client.wizards.WizardPageStatusChangeEvent;
 import org.uberfire.mocks.CallerMock;
 import org.uberfire.mocks.EventSourceMock;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 @RunWith(GwtMockitoTestRunner.class)
@@ -75,14 +75,14 @@ public class SourceConfigurationPagePresenterTest {
 
     private List<String> branches;
 
-    private List<Project> projects;
+    private List<Module> modules;
 
     @Before
     public void setUp() {
         ous = createOUs();
         repositories = createRepositories();
         branches = createBranches();
-        projects = createProjects();
+        modules = createModules();
 
         sourceServiceCaller = spy(new CallerMock<>(sourceService));
         presenter = new SourceConfigurationPagePresenter(view,
@@ -106,7 +106,7 @@ public class SourceConfigurationPagePresenterTest {
         verify(view,
                times(1)).clearBranches();
         verify(view,
-               times(1)).clearProjects();
+               times(1)).clearModules();
     }
 
     @Test
@@ -115,7 +115,7 @@ public class SourceConfigurationPagePresenterTest {
         when(view.getOU()).thenReturn(EMPTY_VALUE);
         when(view.getRepository()).thenReturn(EMPTY_VALUE);
         when(view.getBranch()).thenReturn(EMPTY_VALUE);
-        when(view.getProject()).thenReturn(EMPTY_VALUE);
+        when(view.getModule()).thenReturn(EMPTY_VALUE);
 
         presenter.isComplete(Assert::assertFalse);
 
@@ -131,7 +131,7 @@ public class SourceConfigurationPagePresenterTest {
         when(view.getBranch()).thenReturn(SOME_VALUE);
         presenter.isComplete(Assert::assertFalse);
 
-        when(view.getProject()).thenReturn(SOME_VALUE);
+        when(view.getModule()).thenReturn(SOME_VALUE);
         //completed when al values are in place.
         presenter.isComplete(Assert::assertTrue);
     }
@@ -142,7 +142,7 @@ public class SourceConfigurationPagePresenterTest {
         when(view.getOU()).thenReturn(OU);
         when(view.getRepository()).thenReturn(REPOSITORY);
         when(view.getBranch()).thenReturn(BRANCH);
-        when(view.getProject()).thenReturn(PROJECT);
+        when(view.getModule()).thenReturn(PROJECT);
 
         InternalGitSource source = (InternalGitSource) presenter.buildSource();
         assertEquals(OU,
@@ -210,7 +210,7 @@ public class SourceConfigurationPagePresenterTest {
         verify(view,
                times(2)).clearBranches();
         verify(view,
-               times(2)).clearProjects();
+               times(2)).clearModules();
 
         verityRepositoriesWereLoaded();
         verifyWizardEvent();
@@ -237,7 +237,7 @@ public class SourceConfigurationPagePresenterTest {
         verify(view,
                times(2)).clearBranches();
         verify(view,
-               times(2)).clearProjects();
+               times(2)).clearModules();
 
         verifyBranchesWereLoaded();
         verifyWizardEvent();
@@ -256,8 +256,8 @@ public class SourceConfigurationPagePresenterTest {
     public void testOnBranchChangeValid() {
         when(view.getRepository()).thenReturn(REPOSITORY);
         when(view.getBranch()).thenReturn(BRANCH);
-        when(sourceService.getProjects(REPOSITORY,
-                                       BRANCH)).thenReturn(projects);
+        when(sourceService.getModules(REPOSITORY,
+                                      BRANCH)).thenReturn(modules);
 
         presenter.onBranchChange();
 
@@ -265,7 +265,7 @@ public class SourceConfigurationPagePresenterTest {
                times(1)).setBranchStatus(FormStatus.VALID);
 
         verify(view,
-               times(2)).clearProjects();
+               times(2)).clearModules();
 
         verifyProjectsWereLoaded();
         verifyWizardEvent();
@@ -282,8 +282,8 @@ public class SourceConfigurationPagePresenterTest {
 
     @Test
     public void testOnProjectChangeValid() {
-        when(view.getProject()).thenReturn(PROJECT);
-        presenter.onProjectChange();
+        when(view.getModule()).thenReturn(PROJECT);
+        presenter.onModuleChange();
         verify(view,
                times(1)).setProjectStatus(FormStatus.VALID);
         verifyWizardEvent();
@@ -291,8 +291,8 @@ public class SourceConfigurationPagePresenterTest {
 
     @Test
     public void testOnProjectChangeInValid() {
-        when(view.getProject()).thenReturn(EMPTY_VALUE);
-        presenter.onProjectChange();
+        when(view.getModule()).thenReturn(EMPTY_VALUE);
+        presenter.onModuleChange();
         verify(view,
                times(1)).setProjectStatus(FormStatus.ERROR);
         verifyWizardEvent();
@@ -309,8 +309,8 @@ public class SourceConfigurationPagePresenterTest {
     }
 
     private void verifyProjectsWereLoaded() {
-        projects.forEach(project -> verify(view,
-                                           times(1)).addProject(project.getProjectName()));
+        modules.forEach(module -> verify(view,
+                                         times(1)).addProject(module.getModuleName()));
     }
 
     private List<String> createOUs() {
@@ -328,11 +328,11 @@ public class SourceConfigurationPagePresenterTest {
                             "Branch.name.");
     }
 
-    private List<Project> createProjects() {
-        List<Project> elements = new ArrayList<>();
+    private List<Module> createModules() {
+        List<Module> elements = new ArrayList<>();
         for (int i = 0; i < ELEMENTS_SIZE; i++) {
-            Project project = mock(Project.class);
-            when(project.getProjectName()).thenReturn("Project.name." + i);
+            Module module = mock(Module.class);
+            when(module.getModuleName()).thenReturn("Module.name." + i);
         }
         return elements;
     }

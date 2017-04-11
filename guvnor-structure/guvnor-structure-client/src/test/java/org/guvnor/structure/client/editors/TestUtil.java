@@ -16,23 +16,34 @@
 
 package org.guvnor.structure.client.editors;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
+import org.guvnor.structure.repositories.Branch;
 import org.guvnor.structure.repositories.Repository;
+import org.uberfire.backend.vfs.Path;
 
 import static org.mockito.Mockito.*;
 
 public class TestUtil {
 
-    public static Repository makeRepository( final String alias,
-                                             final String... branches ) {
-        final Repository repository = mock( Repository.class );
+    public static Repository makeRepository(final String alias,
+                                            final String... branches) {
+        final Repository repository = mock(Repository.class);
 
-        when( repository.getAlias() ).thenReturn( alias );
+        when(repository.getAlias()).thenReturn(alias);
 
-        when( repository.getBranches() ).thenReturn( Arrays.asList( branches ) );
+        final List<Branch> branchList = new ArrayList<>();
+        for (final String branchName : branches) {
+            branchList.add(new Branch(branchName,
+                                      mock(Path.class)));
+        }
 
-        when( repository.getDefaultBranch() ).thenReturn( "master" );
+        when(repository.getBranches()).thenReturn(branchList);
+
+        when(repository.getDefaultBranch()).thenReturn(Optional.of(new Branch("master",
+                                                                              mock(Path.class))));
 
         return repository;
     }

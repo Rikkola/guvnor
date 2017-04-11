@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
@@ -32,9 +31,11 @@ import org.guvnor.common.services.project.builder.model.BuildResults;
 import org.guvnor.common.services.project.builder.service.BuildService;
 import org.guvnor.common.services.project.model.GAV;
 import org.guvnor.common.services.project.model.MavenRepositoryMetadata;
+import org.guvnor.common.services.project.model.Module;
 import org.guvnor.common.services.project.model.POM;
 import org.guvnor.common.services.project.model.Project;
 import org.guvnor.common.services.project.service.GAVAlreadyExistsException;
+import org.guvnor.common.services.project.service.ModuleService;
 import org.guvnor.common.services.project.service.ProjectService;
 import org.guvnor.common.services.shared.test.TestResultMessage;
 import org.guvnor.common.services.shared.test.TestService;
@@ -59,14 +60,16 @@ import org.uberfire.io.IOService;
 @ApplicationScoped
 public class JobRequestHelper {
 
-    public static final String GUVNOR_BASE_URL = "/";
     private static final Logger logger = LoggerFactory.getLogger(JobRequestHelper.class);
 
     @Inject
     private RepositoryService repositoryService;
 
     @Inject
-    private ProjectService<? extends Project> projectService;
+    private ModuleService<? extends Module> moduleService;
+
+    @Inject
+    private ProjectService projectService;
 
     @Inject
     private BuildService buildService;
@@ -183,29 +186,29 @@ public class JobRequestHelper {
     }
 
     public JobResult createProject(final String jobId,
-                                   final String repositoryAlias,
+                                   final String organizationalUnitName,
                                    final String projectName,
                                    String projectGroupId,
                                    String projectVersion,
                                    String projectDescription) {
-        JobResult result = new JobResult();
+
+        final JobResult result = new JobResult();
         result.setJobId(jobId);
 
-        org.uberfire.java.nio.file.Path repositoryPath = getRepositoryRootPath(repositoryAlias);
-
-        if (projectGroupId == null || projectGroupId.trim().isEmpty()) {
-            projectGroupId = projectName;
-        }
-        if (projectVersion == null || projectVersion.trim().isEmpty()) {
-            projectVersion = "1.0";
-        }
-
-        if (repositoryPath == null) {
+        final OrganizationalUnit organizationalUnit = organizationalUnitService.getOrganizationalUnit(organizationalUnitName);
+        if (organizationalUnit == null) {
             result.setStatus(JobStatus.RESOURCE_NOT_EXIST);
-            result.setResult("Repository [" + repositoryAlias + "] does not exist");
-            return result;
+            result.setResult("OrganizationalUnit [" + organizationalUnitName + "] does not exist");
         } else {
-            POM pom = new POM();
+
+            if (projectGroupId == null || projectGroupId.trim().isEmpty()) {
+                projectGroupId = projectName;
+            }
+            if (projectVersion == null || projectVersion.trim().isEmpty()) {
+                projectVersion = "1.0";
+            }
+
+            final POM pom = new POM();
             pom.getGav().setArtifactId(projectName);
             pom.getGav().setGroupId(projectGroupId);
             pom.getGav().setVersion(projectVersion);
@@ -213,9 +216,8 @@ public class JobRequestHelper {
             pom.setName(projectName);
 
             try {
-                projectService.newProject(Paths.convert(repositoryPath),
-                                          pom,
-                                          GUVNOR_BASE_URL);
+                projectService.newProject(organizationalUnit,
+                                          pom);
             } catch (GAVAlreadyExistsException gae) {
                 result.setStatus(JobStatus.DUPLICATE_RESOURCE);
                 result.setResult("Project's GAV [" + gae.getGAV().toString() + "] already exists at [" + toString(gae.getRepositories()) + "]");
@@ -227,8 +229,8 @@ public class JobRequestHelper {
             }
 
             result.setStatus(JobStatus.SUCCESS);
-            return result;
         }
+        return result;
     }
 
     private String toString(final Set<MavenRepositoryMetadata> repositories) {
@@ -241,30 +243,20 @@ public class JobRequestHelper {
         return sb.toString();
     }
 
-    public JobResult deleteProject(String jobId,
-                                   String repositoryAlias,
-                                   String projectName) {
+    public JobResult deleteProject(final String jobId,
+                                   final String projectName) {
         JobResult result = new JobResult();
         result.setJobId(jobId);
 
-        org.uberfire.java.nio.file.Path repositoryPath = getRepositoryRootPath(repositoryAlias);
+        final Project project = projectService.resolveProject(projectName);
 
-        if (repositoryPath == null) {
+        if (project == null) {
             result.setStatus(JobStatus.RESOURCE_NOT_EXIST);
-            result.setResult("Repository [" + repositoryAlias + "] does not exist");
+            result.setResult("Project [" + projectName + "] does not exist");
             return result;
         } else {
-            String repoPathStr = repositoryPath.toUri().toString();
-            StringBuilder projectPomUriStrBdr = new StringBuilder(repoPathStr);
-            if (!repoPathStr.endsWith("/")) {
-                projectPomUriStrBdr.append("/");
-            }
-            projectPomUriStrBdr.append(projectName).append("/pom.xml");
-            URI projectPomUri = URI.create(projectPomUriStrBdr.toString());
-            Path projectPomPath = Paths.convert(org.uberfire.java.nio.file.Paths.get(projectPomUri));
             try {
-                projectService.delete(projectPomPath,
-                                      "Deleting project via REST request");
+                repositoryService.removeRepository(project.getRepository().getAlias());
             } catch (Exception e) {
                 result.setStatus(JobStatus.FAIL);
                 result.setResult("Project [" + projectName + "] could not be deleted: " + e.getMessage());
@@ -291,15 +283,15 @@ public class JobRequestHelper {
             result.setResult("Repository [" + repositoryAlias + "] does not exist");
             return result;
         } else {
-            Project project = projectService.resolveProject(Paths.convert(repositoryPath.resolve(projectName)));
+            Module module = moduleService.resolveModule(Paths.convert(repositoryPath.resolve(projectName)));
 
-            if (project == null) {
+            if (module == null) {
                 result.setStatus(JobStatus.RESOURCE_NOT_EXIST);
                 result.setResult("Project [" + projectName + "] does not exist");
                 return result;
             }
 
-            BuildResults buildResults = buildService.build(project);
+            BuildResults buildResults = buildService.build(module);
 
             result.setDetailedResult(buildResultsToDetailedStringMessages(buildResults.getMessages()));
             result.setStatus(buildResults.getErrorMessages().isEmpty() ? JobStatus.SUCCESS : JobStatus.FAIL);
@@ -331,9 +323,9 @@ public class JobRequestHelper {
             result.setResult("Repository [" + repositoryAlias + "] does not exist");
             return result;
         } else {
-            Project project = projectService.resolveProject(Paths.convert(repositoryPath.resolve(projectName)));
+            Module module = moduleService.resolveModule(Paths.convert(repositoryPath.resolve(projectName)));
 
-            if (project == null) {
+            if (module == null) {
                 result.setStatus(JobStatus.RESOURCE_NOT_EXIST);
                 result.setResult("Project [" + projectName + "] does not exist");
                 return result;
@@ -341,12 +333,13 @@ public class JobRequestHelper {
 
             BuildResults buildResults = null;
             try {
-                buildResults = buildService.buildAndDeploy(project);
+                buildResults = buildService.buildAndDeploy(module);
 
                 result.setDetailedResult(buildResults == null ? null : deployResultToDetailedStringMessages(buildResults));
                 result.setStatus(buildResults != null && buildResults.getErrorMessages().isEmpty() ? JobStatus.SUCCESS : JobStatus.FAIL);
             } catch (Throwable t) {
-                Optional<GAVAlreadyExistsException> gaeOpt = findCause(t, GAVAlreadyExistsException.class);
+                Optional<GAVAlreadyExistsException> gaeOpt = findCause(t,
+                                                                       GAVAlreadyExistsException.class);
                 if (gaeOpt.isPresent()) {
                     GAVAlreadyExistsException gae = gaeOpt.get();
                     result.setStatus(JobStatus.DUPLICATE_RESOURCE);
@@ -357,7 +350,6 @@ public class JobRequestHelper {
                     result.setDetailedResult(errorResult);
                     result.setStatus(JobStatus.FAIL);
                 }
-
             }
             return result;
         }
@@ -386,9 +378,9 @@ public class JobRequestHelper {
             result.setResult("Repository [" + repositoryAlias + "] does not exist");
             return result;
         } else {
-            final Project project = projectService.resolveProject(Paths.convert(repositoryPath.resolve(projectName)));
+            final Module module = moduleService.resolveModule(Paths.convert(repositoryPath.resolve(projectName)));
 
-            if (project == null) {
+            if (module == null) {
                 result.setStatus(JobStatus.RESOURCE_NOT_EXIST);
                 result.setResult("Project [" + projectName + "] does not exist");
                 return result;
@@ -396,7 +388,7 @@ public class JobRequestHelper {
 
                 testService.runAllTests(
                         "JobRequestHelper",
-                        project.getPomXMLPath(),
+                        module.getPomXMLPath(),
                         getCustomTestResultEvent(result));
                 return result;
             }
@@ -439,9 +431,9 @@ public class JobRequestHelper {
             result.setResult("Repository [" + repositoryAlias + "] does not exist");
             return result;
         } else {
-            Project project = projectService.resolveProject(Paths.convert(repositoryPath.resolve(projectName)));
+            Module module = moduleService.resolveModule(Paths.convert(repositoryPath.resolve(projectName)));
 
-            if (project == null) {
+            if (module == null) {
                 result.setStatus(JobStatus.RESOURCE_NOT_EXIST);
                 result.setResult("Project [" + projectName + "] does not exist");
                 return result;
@@ -449,12 +441,13 @@ public class JobRequestHelper {
 
             BuildResults buildResults = null;
             try {
-                buildResults = buildService.buildAndDeploy(project);
+                buildResults = buildService.buildAndDeploy(module);
 
                 result.setDetailedResult(buildResults == null ? null : deployResultToDetailedStringMessages(buildResults));
                 result.setStatus(buildResults != null && buildResults.getErrorMessages().isEmpty() ? JobStatus.SUCCESS : JobStatus.FAIL);
             } catch (RuntimeException ex) {
-                GAVAlreadyExistsException gae = findCause(ex, GAVAlreadyExistsException.class).orElseThrow(() -> ex);
+                GAVAlreadyExistsException gae = findCause(ex,
+                                                          GAVAlreadyExistsException.class).orElseThrow(() -> ex);
                 result.setStatus(JobStatus.DUPLICATE_RESOURCE);
                 result.setResult("Project's GAV [" + gae.getGAV() + "] already exists at [" + toString(gae.getRepositories()) + "]");
                 return result;
@@ -672,20 +665,24 @@ public class JobRequestHelper {
     }
 
     private org.uberfire.java.nio.file.Path getRepositoryRootPath(final String repositoryAlias) {
-        org.guvnor.structure.repositories.Repository repository = repositoryService.getRepository(repositoryAlias);
+
+        final org.guvnor.structure.repositories.Repository repository = repositoryService.getRepository(repositoryAlias);
         if (repository == null) {
             return null;
+        } else {
+            return Paths.convert(repository.getRoot());
         }
-        return Paths.convert(repository.getBranchRoot(repository.getDefaultBranch()));
     }
 
-    private <T> Optional<T> findCause(Throwable t, Class<T> causeClass) {
+    private <T> Optional<T> findCause(Throwable t,
+                                      Class<T> causeClass) {
         if (t == null) {
             return Optional.empty();
         } else if (t.getClass().equals(causeClass)) {
-            return Optional.of((T)t);
+            return Optional.of((T) t);
         } else {
-            return findCause(t.getCause(), causeClass);
+            return findCause(t.getCause(),
+                             causeClass);
         }
     }
 }

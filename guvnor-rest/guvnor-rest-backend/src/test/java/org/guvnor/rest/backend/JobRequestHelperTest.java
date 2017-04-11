@@ -17,15 +17,17 @@ package org.guvnor.rest.backend;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Optional;
 import javax.enterprise.event.Event;
 
-import org.guvnor.common.services.project.model.Project;
-import org.guvnor.common.services.project.service.ProjectService;
+import org.guvnor.common.services.project.model.Module;
+import org.guvnor.common.services.project.service.ModuleService;
 import org.guvnor.common.services.shared.test.Failure;
 import org.guvnor.common.services.shared.test.TestResultMessage;
 import org.guvnor.common.services.shared.test.TestService;
 import org.guvnor.rest.client.JobResult;
 import org.guvnor.rest.client.JobStatus;
+import org.guvnor.structure.repositories.Branch;
 import org.guvnor.structure.repositories.Repository;
 import org.guvnor.structure.repositories.RepositoryService;
 import org.junit.Before;
@@ -41,9 +43,7 @@ import org.uberfire.backend.vfs.Path;
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class JobRequestHelperTest {
@@ -59,7 +59,7 @@ public class JobRequestHelperTest {
     @Mock
     private RepositoryService repositoryService;
     @Mock
-    private ProjectService<MyProject> projectService;
+    private ModuleService<MyModule> moduleService;
 
     @Before
     public void setUp() throws Exception {
@@ -77,13 +77,17 @@ public class JobRequestHelperTest {
 
     @Test
     public void projectDoesNotExist() throws Exception {
-        when(repository.getDefaultBranch()).thenReturn("master");
 
-        Path path = mock(Path.class);
+        final Path path = mock(Path.class);
         when(path.getFileName()).thenReturn("");
         when(path.toURI()).thenReturn("file://project/");
 
-        when(repository.getBranchRoot("master")).thenReturn(path);
+        final Branch masterBranch = new Branch("master",
+                                               path);
+
+        when(repository.getDefaultBranch()).thenReturn(Optional.of(masterBranch));
+
+        when(repository.getBranch("master")).thenReturn(Optional.of(masterBranch));
 
         final JobResult jobResult = helper.testProject(null,
                                                        "repositoryAlias",
@@ -136,18 +140,17 @@ public class JobRequestHelperTest {
     }
 
     private void whenProjectExists() {
-        when(repository.getDefaultBranch()).thenReturn("master");
 
-        Path path = mock(Path.class);
+        final Path path = mock(Path.class);
         when(path.getFileName()).thenReturn("");
         when(path.toURI()).thenReturn("file://project/");
 
-        when(repository.getBranchRoot("master")).thenReturn(path);
+        when(repository.getRoot()).thenReturn(path);
 
-        when(projectService.resolveProject(any(Path.class))).thenReturn(mock(MyProject.class));
+        when(moduleService.resolveModule(any(Path.class))).thenReturn(mock(MyModule.class));
     }
 
-    class MyProject extends Project {
+    class MyModule extends Module {
 
     }
 }

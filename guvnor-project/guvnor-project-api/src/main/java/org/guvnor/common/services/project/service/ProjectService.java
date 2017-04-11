@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 Red Hat, Inc. and/or its affiliates.
+ * Copyright 2017 Red Hat, Inc. and/or its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,15 +13,59 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.guvnor.common.services.project.service;
 
+import java.util.Collection;
+
+import org.guvnor.common.services.project.model.Module;
+import org.guvnor.common.services.project.model.POM;
 import org.guvnor.common.services.project.model.Project;
+import org.guvnor.structure.organizationalunit.OrganizationalUnit;
+import org.guvnor.structure.repositories.Branch;
+import org.guvnor.structure.repositories.Repository;
 import org.jboss.errai.bus.server.annotations.Remote;
+import org.uberfire.backend.vfs.Path;
 
 @Remote
-public interface ProjectService<T extends Project>
-        extends ProjectResourceResolver<T>,
-                ProjectServiceCore<T> {
+public interface ProjectService {
 
+    Collection<Project> getAllProjects();
+
+    Collection<Project> getAllProjects(final OrganizationalUnit organizationalUnit);
+
+    Project newProject(final OrganizationalUnit organizationalUnit,
+                       final String targetRepositoryAlias);
+
+    Project newProject(final OrganizationalUnit organizationalUnit,
+                       final POM pom);
+
+    Project newProject(final OrganizationalUnit organizationalUnit,
+                       final POM pom,
+                       final DeploymentMode mode);
+
+    Project resolveProject(final Repository repository);
+
+    Project resolveProject(final Branch branch);
+
+    Project resolveProject(final Module module);
+
+    Project resolveProject(final Path module);
+
+    Project resolveProject(final String name);
+
+    /**
+     * Add a group to a project; limiting access to users with the group
+     * @param module The Project
+     * @param group The required group
+     */
+    void addGroup(final Module module,
+                  final String group);
+
+    /**
+     * Remove a group from a project
+     * @param module The Project
+     * @param group The group
+     */
+    void removeGroup(final Module module,
+                     final String group);
 }

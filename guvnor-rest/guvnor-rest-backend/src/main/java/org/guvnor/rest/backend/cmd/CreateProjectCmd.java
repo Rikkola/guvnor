@@ -27,26 +27,36 @@ import org.guvnor.rest.client.JobStatus;
 public class CreateProjectCmd extends AbstractJobCommand {
 
     public CreateProjectCmd(final JobRequestHelper jobRequestHelper,
-                                     final JobResultManager jobResultManager,
-                                     final Map<String, Object> context) {
-        super(jobRequestHelper, jobResultManager, context);
+                            final JobResultManager jobResultManager,
+                            final Map<String, Object> context) {
+        super(jobRequestHelper,
+              jobResultManager,
+              context);
     }
 
     @Override
-    public JobResult internalExecute(JobRequest request) throws Exception {
+    public JobResult internalExecute(final JobRequest request) throws Exception {
         JobRequestHelper helper = getHelper();
         CreateProjectRequest jobRequest = (CreateProjectRequest) request;
 
         JobResult result = null;
-        try { 
-            result = helper.createProject( jobRequest.getJobId(), jobRequest.getRepositoryName(), jobRequest.getProjectName() ,
-                    jobRequest.getProjectGroupId(), jobRequest.getProjectVersion(), jobRequest.getDescription() );
-        } finally { 
+        try {
+            result = helper.createProject(jobRequest.getJobId(),
+                                          jobRequest.getOrganizationalUnitName(),
+                                          jobRequest.getProjectName(),
+                                          jobRequest.getProjectGroupId(),
+                                          jobRequest.getProjectVersion(),
+                                          jobRequest.getDescription());
+        } finally {
             JobStatus status = result != null ? result.getStatus() : JobStatus.SERVER_ERROR;
             String groupId = jobRequest.getProjectGroupId() == null ? jobRequest.getProjectName() : jobRequest.getProjectGroupId();
             String version = jobRequest.getProjectVersion() == null ? "1.0" : jobRequest.getProjectVersion();
-            logger.debug( "-----createProject--- , repositoryName: {}, project : {}:{}:{} [{}]", 
-                    jobRequest.getRepositoryName(), jobRequest.getProjectName(), groupId, version, status);
+            logger.debug("-----createProject--- , ouName: {}, project : {}:{}:{} [{}]",
+                         jobRequest.getOrganizationalUnitName(),
+                         jobRequest.getProjectName(),
+                         groupId,
+                         version,
+                         status);
         }
         return result;
     }

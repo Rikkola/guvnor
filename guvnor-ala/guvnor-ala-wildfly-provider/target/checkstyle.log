@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<checkstyle version="7.4">
+<file name="/Users/tonirikkola/Work/Codes/master/guvnor/guvnor-ala/guvnor-ala-wildfly-provider/src/main/java/org/guvnor/ala/wildfly/access/exceptions/WildflyClientException.java">
+</file>
+<file name="/Users/tonirikkola/Work/Codes/master/guvnor/guvnor-ala/guvnor-ala-wildfly-provider/src/main/java/org/guvnor/ala/wildfly/access/impl/WildflyAccessInterfaceImpl.java">
+</file>
+<file name="/Users/tonirikkola/Work/Codes/master/guvnor/guvnor-ala/guvnor-ala-wildfly-provider/src/main/java/org/guvnor/ala/wildfly/access/WildflyAccessInterface.java">
+<error line="19" severity="error" message="Wrong lexicographical order for &apos;org.guvnor.ala.runtime.providers.ProviderId&apos; import. Should be before &apos;org.uberfire.commons.lifecycle.Disposable&apos;." source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+</file>
+<file name="/Users/tonirikkola/Work/Codes/master/guvnor/guvnor-ala/guvnor-ala-wildfly-provider/src/main/java/org/guvnor/ala/wildfly/access/WildflyAppState.java">
+</file>
+<file name="/Users/tonirikkola/Work/Codes/master/guvnor/guvnor-ala/guvnor-ala-wildfly-provider/src/main/java/org/guvnor/ala/wildfly/access/WildflyClient.java">
+<error line="40" severity="error" message="Import statement for &apos;java.util.Date&apos; is in the wrong order. Should be in the &apos;STANDARD_JAVA_PACKAGE&apos; group, expecting group &apos;STATIC&apos; on this line." source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="41" severity="error" message="&apos;java.util.logging.Level.*&apos; should be separated from previous import group by one line." source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="41" severity="error" message="Using the &apos;.*&apos; form of import should be avoided - java.util.logging.Level.*." source="com.puppycrawl.tools.checkstyle.checks.imports.AvoidStarImportCheck"/>
+<error line="42" severity="error" message="Using the &apos;.*&apos; form of import should be avoided - java.util.logging.Logger.*." source="com.puppycrawl.tools.checkstyle.checks.imports.AvoidStarImportCheck"/>
+<error line="44" severity="error" message="Using the &apos;.*&apos; form of import should be avoided - org.apache.http.entity.mime.HttpMultipartMode.*." source="com.puppycrawl.tools.checkstyle.checks.imports.AvoidStarImportCheck"/>
+<error line="46" severity="error" message="Using the &apos;.*&apos; form of import should be avoided - org.apache.http.impl.client.HttpClients.*." source="com.puppycrawl.tools.checkstyle.checks.imports.AvoidStarImportCheck"/>
+<error line="48" severity="error" message="Import statement for &apos;org.apache.http.entity.StringEntity&apos; is in the wrong order. Should be in the &apos;THIRD_PARTY_PACKAGE&apos; group, expecting not assigned imports on this line." source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="49" severity="error" message="Import statement for &apos;org.apache.http.util.EntityUtils&apos; is in the wrong order. Should be in the &apos;THIRD_PARTY_PACKAGE&apos; group, expecting not assigned imports on this line." source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="50" severity="error" message="Import statement for &apos;org.guvnor.ala.wildfly.access.exceptions.WildflyClientException&apos; is in the wrong order. Should be in the &apos;THIRD_PARTY_PACKAGE&apos; group, expecting not assigned imports on this line." source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="51" severity="error" message="Wrong lexicographical order for &apos;org.apache.http.entity.ContentType.create&apos; import. Should be before &apos;org.apache.http.impl.client.HttpClients.*&apos;." source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="52" severity="error" message="Import statement for &apos;org.slf4j.Logger&apos; is in the wrong order. Should be in the &apos;THIRD_PARTY_PACKAGE&apos; group, expecting not assigned imports on this line." source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="53" severity="error" message="Import statement for &apos;org.slf4j.LoggerFactory&apos; is in the wrong order. Should be in the &apos;THIRD_PARTY_PACKAGE&apos; group, expecting not assigned imports on this line." source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+</file>
+<file name="/Users/tonirikkola/Work/Codes/master/guvnor/guvnor-ala/guvnor-ala-wildfly-provider/src/main/java/org/guvnor/ala/wildfly/config/impl/ContextAwareWildflyRuntimeExecConfig.java">
+</file>
+<file name="/Users/tonirikkola/Work/Codes/master/guvnor/guvnor-ala/guvnor-ala-wildfly-provider/src/main/java/org/guvnor/ala/wildfly/config/impl/WildflyProviderConfigImpl.java">
+</file>
+<file name="/Users/tonirikkola/Work/Codes/master/guvnor/guvnor-ala/guvnor-ala-wildfly-provider/src/main/java/org/guvnor/ala/wildfly/config/WildflyProviderConfig.java">
+</file>
+<file name="/Users/tonirikkola/Work/Codes/master/guvnor/guvnor-ala/guvnor-ala-wildfly-provider/src/main/java/org/guvnor/ala/wildfly/config/WildflyRuntimeConfiguration.java">
+</file>
+<file name="/Users/tonirikkola/Work/Codes/master/guvnor/guvnor-ala/guvnor-ala-wildfly-provider/src/main/java/org/guvnor/ala/wildfly/config/WildflyRuntimeExecConfig.java">
+</file>
+<file name="/Users/tonirikkola/Work/Codes/master/guvnor/guvnor-ala/guvnor-ala-wildfly-provider/src/main/java/org/guvnor/ala/wildfly/executor/WildflyProviderConfigExecutor.java">
+</file>
+<file name="/Users/tonirikkola/Work/Codes/master/guvnor/guvnor-ala/guvnor-ala-wildfly-provider/src/main/java/org/guvnor/ala/wildfly/executor/WildflyRuntimeExecExecutor.java">
+</file>
+<file name="/Users/tonirikkola/Work/Codes/master/guvnor/guvnor-ala/guvnor-ala-wildfly-provider/src/main/java/org/guvnor/ala/wildfly/model/WildflyProvider.java">
+</file>
+<file name="/Users/tonirikkola/Work/Codes/master/guvnor/guvnor-ala/guvnor-ala-wildfly-provider/src/main/java/org/guvnor/ala/wildfly/model/WildflyProviderImpl.java">
+</file>
+<file name="/Users/tonirikkola/Work/Codes/master/guvnor/guvnor-ala/guvnor-ala-wildfly-provider/src/main/java/org/guvnor/ala/wildfly/model/WildflyProviderType.java">
+</file>
+<file name="/Users/tonirikkola/Work/Codes/master/guvnor/guvnor-ala/guvnor-ala-wildfly-provider/src/main/java/org/guvnor/ala/wildfly/model/WildflyRuntime.java">
+</file>
+<file name="/Users/tonirikkola/Work/Codes/master/guvnor/guvnor-ala/guvnor-ala-wildfly-provider/src/main/java/org/guvnor/ala/wildfly/model/WildflyRuntimeEndpoint.java">
+</file>
+<file name="/Users/tonirikkola/Work/Codes/master/guvnor/guvnor-ala/guvnor-ala-wildfly-provider/src/main/java/org/guvnor/ala/wildfly/model/WildflyRuntimeInfo.java">
+</file>
+<file name="/Users/tonirikkola/Work/Codes/master/guvnor/guvnor-ala/guvnor-ala-wildfly-provider/src/main/java/org/guvnor/ala/wildfly/model/WildflyRuntimeState.java">
+</file>
+<file name="/Users/tonirikkola/Work/Codes/master/guvnor/guvnor-ala/guvnor-ala-wildfly-provider/src/main/java/org/guvnor/ala/wildfly/service/WildflyRuntimeManager.java">
+<error line="20" severity="error" message="&apos;org.guvnor.ala.exceptions.RuntimeOperationException&apos; should be separated from previous import group by one line." source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+</file>
+<file name="/Users/tonirikkola/Work/Codes/master/guvnor/guvnor-ala/guvnor-ala-wildfly-provider/src/test/java/org/guvnor/ala/wildfly/executor/tests/ContextAwareWildflyRuntimeExecConfigTest.java">
+<error line="33" severity="error" message="Wrong lexicographical order for &apos;org.guvnor.ala.util.VariableInterpolation.interpolate&apos; import. Should be before &apos;org.mockito.Mockito.when&apos;." source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+</file>
+<file name="/Users/tonirikkola/Work/Codes/master/guvnor/guvnor-ala/guvnor-ala-wildfly-provider/src/test/java/org/guvnor/ala/wildfly/executor/tests/WildflyAccessInterfaceImplTest.java">
+</file>
+<file name="/Users/tonirikkola/Work/Codes/master/guvnor/guvnor-ala/guvnor-ala-wildfly-provider/src/test/java/org/guvnor/ala/wildfly/executor/tests/WildflyExecutorTest.java">
+<error line="23" severity="error" message="Wrong lexicographical order for &apos;org.guvnor.ala.build.maven.config.MavenBuildConfig&apos; import. Should be before &apos;org.junit.Test&apos;." source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="24" severity="error" message="Wrong lexicographical order for &apos;org.guvnor.ala.build.maven.config.MavenBuildExecConfig&apos; import. Should be before &apos;org.junit.Test&apos;." source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="25" severity="error" message="Wrong lexicographical order for &apos;org.guvnor.ala.build.maven.config.MavenProjectConfig&apos; import. Should be before &apos;org.junit.Test&apos;." source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="26" severity="error" message="Wrong lexicographical order for &apos;org.guvnor.ala.build.maven.executor.MavenBuildConfigExecutor&apos; import. Should be before &apos;org.junit.Test&apos;." source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="27" severity="error" message="Wrong lexicographical order for &apos;org.guvnor.ala.build.maven.executor.MavenBuildExecConfigExecutor&apos; import. Should be before &apos;org.junit.Test&apos;." source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="28" severity="error" message="Wrong lexicographical order for &apos;org.guvnor.ala.build.maven.executor.MavenProjectConfigExecutor&apos; import. Should be before &apos;org.junit.Test&apos;." source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="29" severity="error" message="Wrong lexicographical order for &apos;org.guvnor.ala.config.BinaryConfig&apos; import. Should be before &apos;org.junit.Test&apos;." source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="30" severity="error" message="Wrong lexicographical order for &apos;org.guvnor.ala.config.BuildConfig&apos; import. Should be before &apos;org.junit.Test&apos;." source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="31" severity="error" message="Wrong lexicographical order for &apos;org.guvnor.ala.config.ProjectConfig&apos; import. Should be before &apos;org.junit.Test&apos;." source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="32" severity="error" message="Wrong lexicographical order for &apos;org.guvnor.ala.config.ProviderConfig&apos; import. Should be before &apos;org.junit.Test&apos;." source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="33" severity="error" message="Wrong lexicographical order for &apos;org.guvnor.ala.config.RuntimeConfig&apos; import. Should be before &apos;org.junit.Test&apos;." source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="34" severity="error" message="Wrong lexicographical order for &apos;org.guvnor.ala.config.SourceConfig&apos; import. Should be before &apos;org.junit.Test&apos;." source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="36" severity="error" message="Wrong lexicographical order for &apos;org.guvnor.ala.pipeline.Input&apos; import. Should be before &apos;org.junit.Test&apos;." source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="37" severity="error" message="Wrong lexicographical order for &apos;org.guvnor.ala.pipeline.Pipeline&apos; import. Should be before &apos;org.junit.Test&apos;." source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="38" severity="error" message="Wrong lexicographical order for &apos;org.guvnor.ala.pipeline.PipelineFactory&apos; import. Should be before &apos;org.junit.Test&apos;." source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="39" severity="error" message="Wrong lexicographical order for &apos;org.guvnor.ala.pipeline.Stage&apos; import. Should be before &apos;org.junit.Test&apos;." source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="40" severity="error" message="Wrong lexicographical order for &apos;org.guvnor.ala.pipeline.execution.PipelineExecutor&apos; import. Should be before &apos;org.junit.Test&apos;." source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="41" severity="error" message="Wrong lexicographical order for &apos;org.guvnor.ala.registry.BuildRegistry&apos; import. Should be before &apos;org.junit.Test&apos;." source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="42" severity="error" message="Wrong lexicographical order for &apos;org.guvnor.ala.registry.SourceRegistry&apos; import. Should be before &apos;org.junit.Test&apos;." source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="43" severity="error" message="Wrong lexicographical order for &apos;org.guvnor.ala.registry.local.InMemoryBuildRegistry&apos; import. Should be before &apos;org.junit.Test&apos;." source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="44" severity="error" message="Wrong lexicographical order for &apos;org.guvnor.ala.registry.local.InMemoryRuntimeRegistry&apos; import. Should be before &apos;org.junit.Test&apos;." source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="45" severity="error" message="Wrong lexicographical order for &apos;org.guvnor.ala.registry.local.InMemorySourceRegistry&apos; import. Should be before &apos;org.junit.Test&apos;." source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="46" severity="error" message="Wrong lexicographical order for &apos;org.guvnor.ala.runtime.Runtime&apos; import. Should be before &apos;org.junit.Test&apos;." source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="47" severity="error" message="Wrong lexicographical order for &apos;org.guvnor.ala.source.git.config.GitConfig&apos; import. Should be before &apos;org.junit.Test&apos;." source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="48" severity="error" message="Wrong lexicographical order for &apos;org.guvnor.ala.source.git.executor.GitConfigExecutor&apos; import. Should be before &apos;org.junit.Test&apos;." source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="50" severity="error" message="Using the &apos;.*&apos; form of import should be avoided - java.util.Arrays.*." source="com.puppycrawl.tools.checkstyle.checks.imports.AvoidStarImportCheck"/>
+<error line="51" severity="error" message="Import statement for &apos;java.util.List&apos; is in the wrong order. Should be in the &apos;STANDARD_JAVA_PACKAGE&apos; group, expecting not assigned imports on this line." source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="52" severity="error" message="Import statement for &apos;org.apache.commons.io.FileUtils&apos; is in the wrong order. Should be in the &apos;THIRD_PARTY_PACKAGE&apos; group, expecting not assigned imports on this line." source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="53" severity="error" message="Import statement for &apos;org.arquillian.cube.CubeController&apos; is in the wrong order. Should be in the &apos;THIRD_PARTY_PACKAGE&apos; group, expecting not assigned imports on this line." source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="54" severity="error" message="Import statement for &apos;org.arquillian.cube.HostIp&apos; is in the wrong order. Should be in the &apos;THIRD_PARTY_PACKAGE&apos; group, expecting not assigned imports on this line." source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="55" severity="error" message="Import statement for &apos;org.arquillian.cube.requirement.ArquillianConditionalRunner&apos; is in the wrong order. Should be in the &apos;THIRD_PARTY_PACKAGE&apos; group, expecting not assigned imports on this line." source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="56" severity="error" message="Using the &apos;.*&apos; form of import should be avoided - org.guvnor.ala.pipeline.StageUtil.*." source="com.puppycrawl.tools.checkstyle.checks.imports.AvoidStarImportCheck"/>
+<error line="57" severity="error" message="Import statement for &apos;org.guvnor.ala.wildfly.access.WildflyAccessInterface&apos; is in the wrong order. Should be in the &apos;THIRD_PARTY_PACKAGE&apos; group, expecting not assigned imports on this line." source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="58" severity="error" message="Import statement for &apos;org.guvnor.ala.wildfly.access.impl.WildflyAccessInterfaceImpl&apos; is in the wrong order. Should be in the &apos;THIRD_PARTY_PACKAGE&apos; group, expecting not assigned imports on this line." source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="59" severity="error" message="Import statement for &apos;org.guvnor.ala.wildfly.config.impl.ContextAwareWildflyRuntimeExecConfig&apos; is in the wrong order. Should be in the &apos;THIRD_PARTY_PACKAGE&apos; group, expecting not assigned imports on this line." source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="60" severity="error" message="Import statement for &apos;org.guvnor.ala.wildfly.config.WildflyProviderConfig&apos; is in the wrong order. Should be in the &apos;THIRD_PARTY_PACKAGE&apos; group, expecting not assigned imports on this line." source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="61" severity="error" message="Import statement for &apos;org.guvnor.ala.wildfly.executor.WildflyProviderConfigExecutor&apos; is in the wrong order. Should be in the &apos;THIRD_PARTY_PACKAGE&apos; group, expecting not assigned imports on this line." source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="62" severity="error" message="Import statement for &apos;org.guvnor.ala.wildfly.executor.WildflyRuntimeExecExecutor&apos; is in the wrong order. Should be in the &apos;THIRD_PARTY_PACKAGE&apos; group, expecting not assigned imports on this line." source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="63" severity="error" message="Import statement for &apos;org.guvnor.ala.wildfly.model.WildflyRuntime&apos; is in the wrong order. Should be in the &apos;THIRD_PARTY_PACKAGE&apos; group, expecting not assigned imports on this line." source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="64" severity="error" message="Import statement for &apos;org.guvnor.ala.wildfly.service.WildflyRuntimeManager&apos; is in the wrong order. Should be in the &apos;THIRD_PARTY_PACKAGE&apos; group, expecting not assigned imports on this line." source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="65" severity="error" message="Import statement for &apos;org.jboss.arquillian.junit.InSequence&apos; is in the wrong order. Should be in the &apos;THIRD_PARTY_PACKAGE&apos; group, expecting not assigned imports on this line." source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="66" severity="error" message="Import statement for &apos;org.jboss.arquillian.test.api.ArquillianResource&apos; is in the wrong order. Should be in the &apos;THIRD_PARTY_PACKAGE&apos; group, expecting not assigned imports on this line." source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="67" severity="error" message="Import statement for &apos;org.junit.AfterClass&apos; is in the wrong order. Should be in the &apos;THIRD_PARTY_PACKAGE&apos; group, expecting not assigned imports on this line." source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="70" severity="error" message="Import statement for &apos;org.junit.BeforeClass&apos; is in the wrong order. Should be in the &apos;THIRD_PARTY_PACKAGE&apos; group, expecting not assigned imports on this line." source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="71" severity="error" message="Import statement for &apos;org.junit.runner.RunWith&apos; is in the wrong order. Should be in the &apos;THIRD_PARTY_PACKAGE&apos; group, expecting not assigned imports on this line." source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+</file>
+<file name="/Users/tonirikkola/Work/Codes/master/guvnor/guvnor-ala/guvnor-ala-wildfly-provider/src/test/java/org/guvnor/ala/wildfly/executor/tests/WildflyRuntimeTest.java">
+<error line="54" severity="error" message="Import statement for &apos;org.uberfire.java.nio.file.Path&apos; is in the wrong order. Should be in the &apos;THIRD_PARTY_PACKAGE&apos; group, expecting not assigned imports on this line." source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+</file>
+</checkstyle>

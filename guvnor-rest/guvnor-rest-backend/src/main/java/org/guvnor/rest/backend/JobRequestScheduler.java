@@ -112,7 +112,7 @@ public class JobRequestScheduler {
     public void createProjectRequest(final CreateProjectRequest jobRequest) {
         final Map<String, Object> params = getContext(jobRequest);
         params.put("Repository",
-                   jobRequest.getRepositoryName());
+                   jobRequest.getOrganizationalUnitName());
         params.put("Project",
                    jobRequest.getProjectName());
         params.put("Operation",
@@ -126,8 +126,6 @@ public class JobRequestScheduler {
 
     public void deleteProjectRequest(final DeleteProjectRequest jobRequest) {
         final Map<String, Object> params = getContext(jobRequest);
-        params.put("Repository",
-                   jobRequest.getRepositoryName());
         params.put("Project",
                    jobRequest.getProjectName());
         params.put("Operation",
